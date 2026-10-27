@@ -28,4 +28,4 @@ The reorganized tree requires a clean-build qualification before a new release.
 Existing RC3 release images are unchanged by this source reorganization.
 
 Installation and releases:
-[lineageos_releases_ldy_an00](https://github.com/iodn/lineageos_releases_ldy_an00).
+[android_manifest_ldy_an00](https://github.com/iodn/android_manifest_ldy_an00).
