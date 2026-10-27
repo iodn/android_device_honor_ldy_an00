@@ -1,0 +1,24 @@
+# UNVALIDATED: staged retained-stock daemon integration.
+typeattribute system_teecd coredomain;
+init_daemon_domain(system_teecd)
+
+# Stock AIDL client memberships; retained vendor policy supplies the HAL rules.
+typeattribute system_teecd halclientdomain;
+typeattribute system_teecd hal_libteec_aidl_client;
+
+# ITeecService registration and service-manager transport.
+binder_use(system_teecd)
+allow system_teecd iteec_service:service_manager add;
+neverallow { domain -system_teecd } iteec_service:service_manager add;
+
+# Measured stock HIDL client rules (system_ext CIL 11633-11637).
+hwbinder_use(system_teecd)
+get_prop(system_teecd, hwservicemanager_prop)
+allow system_teecd hal_libteec:binder { call transfer };
+allow system_teecd hal_ext_libteec_hwservice_attr:hwservice_manager find;
+allow system_teecd hidl_memory_hwservice:hwservice_manager find;
+
+# Measured stock read-only sysfs and version-property access.
+allow system_teecd sysfs_tee:dir r_dir_perms;
+allow system_teecd sysfs_tee:{ file lnk_file } r_file_perms;
+get_prop(system_teecd, htee_version_prop)

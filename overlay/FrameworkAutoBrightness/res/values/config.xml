@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Measured stock 10.0.0.113 ambient-light curve and lower brightness bound. -->
+    <bool name="config_automatic_brightness_available">true</bool>
+    <integer name="config_screenBrightnessSettingMinimum">4</integer>
+    <!-- Measured stock float bounds; Android requires both bounds to bypass int conversion. -->
+    <item name="config_screenBrightnessSettingMinimumFloat" format="float" type="dimen">0.015686275</item>
+    <item name="config_screenBrightnessSettingMaximumFloat" format="float" type="dimen">1.0</item>
+    <item name="config_screenBrightnessSettingDefaultFloat" format="float" type="dimen">0.12941177</item>
+    <integer-array name="config_autoBrightnessLevels">
+        <item>8</item>
+        <item>55</item>
+        <item>350</item>
+        <item>1600</item>
+        <item>2550</item>
+    </integer-array>
+    <integer-array name="config_autoBrightnessLcdBacklightValues">
+        <item>6</item>
+        <item>47</item>
+        <item>150</item>
+        <item>180</item>
+        <item>250</item>
+        <item>255</item>
+    </integer-array>
+</resources>

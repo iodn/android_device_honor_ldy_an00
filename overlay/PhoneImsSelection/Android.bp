@@ -1,0 +1,5 @@
+runtime_resource_overlay {
+    name: "LdyAn00PhoneImsSelectionOverlay",
+    product_specific: true,
+    resource_dirs: ["res"],
+}

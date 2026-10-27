@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2026 The LineageOS Project; SPDX-License-Identifier: Apache-2.0 -->
+<resources>
+    <bool name="config_face_enroll_hal_owns_camera">true</bool>
+    <bool name="config_face_attention_supported">false</bool>
+    <bool name="config_show_battery_info_dates">true</bool>
+    <bool name="config_show_battery_cycle_count">true</bool>
+    <bool name="config_show_hardware_info_details">true</bool>
+</resources>

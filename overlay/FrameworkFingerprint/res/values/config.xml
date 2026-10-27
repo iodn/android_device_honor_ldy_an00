@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- SOURCE CANDIDATE ONLY: not selected by the current product.
+         Source/image qualification required before the authorized hardware trial.
+         OEM normalized corners440,712..560,766 -> rounded535,1880..681,2022.
+         OEM circle radius72 is already in native pixels, not normalized units. -->
+    <bool name="config_useHonorLdyAn00FingerprintBridge">true</bool>
+    <array name="config_sfps_sensor_props">
+        <item>@array/config_ldy_an00_fingerprint_location</item>
+    </array>
+    <array name="config_ldy_an00_fingerprint_location">
+        <item>""</item>
+        <item>608</item>
+        <item>1951</item>
+        <item>72</item>
+    </array>
+</resources>

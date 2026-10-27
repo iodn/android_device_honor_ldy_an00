@@ -1,0 +1,12 @@
+# Userdebug-only package; no mount, data, UI or adb prerequisite.
+on post-fs && property:ro.debuggable=1
+    start ldy-guest-capture
+
+service ldy-guest-capture /system/bin/ldy-guest-capture
+    disabled
+    oneshot
+    user root
+    group root log cache
+    capabilities
+    stdio_to_kmsg
+    timeout_period 210

@@ -1,0 +1,6 @@
+# Stock system-owned public properties consumed by retained vendor services.
+system_public_prop(htee_version_prop)
+system_public_prop(htee_basic_prop)
+
+# Exact retained-vendor boot mode, exported only to the measured bridge consumers.
+vendor_public_prop(vendor_honor_face_mode_prop)

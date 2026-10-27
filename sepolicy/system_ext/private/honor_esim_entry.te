@@ -1,0 +1,5 @@
+# Read-only feature switch for Phone's consent UI and its Settings entry.
+# Kept disabled until the complete shared-path implementation is qualified.
+system_internal_prop(honor_ldy_an00_esim_bridge_prop)
+get_prop(system_app, honor_ldy_an00_esim_bridge_prop)
+get_prop(radio, honor_ldy_an00_esim_bridge_prop)

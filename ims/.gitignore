@@ -1,0 +1,5 @@
+proprietary/
+prebuilts/
+*.pk8
+*.key
+__pycache__/

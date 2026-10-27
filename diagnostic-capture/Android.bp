@@ -1,0 +1,7 @@
+cc_binary {
+    name: "ldy-guest-capture",
+    srcs: ["ldy-capture.c"],
+    static_executable: true,
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+    init_rc: ["ldy-guest-capture.rc"],
+}

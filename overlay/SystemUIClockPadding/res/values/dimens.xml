@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Clock and carrier spacing confirmed on the physical display. -->
+    <dimen name="status_bar_padding_start">12dp</dimen>
+    <dimen name="status_bar_padding_end">12dp</dimen>
+    <dimen name="status_bar_clock_starting_padding">16dp</dimen>
+    <dimen name="keyguard_carrier_text_margin">28dp</dimen>
+    <!-- Native 1216px panel is 67mm wide: 67000um / 1216px. -->
+    <item name="pixel_pitch" format="float" type="dimen">55.098684</item>
+</resources>

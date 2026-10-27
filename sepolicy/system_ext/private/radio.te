@@ -1,0 +1,15 @@
+
+# Exact stock ImsUtImpl checks its own named binder before publication.
+allow radio ims_ut_service:service_manager { add find };
+
+# Retained WfoService publishes MWI; its observed clients run in radio.
+allow radio ldy_mwi_service:service_manager { add find };
+
+# Restore stock IMS supplementary-service property reads.
+get_prop(radio, system_mtk_supp_serv_prop)
+
+# The controlled Phone probe checks enforcing mode through security_getenforce().
+# Reading the mode must not grant policy or enforcement mutation permissions.
+userdebug_or_eng(`
+  allow radio selinuxfs:file { open read };
+')

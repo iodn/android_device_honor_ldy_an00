@@ -1,0 +1,14 @@
+# Raw cross-partition attributes exported by the stock system_ext policy.
+attribute hal_libteec;
+attribute hal_ext_libteec_hwservice_attr;
+
+attribute hal_libteec_aidl;
+expandattribute hal_libteec_aidl true;
+attribute hal_libteec_aidl_client;
+expandattribute hal_libteec_aidl_client true;
+attribute hal_libteec_aidl_server;
+expandattribute hal_libteec_aidl_server false;
+
+# Stock system_ext exports this raw client attribute to the retained Honor TP HAL.
+attribute hal_tp_aidl_client;
+expandattribute hal_tp_aidl_client true;

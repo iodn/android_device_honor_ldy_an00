@@ -1,0 +1,10 @@
+{
+  "firmware": "LDY-AN00 stock10.0.0.113",
+  "source": "stock113/system_ext/lib64/libsf_cpupolicy.so",
+  "sha256": "0e1f86711e5cd508b41be59b88bb440341564df984bb4e740fc8f3dea11d6bb7",
+  "bytes": 56432,
+  "retained_opaque_component": true,
+  "kernel_or_properties_modified": false,
+  "runtime_verified": false,
+  "scope": "Exact C-export bridge; no Android17 FrameTimeline ABI object passed to plugin. Module/provider link and kernel/policy runtime qualification pending."
+}

@@ -1,0 +1,12 @@
+proprietary/
+prebuilts/**/*.so
+*.pk8
+*.key
+__pycache__/
+
+.venv/
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore

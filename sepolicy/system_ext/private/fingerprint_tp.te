@@ -1,0 +1,2 @@
+# Restore only stock system_server membership; vendor supplies the existing HAL rules.
+typeattribute system_server hal_tp_aidl_client;

@@ -1,0 +1,6 @@
+{
+  "source": "stock/10.0.0.113/complete-content-reference/system_ext/etc/permissions/privapp-permissions-system_ext.xml",
+  "sha256": "09a0bf8886f1faa48b9d687345e7febc7dd5c7c38ca4aee4b9cf7c8e0409b3c6",
+  "extraction": "Only exact com.mediatek.ims block; original seven permission entries unchanged",
+  "fragment_sha256": "d272c431f971de348b48804b16259e84a80dca2b727d9473b1908dfb0df2c0a3"
+}

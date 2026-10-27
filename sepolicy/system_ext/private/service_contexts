@@ -1,0 +1,7 @@
+ITeecService u:object_r:iteec_service:s0
+
+media.VTS u:object_r:vtservice_service:s0
+imsa u:object_r:radio_service:s0
+mtkIms u:object_r:radio_service:s0
+mwis u:object_r:ldy_mwi_service:s0
+ims_ut u:object_r:ims_ut_service:s0

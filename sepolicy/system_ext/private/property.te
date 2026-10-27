@@ -1,0 +1,3 @@
+# Stock framework-owned MTK supplementary-service properties.
+system_internal_prop(system_mtk_supp_serv_prop)
+typeattribute system_mtk_supp_serv_prop extended_core_property_type;

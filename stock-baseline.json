@@ -1,0 +1,44 @@
+{
+  "source": "read-only stock inventory 2026-10-21T07:41:05.134819+00:00",
+  "firmware": "10.0.0.113(C00E100R101P1)",
+  "properties": {
+    "ro.product.device": "HNLDY-M",
+    "ro.product.model": "LDY-AN00",
+    "ro.product.board": "k6993v1_64",
+    "ro.board.platform": "mt6993",
+    "ro.build.fingerprint": "HONOR/LDY-AN00/HNLDY-M:16/HONORLDY-AN00/10DLDLD113C00E100:user/release-keys",
+    "ro.vendor.build.fingerprint": "alps/vext_k6993v1_64/k6993v1_64:16/BP2A.250605.031.A3/mp1tc36spV1:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.build.version.security_patch": "2025-12-01",
+    "ro.vendor.build.security_patch": "2025-12-01",
+    "ro.product.first_api_level": "36",
+    "ro.board.first_api_level": "202504",
+    "ro.product.cpu.abilist": "arm64-v8a",
+    "ro.virtual_ab.enabled": "true"
+  },
+  "kernel_version": "6.12.38-android16-5-g4b3671e1f5b7-abogki460618149-4k",
+  "kernel_page_size": 4096,
+  "boot_header_version": 4,
+  "stock_boot_prebuilts": "vendor/honor/ldy_an00/stock-images.json",
+  "reuse_partitions": [
+    "boot",
+    "init_boot",
+    "vendor_boot",
+    "dtbo",
+    "vendor",
+    "odm",
+    "system_dlkm",
+    "vendor_dlkm",
+    "odm_dlkm"
+  ],
+  "hardware_boot_validated": false,
+  "display": {
+    "width": 1216,
+    "height": 2640,
+    "density": 560,
+    "egl": "mali",
+    "vulkan": "mali",
+    "gralloc": "common",
+    "source": "read-only wm size/density and getprop; 2026-10-22"
+  }
+}

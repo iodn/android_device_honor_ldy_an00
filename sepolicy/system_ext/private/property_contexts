@@ -1,0 +1,11 @@
+# Preserve legacy stock prefix matching; no invented property value type.
+htee.version u:object_r:htee_version_prop:s0 prefix
+htee.basic u:object_r:htee_basic_prop:s0 prefix
+
+persist.vendor.suppserv. u:object_r:system_mtk_supp_serv_prop:s0 prefix
+
+# Keep this exact vendor boot-mode value separate from vendor_default_prop.
+ro.odm.config.support_face_mode u:object_r:vendor_honor_face_mode_prop:s0 exact int
+
+ro.lineage.ldy_an00.esim_bridge u:object_r:honor_ldy_an00_esim_bridge_prop:s0 exact bool
+ro.lineage.ldy_an00.esim_test_support u:object_r:honor_ldy_an00_esim_bridge_prop:s0 exact bool

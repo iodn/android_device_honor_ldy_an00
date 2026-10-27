@@ -1,0 +1,3 @@
+# Stock framework-owned types referenced by the retained 202504 vendor policy.
+type system_teecd, domain;
+type system_teecd_exec, exec_type, file_type, system_file_type;

@@ -1,0 +1,31 @@
+{
+  "firmware": "10.0.0.113(C00E100R101P1)",
+  "inputs": [
+    {
+      "path": "prebuilts/display/lib64/libsf_cpupolicy.so",
+      "size": 56432,
+      "sha256": "0e1f86711e5cd508b41be59b88bb440341564df984bb4e740fc8f3dea11d6bb7"
+    },
+    {
+      "path": "ims/proprietary/ImsService.apk",
+      "size": 9687271,
+      "sha256": "9b91d69f0062c9b50c8f30f6cee0cc8b6a49976cceaf060b1f223f15140340d5"
+    },
+    {
+      "path": "ims/proprietary/SHA256.json",
+      "size": 852,
+      "sha256": "eb535372564237cdfbc9ba84772891f344ef8282b14c20d1ef2995f7f3f3c59c"
+    },
+    {
+      "path": "ims/proprietary/ims-chr-compat.dex",
+      "size": 9706240,
+      "sha256": "84487a11317cf7d645f8eb0b45f0ed916283923c744b655c771a686750c905f8"
+    },
+    {
+      "path": "ims/proprietary/mediatek-ims-oem-plugin.jar",
+      "size": 3973,
+      "sha256": "4e431d1811fc39164c15f97fd188fd6e718adcb702dcb90b0ce265a58b999b39"
+    }
+  ],
+  "notice": "Exact RC3 build inputs. Some IMS files are derived by the integration tools; not every file exists in stock firmware. Personal ADB keys are excluded."
+}

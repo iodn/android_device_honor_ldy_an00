@@ -1,0 +1,10 @@
+# Plain Binder service registered by tee_auth_daemon.
+type iteec_service, service_manager_type;
+
+type vtservice_service, service_manager_type;
+# Private framework-owned service label; no app_api_service membership.
+type ims_ut_service, service_manager_type;
+
+# MWI is an OEM Binder API without per-command app permission checks.
+# Device-specific discovery access is granted only to observed radio-process IMS clients.
+type ldy_mwi_service, service_manager_type;

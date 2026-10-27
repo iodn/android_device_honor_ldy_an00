@@ -1,0 +1,5 @@
+/(system_ext|system/system_ext)/bin/tee_auth_daemon u:object_r:system_teecd_exec:s0
+/sec_storage(/.*)? u:object_r:teecd_data_file:s0
+/sys/kernel/tui/c_state u:object_r:sysfs_tee:s0
+
+/(system_ext|system/system_ext)/bin/vtservice u:object_r:vtservice_exec:s0

@@ -1,0 +1,17 @@
+# Retained Honor V2 face client bridge. No feature is enabled by these rules.
+# Keep this attribute for the exact stock 202504 vendor compatibility mapping.
+attribute honor_ldy_an00_face_bridge_client;
+expandattribute honor_ldy_an00_face_bridge_client false;
+
+# Exact retained native HAL consumer for the newly labeled vendor boot mode.
+attribute honor_ldy_an00_face_bridge_server;
+expandattribute honor_ldy_an00_face_bridge_server false;
+get_prop(honor_ldy_an00_face_bridge_server, vendor_honor_face_mode_prop)
+# Main init already owns property writes; no new setter permission is needed.
+
+userdebug_or_eng(`
+  typeattribute system_server honor_ldy_an00_face_bridge_client;
+  get_prop(system_server, htee_version_prop)
+  get_prop(system_server, htee_basic_prop)
+  get_prop(system_server, vendor_honor_face_mode_prop)
+')

@@ -1,0 +1,34 @@
+; Preserve the real stock public type identities required by retained vendor.
+(typeattribute system_teecd_202504)
+(expandtypeattribute (system_teecd_202504) true)
+(typeattributeset system_teecd_202504 (system_teecd))
+(typeattribute system_teecd_exec_202504)
+(expandtypeattribute (system_teecd_exec_202504) true)
+(typeattributeset system_teecd_exec_202504 (system_teecd_exec))
+
+(typeattribute teecd_data_file_202504)
+(expandtypeattribute (teecd_data_file_202504) true)
+(typeattributeset teecd_data_file_202504 (teecd_data_file))
+
+(typeattribute sysfs_tee_202504)
+(expandtypeattribute (sysfs_tee_202504) true)
+(typeattributeset sysfs_tee_202504 (sysfs_tee))
+
+(typeattribute htee_version_prop_202504)
+(expandtypeattribute (htee_version_prop_202504) true)
+(typeattributeset htee_version_prop_202504 (htee_version_prop))
+
+(typeattribute htee_basic_prop_202504)
+(expandtypeattribute (htee_basic_prop_202504) true)
+(typeattributeset htee_basic_prop_202504 (htee_basic_prop))
+
+(typeattribute vtservice_202504)
+(expandtypeattribute (vtservice_202504) true)
+(typeattributeset vtservice_202504 (vtservice))
+
+; Bind the exact retained vendor HAL only when both private vendor symbols exist.
+; Platform-only compatibility tests intentionally have no vendor policy.
+(optional honor_ldy_an00_retained_face_binding
+  (typeattributeset hal_facerecognize_client (honor_ldy_an00_face_bridge_client))
+  (typeattributeset honor_ldy_an00_face_bridge_server (hal_facerecognize_default))
+)

@@ -1,0 +1,20 @@
+// Copyright (C) 2026 The LineageOS Project. SPDX-License-Identifier: Apache-2.0
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+aconfig_values {
+    name: "aconfig-values-ldy_an00-telephony-compat",
+    package: "com.android.internal.telephony.flags",
+    srcs: ["config/aconfig/telephony_compat.textproto"],
+}
+
+aconfig_value_set {
+    name: "aconfig_value_set-ldy_an00-telephony-compat",
+    values: ["aconfig-values-ldy_an00-telephony-compat"],
+}
+
+release_config_contributions {
+    name: "release_config_contributions-ldy_an00-telephony-compat",
+    srcs: ["config/release/release_configs/*.textproto"],
+}

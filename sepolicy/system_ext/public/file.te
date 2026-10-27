@@ -1,0 +1,5 @@
+# Framework-owned stock labels referenced by retained vendor policy.
+type teecd_data_file, file_type;
+
+# Preserve measured stock MLS object trust; no daemon subject trust is granted.
+type sysfs_tee, fs_type, sysfs_type, mlstrustedobject;

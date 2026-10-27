@@ -1,0 +1,31 @@
+type ldy_capture, domain;
+type ldy_capture_exec, exec_type, file_type, system_file_type;
+typeattribute ldy_capture coredomain;
+init_daemon_domain(ldy_capture)
+
+type ldy_capture_file, file_type, data_file_type, core_data_file_type;
+type_transition ldy_capture cache_file:dir ldy_capture_file "ldy-guest-capture";
+allow ldy_capture cache_file:dir { search getattr open read write add_name };
+allow ldy_capture ldy_capture_file:dir { create search getattr open read write add_name };
+allow ldy_capture ldy_capture_file:file { create open getattr write append setattr };
+allow ldy_capture proc_mounts:file r_file_perms;
+allow ldy_capture proc_random:file r_file_perms;
+allow ldy_capture block_device:dir search;
+allow ldy_capture block_device:lnk_file read;
+# Honor by-name/cache is a tmpfs symlink; target remains cache-only getattr.
+allow ldy_capture tmpfs:lnk_file read;
+allow ldy_capture cache_block_device:lnk_file { getattr read };
+allow ldy_capture cache_block_device:blk_file getattr;
+allow ldy_capture logcat_exec:file rx_file_perms;
+unix_socket_connect(ldy_capture, logdr, logd)
+get_prop(ldy_capture, logd_prop)
+get_prop(ldy_capture, fingerprint_prop)
+get_prop(ldy_capture, build_prop)
+# Only inherited init stderr/stdout, no open of kmsg.
+allow ldy_capture kmsg_device:chr_file write;
+
+neverallow ldy_capture dev_type:blk_file { open read write append ioctl };
+neverallow ldy_capture self:capability { sys_admin sys_ptrace net_admin };
+neverallow ldy_capture domain:process ptrace;
+# Existing platform coredump/profiler shared-memory grants are unchanged; no new allow here.
+neverallow ldy_capture { file_type -ldy_capture_file -coredump_file -heapprofd_tmpfs }:file { create write append };

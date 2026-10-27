@@ -1,0 +1,10 @@
+# Stock system_ext VT service identity and measured framework-side Binder rules.
+typeattribute vtservice coredomain;
+binder_service(vtservice)
+init_daemon_domain(vtservice)
+binder_use(vtservice)
+binder_call(vtservice, mediaserver)
+allow vtservice vtservice_service:service_manager add;
+allow radio vtservice_service:service_manager find;
+# Vendor-owned media/HAL/socket/device rules are retained through vtservice_202504.
+# Optional stock debug-property rules are deliberately not copied without ownership audit.

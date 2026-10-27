@@ -1,0 +1,22 @@
+// Exact retained stock113 C-ABI plugin; loaded only by the complete qualified SF owner.
+cc_prebuilt_library_shared {
+    name: "libhonor_ldy_an00_sf_cpupolicy",
+    stem: "libsf_cpupolicy",
+    srcs: ["lib64/libsf_cpupolicy.so"],
+    system_ext_specific: true,
+    compile_multilib: "64",
+    strip: { none: true },
+    check_elf_files: true,
+    stl: "none",
+    shared_libs: [
+        "libbase",
+        "liblog",
+        "libutils",
+        "libcutils",
+        "libprocessgroup",
+        "libc++",
+        "libc",
+        "libm",
+        "libdl",
+    ],
+}

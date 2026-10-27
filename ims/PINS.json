@@ -1,0 +1,20 @@
+{
+  "status": "UNBUILT_ANDROID_UNINTEGRATED",
+  "sources": {
+    "src/hihonor/cust/HwCfgFilePolicy.java": "5f31a564f900b6bfd98e2bd0824b938fc46ceac9587dfec97f6566da800d5325",
+    "src/com/hihonor/chr/HnChrReportConnImpl.java": "cb3b23c5576adac23d97d9229f32301425cfbcf8cf708c3f4bca00131431e425",
+    "src/com/hihonor/android/ims/HwImsManager.java": "881f6e66ffd6a8a5aab58c5771f8011ce5a3c550668412d02e79dbb8cca5a2fc",
+    "src/com/hihonor/android/telephony/SubscriptionManagerEx.java": "5aa9b01f4a9bf3081185e6a095a93da1816d376b7b6f82c74a6b0c44d6b1bb0a",
+    "src/com/hihonor/android/cust/HwCfgFilePolicy.java": "920a0db1ff87c36dc04cbe53fe5e50e4172ae5d3108bc21597267dd196cb784e",
+    "src/com/hihonor/android/os/SystemPropertiesEx.java": "56ab1f65add56ec821eb8e1f63ca2caa0bde8f8b74070340b873531c492befb0",
+    "aidl/com/android/ims/IHwImsUtManager.aidl": "22c9d2e9692a42731654a52f1d00533b1005bfd62e9a9280589723b68e7fdb68",
+    "tools/append-ims-compat.py": "d9c7b0e84b1ea63205bc612d34eee3adaaf2d9dbb26c58c26f1559d0b1f0f1f7",
+    "tools/prepare-ims-manifest.py": "40fa19d493a57cf4683a3f986419a329b649d536438c454841b97e53fb76a29a",
+    "tools/guard-ut-stub.py": "7821c5e41314dfff96b799770260b98746171398c6366fa4bf20beecc5d383fa",
+    "tests/AbsentPolicyTest.java": "60c00369ec82a8a3641e6373d8d85622b7675b4b3d5549d4577daac62b626508",
+    "proprietary/ImsService.apk": "9b91d69f0062c9b50c8f30f6cee0cc8b6a49976cceaf060b1f223f15140340d5",
+    "proprietary/mediatek-ims-oem-plugin.jar": "4e431d1811fc39164c15f97fd188fd6e718adcb702dcb90b0ce265a58b999b39",
+    "proprietary/SHA256.json": "0472cca3184c3a99604b4620e5c753a3c25f076417f4339459af4a1b584ca4b2"
+  },
+  "Android.bp": "feef10d9e9d55d60f1db1e5494a67462fc020146ca6d144809488b87ffeeddf2"
+}

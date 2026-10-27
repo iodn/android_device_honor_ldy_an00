@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Existing volume rocker (64) plus the firm-press assistant key (8). -->
+    <integer name="config_deviceHardwareKeys">72</integer>
+</resources>

@@ -1,0 +1,3 @@
+# Main init performs the retained vendor rc's canonical /sec_storage mount.
+allow init teecd_data_file:filesystem { mount unmount relabelfrom relabelto };
+allow init teecd_data_file:dir mounton;

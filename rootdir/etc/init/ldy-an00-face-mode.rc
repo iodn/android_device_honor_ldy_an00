@@ -1,0 +1,4 @@
+# Verified stock LDY-AN00 product_h mode, before retained late_start face HAL.
+# Preserve any value already supplied by stock ODM; never overwrite a mismatch.
+on early-init && property:ro.odm.config.support_face_mode=
+    setprop ro.odm.config.support_face_mode 1

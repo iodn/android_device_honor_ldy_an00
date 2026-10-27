@@ -1,0 +1,14 @@
+{
+  "path": "hardware/honor/ldy_an00/ims",
+  "revision": "2a85c8dc0b6e0b32ac59628a5346e4611856261b",
+  "tree": "024df32394fb36dfdba45eabac29f03fa22ec918",
+  "excluded_inputs": [
+    "proprietary/ImsService.apk",
+    "proprietary/SHA256.json",
+    "proprietary/ims-chr-compat.dex",
+    "proprietary/mediatek-ims-oem-plugin.jar"
+  ],
+  "export": "Tracked source/configuration only; excluded proprietary inputs must be supplied separately.",
+  "public_source_path": "device/honor/ldy_an00/ims",
+  "relocation": "Source preserved; device.mk inheritance path changed. New clean-build qualification pending."
+}

@@ -1,0 +1,17 @@
+{
+  "path": "device/honor/ldy_an00",
+  "revision": "136af1c298cff8b994aaae2a4f99f92ebebbeb0f",
+  "tree": "ac7c6cc8482d2e18e5c7dbe4eb030a0475f395b9",
+  "excluded_inputs": [
+    "prebuilts/display/lib64/libsf_cpupolicy.so"
+  ],
+  "export": "Tracked source/configuration only; excluded proprietary inputs must be supplied separately.",
+  "integrated_components": [
+    {
+      "path": "ims",
+      "original_path": "hardware/honor/ldy_an00/ims",
+      "revision": "2a85c8dc0b6e0b32ac59628a5346e4611856261b",
+      "note": "Device-specific integration moved into the device repository; build path updated."
+    }
+  ]
+}

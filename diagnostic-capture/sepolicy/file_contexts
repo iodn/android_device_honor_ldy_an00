@@ -1,0 +1,2 @@
+/system/bin/ldy-guest-capture -- u:object_r:ldy_capture_exec:s0
+/cache/ldy-guest-capture(/.*)? u:object_r:ldy_capture_file:s0

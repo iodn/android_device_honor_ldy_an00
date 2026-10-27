@@ -1,0 +1,15 @@
+{
+  "base_ims_commit": "49e5808b941c3d45d1d91635b2e1fd78c25329bf",
+  "future_device_baseline": "b76a58af450fd7b7e2dfd61c42c68b5f4b71162f",
+  "old_dex_sha256": "c0cf03332add65e867a38bfea7ede64daa6fbe185e53bcfc9443b8450c26c488",
+  "diagnostic_dex_sha256": "84487a11317cf7d645f8eb0b45f0ed916283923c744b655c771a686750c905f8",
+  "files": {
+    "tools/reproduce-ims-chr.py": "9fc7ce30c9fa7b74249359fafc6d406302627870810cb979b66d5d53782bd111",
+    "tools/append-ims-compat.py": "0d5dea5eba4b2f88fe02816b70c81aae6228994464cec8fa9631133ab33ac843",
+    "tools/sip-diagnostic-method.smali": "5de791238e64d93877bdc3f627e2fc7f44be8fa0c972fc4f4129f97787be6ca2",
+    "tools/test-sip-diagnostic.py": "cc0dd4b13e59054393977a45698e7a5970b3e8844cae0f7c26222eeb829df094",
+    "proprietary/ims-chr-compat.dex": "84487a11317cf7d645f8eb0b45f0ed916283923c744b655c771a686750c905f8",
+    "SIP-DIAGNOSTIC.md": "d0acef0960c67463e6afba933bd419de6aa063ed08f1c344c5b9f9d43d5d9c00"
+  },
+  "scope": "Isolated unintegrated host-tested diagnostic; not a signed APK, image or runtime acceptance"
+}

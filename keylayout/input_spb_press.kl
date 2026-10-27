@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
+# Stock SPB EV_KEY 675 is the heavy/firm press down/up stage.
+# Keep touch, light press and slide gestures unmapped for the initial trial.
+key 675 ASSIST

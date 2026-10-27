@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Logical rear camera 0 already owns physical IDs 2/3/4.
+         0.6 is the advertised minimum; 3.2 follows focal-length/sensor-width metadata.
+         Exact optical handoff and mode compatibility remain hardware-test requirements. -->
+    <string-array name="config_logicalZoomRatios">
+        <item>0</item> <item>0.6</item> <item>0.6</item>
+        <item>0</item> <item>3.2</item> <item>3.2</item>
+    </string-array>
+</resources>

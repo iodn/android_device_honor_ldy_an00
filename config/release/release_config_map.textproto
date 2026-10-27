@@ -1,0 +1,2 @@
+# Product-selected only; outside the global device/*/*/release discovery path.
+default_containers: "system"

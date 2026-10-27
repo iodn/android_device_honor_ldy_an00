@@ -1,0 +1,73 @@
+// SPDX-License-Identifier: Apache-2.0
+// Isolated target draft. PRODUCT_PACKAGES does not select these modules.
+python_binary_host {
+    name: "LdyAn00GuardImsUt",
+    main: "tools/guard-ut-stub.py",
+    srcs: ["tools/guard-ut-stub.py"],
+}
+python_binary_host {
+    name: "LdyAn00PrepareImsManifest",
+    main: "tools/prepare-ims-manifest.py",
+    srcs: ["tools/prepare-ims-manifest.py"],
+}
+python_binary_host {
+    name: "LdyAn00AppendImsCompat",
+    main: "tools/append-ims-compat.py",
+    srcs: ["tools/append-ims-compat.py"],
+}
+genrule {
+    name: "LdyAn00ImsUtGuardedJava",
+    tools: ["aidl", "LdyAn00GuardImsUt"],
+    srcs: ["aidl/com/android/ims/IHwImsUtManager.aidl"],
+    out: ["IHwImsUtManager.java"],
+    cmd: "mkdir -p $(genDir)/aidl/com/android/ims $(genDir)/raw && " +
+        "cp $(in) $(genDir)/aidl/com/android/ims/IHwImsUtManager.aidl && " +
+        "$(location aidl) --lang=java -I$(genDir)/aidl -o$(genDir)/raw " +
+        "$(genDir)/aidl/com/android/ims/IHwImsUtManager.aidl && " +
+        "$(location LdyAn00GuardImsUt) " +
+        "$(genDir)/raw/com/android/ims/IHwImsUtManager.java $(out)",
+}
+java_library {
+    name: "LdyAn00ImsCompat",
+    srcs: ["src/**/*.java", ":LdyAn00ImsUtGuardedJava"],
+    libs: ["ims-common"],
+    static_libs: ["telephony-common-stub"],
+    compile_dex: true,
+    installable: false,
+    dex_preopt: { enabled: false },
+}
+java_genrule {
+    name: "LdyAn00ImsUnsignedApk",
+    tools: ["LdyAn00PrepareImsManifest", "LdyAn00AppendImsCompat"],
+    srcs: ["proprietary/ImsService.apk", "proprietary/ims-chr-compat.dex", ":LdyAn00ImsCompat"],
+    out: ["ImsService-app-local-UNSIGNED.apk"],
+    cmd: "$(location LdyAn00PrepareImsManifest) " +
+        "$(location proprietary/ImsService.apk) $(genDir)/manifest-only.apk && " +
+        "$(location LdyAn00AppendImsCompat) " +
+        "$(location proprietary/ImsService.apk) $(genDir)/manifest-only.apk " +
+        "$(location :LdyAn00ImsCompat) $(location proprietary/ims-chr-compat.dex) $(out)",
+}
+dex_import {
+    name: "LdyAn00ImsOemPlugin",
+    jars: ["proprietary/mediatek-ims-oem-plugin.jar"],
+    stem: "mediatek-ims-oem-plugin",
+    system_ext_specific: true,
+}
+android_app_import {
+    name: "LdyAn00ImsService",
+    apk: ":LdyAn00ImsUnsignedApk",
+    filename: "ImsService.apk",
+    certificate: "platform",
+    privileged: true,
+    system_ext_specific: true,
+    enforce_uses_libs: true,
+    required: ["LdyAn00ImsOemPlugin"],
+}
+
+prebuilt_etc {
+    name: "LdyAn00ImsPrivappPermissions",
+    src: "permissions/privapp-permissions-ldy-an00-ims.xml",
+    filename_from_src: true,
+    sub_dir: "permissions",
+    system_ext_specific: true,
+}
