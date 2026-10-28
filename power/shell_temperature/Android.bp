@@ -3,7 +3,22 @@
 cc_library_static {
     name: "libldy_an00_shell_temperature",
     system_ext_specific: true,
-    srcs: ["Estimator.cpp"],
+    srcs: ["Estimator.cpp", "SysfsIo.cpp"],
     export_include_dirs: ["."],
     cflags: ["-Wall", "-Wextra", "-Werror"],
+}
+
+cc_test_host {
+    name: "ldy_an00_shell_temperature_io_test",
+    srcs: ["SysfsIo.cpp", "tests/SysfsIoTest.cpp"],
+    gtest: false,
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}
+
+cc_test_host {
+    name: "ldy_an00_shell_temperature_io_fault_test",
+    srcs: ["SysfsIo.cpp", "tests/SysfsIoFaultTest.cpp"],
+    gtest: false,
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+    ldflags: ["-Wl,--wrap=open", "-Wl,--wrap=read", "-Wl,--wrap=__read_chk", "-Wl,--wrap=write", "-Wl,--wrap=close"],
 }
