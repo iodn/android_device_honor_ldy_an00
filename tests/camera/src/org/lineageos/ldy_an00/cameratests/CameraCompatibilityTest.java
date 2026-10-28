@@ -10,10 +10,12 @@ import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.params.DynamicRangeProfiles;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Process;
+import android.util.Size;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -48,6 +50,24 @@ public final class CameraCompatibilityTest {
         result.put("lens_facing", jsonValue(chars.get(CameraCharacteristics.LENS_FACING)));
         result.put("capabilities", jsonValue(chars.get(
                 CameraCharacteristics.REQUEST_AVAILABLE_CAPABILITIES)));
+        result.put("focal_lengths_mm", jsonValue(chars.get(
+                CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)));
+        result.put("zoom_ratio_range", jsonValue(chars.get(
+                CameraCharacteristics.CONTROL_ZOOM_RATIO_RANGE)));
+        result.put("ae_target_fps_ranges", jsonValue(chars.get(
+                CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES)));
+        DynamicRangeProfiles profiles = chars.get(
+                CameraCharacteristics.REQUEST_AVAILABLE_DYNAMIC_RANGE_PROFILES);
+        JSONArray dynamicRanges = new JSONArray();
+        if (profiles != null) {
+            for (long profile : profiles.getSupportedProfiles()) {
+                dynamicRanges.put(new JSONObject().put("profile", profile)
+                        .put("capture_request_constraints",
+                                new JSONArray(profiles.getProfileCaptureRequestConstraints(profile)))
+                        .put("extra_latency", profiles.isExtraLatencyPresent(profile)));
+            }
+        }
+        result.put("dynamic_range_profiles", profiles == null ? JSONObject.NULL : dynamicRanges);
         result.put("physical_ids", new JSONArray(chars.getPhysicalCameraIds()));
         result.put("ois_modes", jsonValue(chars.get(
                 CameraCharacteristics.LENS_INFO_AVAILABLE_OPTICAL_STABILIZATION)));
@@ -58,6 +78,22 @@ public final class CameraCompatibilityTest {
         if (map != null) {
             result.put("jpeg_sizes", jsonValue(map.getOutputSizes(ImageFormat.JPEG)));
             result.put("video_sizes", jsonValue(map.getOutputSizes(MediaRecorder.class)));
+            JSONArray videoTiming = new JSONArray();
+            Size[] videoSizes = map.getOutputSizes(MediaRecorder.class);
+            if (videoSizes != null) {
+                for (Size size : videoSizes) {
+                    videoTiming.put(new JSONObject().put("size", size.toString())
+                            .put("minimum_frame_duration_ns",
+                                    map.getOutputMinFrameDuration(MediaRecorder.class, size)));
+                }
+            }
+            result.put("video_timing", videoTiming);
+            JSONArray highSpeed = new JSONArray();
+            for (Size size : map.getHighSpeedVideoSizes()) {
+                highSpeed.put(new JSONObject().put("size", size.toString())
+                        .put("fps_ranges", jsonValue(map.getHighSpeedVideoFpsRangesFor(size))));
+            }
+            result.put("high_speed_video", highSpeed);
         }
         JSONObject vendor = new JSONObject();
         for (CameraCharacteristics.Key<?> key : chars.getKeys()) {
