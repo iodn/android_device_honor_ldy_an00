@@ -40,8 +40,17 @@ The retained Honor performance HAL also requires its original
 listed in `proprietary-inputs.json`; the build installs it under `/product/etc/xml`.
 The proprietary policy is excluded from Git.
 
-This corrects battery accounting. It does not change CPU limits or establish
-a battery-life improvement.
+The power model corrects battery accounting; it does not establish a battery-life
+improvement. A device service separately connects Battery Saver and screen-off
+state to stock CPU/GPU ceilings, releasing them for camera use or non-normal
+audio modes. Existing MediaTek interaction, sustained-performance and thermal
+controls remain in place. Device validation of this integration is pending.
+
+Run the policy and transition tests with JDK 17 or newer:
+
+```sh
+./power/test.sh
+```
 
 Validate or regenerate the profile:
 

@@ -6,3 +6,10 @@ prebuilt_etc {
     sub_dir: "xml",
     product_specific: true,
 }
+
+java_library {
+    name: "LdyAn00PowerService",
+    srcs: ["src/**/*.java"],
+    libs: ["services.core"],
+    installable: true,
+}

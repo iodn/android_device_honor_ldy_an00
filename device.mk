@@ -46,6 +46,8 @@ PRODUCT_PACKAGES += LdyAn00FrameworkAutoBrightnessOverlay
 PRODUCT_PACKAGES += LdyAn00FrameworkPowerProfileOverlay
 # The retained Honor performance HAL requires its stock policy to initialize.
 PRODUCT_PACKAGES += LdyAn00UniPerfConfig
+PRODUCT_PACKAGES += LdyAn00PowerService LdyAn00FrameworkPowerServiceOverlay
+PRODUCT_SYSTEM_SERVER_JARS_EXTRA += LdyAn00PowerService
 # Restore measured native display geometry and device-level IMS capability gates.
 PRODUCT_PACKAGES += LdyAn00FrameworkDisplayGeometryOverlay
 ifeq ($(TARGET_BUILD_VARIANT),userdebug)
