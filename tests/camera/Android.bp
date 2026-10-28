@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: Apache-2.0
+android_test {
+    name: "LdyAn00CameraCompatibilityTests",
+    srcs: ["src/**/*.java"],
+    manifest: "AndroidManifest.xml",
+    sdk_version: "current",
+    min_sdk_version: "31",
+    certificate: "testkey",
+    static_libs: ["androidx.test.runner", "androidx.test.ext.junit"],
+    test_suites: ["device-tests"],
+}
