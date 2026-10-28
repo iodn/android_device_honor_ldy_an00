@@ -99,7 +99,7 @@ public final class CameraCompatibilityTest {
         for (CameraCharacteristics.Key<?> key : chars.getKeys()) {
             if (key.getName().equals("com.hihonor.device.capabilities.extensionType")
                     || key.getName().equals(
-                            "com.hihonor.device.capabilities.cameraIdForExtension")) {
+                            "com.hihonor.device.capabilities.cameraIdCustomInfo")) {
                 vendor.put(key.getName(), jsonValue(chars.get(key)));
             }
         }
