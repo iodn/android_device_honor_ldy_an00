@@ -33,6 +33,8 @@ PRODUCT_SYSTEM_PROPERTIES += ro.zygote=zygote64
 PRODUCT_SYSTEM_PROPERTIES += ro.telephony.default_network=26,26
 # Stock hardware capability read by the IMS OEM plugin before WFO startup.
 PRODUCT_SYSTEM_PROPERTIES += ro.vendor.config.vowifi=true
+# Preserve Honor legacy audio parameter transport through the retained HAL.
+PRODUCT_SYSTEM_PROPERTIES += ro.audio.honor_legacy_parameters=true
 
 # Stock logical density; TARGET_SCREEN_DENSITY only affects the unbuilt vendor image.
 PRODUCT_PRODUCT_PROPERTIES += ro.sf.lcd_density=560

@@ -4,3 +4,6 @@ typeattribute system_mtk_supp_serv_prop extended_core_property_type;
 
 # Complete shell-temperature snapshot; runtime-only, never persisted.
 system_internal_prop(ldy_an00_shell_temperature_prop)
+
+# Boot configuration for the Honor audio parameter adapter.
+system_internal_prop(ldy_an00_audio_config_prop)
