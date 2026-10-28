@@ -17,3 +17,6 @@ allow ldy_an00_shell_temperature honor_ldy_an00_shell_output:dir search;
 allow ldy_an00_shell_temperature honor_ldy_an00_shell_output:file { open write };
 get_prop(ldy_an00_shell_temperature, init_service_status_private_prop)
 write_logd(ldy_an00_shell_temperature)
+
+set_prop(ldy_an00_shell_temperature, ldy_an00_shell_temperature_prop)
+get_prop(system_server, ldy_an00_shell_temperature_prop)

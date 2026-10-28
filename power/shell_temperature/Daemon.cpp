@@ -19,6 +19,7 @@ namespace honor::ldy_an00 {
 namespace {
 
 using SensorPaths = std::array<std::string, 5>;
+constexpr const char* kSnapshotProperty = "sys.lineage.ldy_an00.shell_temp";
 
 std::optional<SensorPaths> FindSensors() {
     constexpr const char* root = "/sys/devices/virtual/thermal";
@@ -94,6 +95,15 @@ bool Sample(std::optional<SensorPaths>& paths, ShellTemperatureEstimator& estima
             return false;
         }
     }
+    // One property value carries a coherent, timestamped sample. Readers must
+    // validate its age; the legacy kernel caches do not carry freshness metadata.
+    const int64_t milliseconds = now.tv_sec * 1000LL + now.tv_nsec / 1000000;
+    std::string snapshot = "1:" + std::to_string(milliseconds);
+    for (int32_t temperature : outputs) snapshot += ":" + std::to_string(temperature);
+    if (!android::base::SetProperty(kSnapshotProperty, snapshot)) {
+        error = "Cannot publish thermal snapshot";
+        return false;
+    }
     return true;
 }
 
@@ -103,12 +113,20 @@ bool Sample(std::optional<SensorPaths>& paths, ShellTemperatureEstimator& estima
 int main(int argc, char** argv) {
     (void)argc;
     android::base::InitLogging(argv, android::base::LogdLogger(android::base::SYSTEM));
+    if (!android::base::SetProperty(honor::ldy_an00::kSnapshotProperty, "")) {
+        LOG(ERROR) << "Cannot invalidate previous thermal snapshot";
+        return 1;
+    }
     honor::ldy_an00::ShellTemperatureEstimator estimator;
     std::optional<honor::ldy_an00::SensorPaths> paths;
     std::string last_error;
     for (;;) {
         std::string error;
         if (!honor::ldy_an00::Sample(paths, estimator, error)) {
+            if (!android::base::SetProperty(honor::ldy_an00::kSnapshotProperty, "")) {
+                LOG(ERROR) << "Cannot invalidate failed thermal snapshot";
+                return 1;
+            }
             if (error != last_error) LOG(ERROR) << error;
         } else if (!last_error.empty()) {
             LOG(INFO) << "Shell temperature publication recovered";
