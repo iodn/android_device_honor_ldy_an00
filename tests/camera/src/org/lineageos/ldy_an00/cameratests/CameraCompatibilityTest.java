@@ -96,15 +96,33 @@ public final class CameraCompatibilityTest {
             result.put("high_speed_video", highSpeed);
         }
         JSONObject vendor = new JSONObject();
+        CameraCharacteristics.Key<byte[]> extensionTypeKey = new CameraCharacteristics.Key<>(
+                "com.hihonor.device.capabilities.extensionType", byte[].class);
+        CameraCharacteristics.Key<int[]> cameraIdInfoKey = new CameraCharacteristics.Key<>(
+                "com.hihonor.device.capabilities.cameraIdCustomInfo", int[].class);
+        readVendorCharacteristic(vendor, chars, extensionTypeKey);
+        readVendorCharacteristic(vendor, chars, cameraIdInfoKey);
+        JSONObject advertised = new JSONObject().put(extensionTypeKey.getName(), false)
+                .put(cameraIdInfoKey.getName(), false);
         for (CameraCharacteristics.Key<?> key : chars.getKeys()) {
-            if (key.getName().equals("com.hihonor.device.capabilities.extensionType")
-                    || key.getName().equals(
-                            "com.hihonor.device.capabilities.cameraIdCustomInfo")) {
-                vendor.put(key.getName(), jsonValue(chars.get(key)));
-            }
+            if (advertised.has(key.getName())) advertised.put(key.getName(), true);
         }
+        result.put("honor_extension_key_advertisement", advertised);
         result.put("honor_extension_metadata", vendor);
         return result;
+    }
+
+    private static <T> void readVendorCharacteristic(JSONObject result,
+            CameraCharacteristics chars, CameraCharacteristics.Key<T> key) throws Exception {
+        Object value;
+        try {
+            value = chars.get(key);
+        } catch (IllegalArgumentException error) {
+            result.put(key.getName(), new JSONObject().put("status", "KEY_QUERY_REJECTED")
+                    .put("exception", error.toString()));
+            return;
+        }
+        result.put(key.getName(), jsonValue(value));
     }
 
     private static void report(JSONObject result) {
