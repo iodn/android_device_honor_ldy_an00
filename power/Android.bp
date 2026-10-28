@@ -1,0 +1,8 @@
+// SPDX-License-Identifier: Apache-2.0
+prebuilt_etc {
+    name: "LdyAn00UniPerfConfig",
+    src: "proprietary/uniperf_config_cust.xml",
+    filename: "uniperf_config_cust.xml",
+    sub_dir: "xml",
+    product_specific: true,
+}

@@ -44,6 +44,8 @@ PRODUCT_PACKAGES += LdyAn00FrameworkNavigationBarOverlay
 PRODUCT_PACKAGES += LdyAn00FrameworkAutoBrightnessOverlay
 # Device power estimates and CPU scaling-policy buckets for the retained kernel.
 PRODUCT_PACKAGES += LdyAn00FrameworkPowerProfileOverlay
+# The retained Honor performance HAL requires its stock policy to initialize.
+PRODUCT_PACKAGES += LdyAn00UniPerfConfig
 # Restore measured native display geometry and device-level IMS capability gates.
 PRODUCT_PACKAGES += LdyAn00FrameworkDisplayGeometryOverlay
 ifeq ($(TARGET_BUILD_VARIANT),userdebug)

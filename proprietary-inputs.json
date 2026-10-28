@@ -25,6 +25,11 @@
       "path": "ims/proprietary/mediatek-ims-oem-plugin.jar",
       "size": 3973,
       "sha256": "4e431d1811fc39164c15f97fd188fd6e718adcb702dcb90b0ce265a58b999b39"
+    },
+    {
+      "path": "power/proprietary/uniperf_config_cust.xml",
+      "size": 55632,
+      "sha256": "445dc297189dec2e8811ce141a33ddf2ec4456e99033a15b8f3dfc2222cc2ca5"
     }
   ],
   "notice": "Exact RC3 build inputs. Some IMS files are derived by the integration tools; not every file exists in stock firmware. Personal ADB keys are excluded."

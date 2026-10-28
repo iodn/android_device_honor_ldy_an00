@@ -34,6 +34,12 @@ design capacity. Android 17 CPU scaling-step arrays follow the retained kernel's
 frequency order. Values between stock points are interpolated; values outside
 the stock range use its nearest endpoint and can underestimate boost consumption.
 
+The retained Honor performance HAL also requires its original
+`product_h/etc/xml/uniperf_config_cust.xml` at
+`power/proprietary/uniperf_config_cust.xml`. Its expected size and hash are
+listed in `proprietary-inputs.json`; the build installs it under `/product/etc/xml`.
+The proprietary policy is excluded from Git.
+
 This corrects battery accounting. It does not change CPU limits or establish
 a battery-life improvement.
 
