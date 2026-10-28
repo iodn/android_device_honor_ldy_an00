@@ -1,0 +1,26 @@
+// SPDX-License-Identifier: Apache-2.0
+cc_library_shared {
+    name: "libldy_an00_opencl_probe",
+    srcs: ["opencl_probe.cpp"],
+    include_dirs: ["external/OpenCL-Headers"],
+    shared_libs: ["libdl"],
+    sdk_version: "current",
+    min_sdk_version: "31",
+    stl: "c++_static",
+    cflags: ["-Wall", "-Wextra", "-Werror", "-DCL_TARGET_OPENCL_VERSION=120"],
+    cppflags: ["-fexceptions"],
+    compile_multilib: "64",
+}
+
+android_test {
+    name: "LdyAn00GpuCompatibilityTests",
+    srcs: ["src/**/*.java"],
+    manifest: "AndroidManifest.xml",
+    sdk_version: "current",
+    min_sdk_version: "31",
+    certificate: "testkey",
+    static_libs: ["androidx.test.runner", "androidx.test.ext.junit"],
+    jni_libs: ["libldy_an00_opencl_probe"],
+    compile_multilib: "64",
+    test_suites: ["device-tests"],
+}

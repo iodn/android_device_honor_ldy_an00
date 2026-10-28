@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.lineageos.ldy_an00.gputests">
+    <application android:label="LDY-AN00 GPU compatibility tests" android:debuggable="false">
+        <uses-native-library android:name="libOpenCL.so" android:required="false" />
+    </application>
+    <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
+        android:targetPackage="org.lineageos.ldy_an00.gputests" />
+</manifest>
