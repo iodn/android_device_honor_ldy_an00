@@ -1,0 +1,8 @@
+# Copyright (C) 2026 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+service ldy-an00-shell-temperature /system_ext/bin/ldy-an00-shell-temperature
+    class main
+    disabled
+    user system
+    group system
+    restart_period 5

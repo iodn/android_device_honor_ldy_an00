@@ -1,0 +1,19 @@
+# Copyright (C) 2026 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+type ldy_an00_shell_temperature, domain, coredomain;
+type ldy_an00_shell_temperature_exec, exec_type, file_type, system_file_type;
+init_daemon_domain(ldy_an00_shell_temperature)
+
+# These attributes bind to the exact retained vendor sysfs labels below.
+attribute honor_ldy_an00_shell_sensor;
+expandattribute honor_ldy_an00_shell_sensor false;
+attribute honor_ldy_an00_shell_output;
+expandattribute honor_ldy_an00_shell_output false;
+
+allow ldy_an00_shell_temperature sysfs:dir search;
+allow ldy_an00_shell_temperature honor_ldy_an00_shell_sensor:dir r_dir_perms;
+allow ldy_an00_shell_temperature honor_ldy_an00_shell_sensor:file r_file_perms;
+allow ldy_an00_shell_temperature honor_ldy_an00_shell_output:dir search;
+allow ldy_an00_shell_temperature honor_ldy_an00_shell_output:file { open write };
+get_prop(ldy_an00_shell_temperature, init_service_status_private_prop)
+write_logd(ldy_an00_shell_temperature)

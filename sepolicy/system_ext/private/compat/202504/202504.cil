@@ -38,3 +38,9 @@
   (typeattributeset honor_ldy_an00_power_config_reader
     (mtk_hal_power hal_uniperf_aidl_default))
 )
+
+; Exact sysfs labels from the retained stock thermal/shell drivers.
+(optional honor_ldy_an00_shell_temperature_binding
+  (typeattributeset honor_ldy_an00_shell_sensor (sysfs_therm))
+  (typeattributeset honor_ldy_an00_shell_output (sysfs_pg))
+)

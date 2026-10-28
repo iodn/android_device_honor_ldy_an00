@@ -22,3 +22,13 @@ cc_test_host {
     cflags: ["-Wall", "-Wextra", "-Werror"],
     ldflags: ["-Wl,--wrap=open", "-Wl,--wrap=read", "-Wl,--wrap=__read_chk", "-Wl,--wrap=write", "-Wl,--wrap=close"],
 }
+
+cc_binary {
+    name: "ldy-an00-shell-temperature",
+    system_ext_specific: true,
+    srcs: ["Daemon.cpp"],
+    static_libs: ["libldy_an00_shell_temperature"],
+    shared_libs: ["libbase", "liblog"],
+    init_rc: ["ldy-an00-shell-temperature.rc"],
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}
