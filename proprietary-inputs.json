@@ -30,7 +30,12 @@
       "path": "power/proprietary/uniperf_config_cust.xml",
       "size": 55632,
       "sha256": "445dc297189dec2e8811ce141a33ddf2ec4456e99033a15b8f3dfc2222cc2ca5"
+    },
+    {
+      "path": "power/proprietary/powerscntbl-stock113.xml",
+      "size": 19629,
+      "sha256": "b8923a5046d1a5fd4df584148f0273ad0a8a5cb8efb715d0dbb7d96d15c1ee44"
     }
   ],
-  "notice": "Exact RC3 build inputs. Some IMS files are derived by the integration tools; not every file exists in stock firmware. Personal ADB keys are excluded."
+  "notice": "Required proprietary build inputs. Some IMS files are derived by the integration tools; not every file exists in stock firmware. Personal ADB keys are excluded."
 }

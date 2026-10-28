@@ -13,3 +13,25 @@ java_library {
     libs: ["services.core"],
     installable: true,
 }
+
+python_binary_host {
+    name: "ldy_an00_generate_power_hints",
+    main: "generate_mtk_power_config.py",
+    srcs: ["generate_mtk_power_config.py"],
+}
+
+genrule {
+    name: "LdyAn00MtkPowerConfigXml",
+    tools: ["ldy_an00_generate_power_hints"],
+    srcs: ["proprietary/powerscntbl-stock113.xml"],
+    out: ["powerscntbl.xml"],
+    cmd: "$(location ldy_an00_generate_power_hints) --source $(in) --output $(out)",
+}
+
+prebuilt_etc {
+    name: "LdyAn00MtkPowerConfig",
+    src: ":LdyAn00MtkPowerConfigXml",
+    filename: "powerscntbl.xml",
+    sub_dir: "ldy_an00",
+    system_ext_specific: true,
+}

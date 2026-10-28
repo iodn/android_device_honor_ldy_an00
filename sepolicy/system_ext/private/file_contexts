@@ -3,3 +3,5 @@
 /sys/kernel/tui/c_state u:object_r:sysfs_tee:s0
 
 /(system_ext|system/system_ext)/bin/vtservice u:object_r:vtservice_exec:s0
+
+/mnt/vendor/lineage_power(/.*)? u:object_r:ldy_an00_power_config_file:s0

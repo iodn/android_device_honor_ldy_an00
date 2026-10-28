@@ -1,0 +1,13 @@
+# Stage the verified userspace table in RAM before the class-hal service starts.
+# The vendor HALs read a vendor-data label, as Treble requires.
+on post-fs
+    mkdir /mnt/vendor/lineage_power 0755 root root
+    restorecon /mnt/vendor/lineage_power
+    copy /system_ext/etc/ldy_an00/powerscntbl.xml /mnt/vendor/lineage_power/powerscntbl.xml
+    restorecon /mnt/vendor/lineage_power/powerscntbl.xml
+    chmod 0444 /mnt/vendor/lineage_power/powerscntbl.xml
+    mount none /mnt/vendor/lineage_power/powerscntbl.xml /vendor/etc/powerscntbl.xml bind
+    copy /product/etc/xml/uniperf_config_cust.xml /mnt/vendor/lineage_power/uniperf_config_cust.xml
+    restorecon /mnt/vendor/lineage_power/uniperf_config_cust.xml
+    chmod 0444 /mnt/vendor/lineage_power/uniperf_config_cust.xml
+    mount none /mnt/vendor/lineage_power/uniperf_config_cust.xml /product/etc/xml/uniperf_config_cust.xml bind

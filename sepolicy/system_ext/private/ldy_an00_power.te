@@ -1,0 +1,11 @@
+# RAM data staged by main init; neither system nor vendor images are writable.
+type ldy_an00_power_config_file, file_type, data_file_type;
+allow init ldy_an00_power_config_file:dir create_dir_perms;
+allow init ldy_an00_power_config_file:file create_file_perms;
+
+# Bound only to the two retained vendor servers by the 202504 compatibility map.
+attribute honor_ldy_an00_power_config_reader;
+expandattribute honor_ldy_an00_power_config_reader false;
+allow honor_ldy_an00_power_config_reader ldy_an00_power_config_file:file r_file_perms;
+allow init vendor_configs_file:file mounton;
+allow init system_file:file mounton;

@@ -32,3 +32,9 @@
   (typeattributeset hal_facerecognize_client (honor_ldy_an00_face_bridge_client))
   (typeattributeset honor_ldy_an00_face_bridge_server (hal_facerecognize_default))
 )
+
+; Keep power-table access scoped to the exact retained MediaTek and Honor HALs.
+(optional honor_ldy_an00_power_config_binding
+  (typeattributeset honor_ldy_an00_power_config_reader
+    (mtk_hal_power hal_uniperf_aidl_default))
+)

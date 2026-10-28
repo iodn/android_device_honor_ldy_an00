@@ -11,3 +11,4 @@ javac --release 17 -d "$TEST_DIR" \
     "$ROOT/power/tests/org/lineageos/ldy_an00/power/PowerControllerTest.java"
 java -cp "$TEST_DIR" org.lineageos.ldy_an00.power.PowerPolicyTest
 java -cp "$TEST_DIR" org.lineageos.ldy_an00.power.PowerControllerTest
+python3 -m unittest discover -s "$ROOT/power" -p "test_mtk_power_config.py"
