@@ -1,0 +1,9 @@
+// Copyright (C) 2026 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+cc_library_static {
+    name: "libldy_an00_shell_temperature",
+    system_ext_specific: true,
+    srcs: ["Estimator.cpp"],
+    export_include_dirs: ["."],
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}
