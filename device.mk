@@ -31,6 +31,8 @@ PRODUCT_BUILD_PVMFW_IMAGE := false
 PRODUCT_SYSTEM_PROPERTIES += ro.zygote=zygote64
 # Default both SIM slots to the reviewed NR/LTE/GSM/WCDMA mode.
 PRODUCT_SYSTEM_PROPERTIES += ro.telephony.default_network=26,26
+# Stock hardware capability read by the IMS OEM plugin before WFO startup.
+PRODUCT_SYSTEM_PROPERTIES += ro.vendor.config.vowifi=true
 
 # Stock logical density; TARGET_SCREEN_DENSITY only affects the unbuilt vendor image.
 PRODUCT_PRODUCT_PROPERTIES += ro.sf.lcd_density=560
