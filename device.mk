@@ -42,6 +42,8 @@ PRODUCT_PACKAGES += gsi_skip_mount.cfg
 PRODUCT_PACKAGES += LdyAn00FrameworkNavigationBarOverlay
 # Restore the measured stock ambient-light curve and availability.
 PRODUCT_PACKAGES += LdyAn00FrameworkAutoBrightnessOverlay
+# Device power estimates and CPU scaling-policy buckets for the retained kernel.
+PRODUCT_PACKAGES += LdyAn00FrameworkPowerProfileOverlay
 # Restore measured native display geometry and device-level IMS capability gates.
 PRODUCT_PACKAGES += LdyAn00FrameworkDisplayGeometryOverlay
 ifeq ($(TARGET_BUILD_VARIANT),userdebug)

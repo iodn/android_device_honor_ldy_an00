@@ -27,5 +27,24 @@ IMS is included in this device tree rather than a separate hardware repository.
 The reorganized tree requires a clean-build qualification before a new release.
 Existing RC3 release images are unchanged by this source reorganization.
 
+## Power profile
+
+The framework overlay uses the stock power estimates and the verified 5,500 mAh
+design capacity. Android 17 CPU scaling-step arrays follow the retained kernel's
+frequency order. Values between stock points are interpolated; values outside
+the stock range use its nearest endpoint and can underestimate boost consumption.
+
+This corrects battery accounting. It does not change CPU limits or establish
+a battery-life improvement.
+
+Validate or regenerate the profile:
+
+```sh
+python3 tools/generate_power_profile.py --check
+python3 -m unittest discover -s tools -p 'test_power_profile.py'
+# After updating the verified source data:
+python3 tools/generate_power_profile.py
+```
+
 Installation and releases:
 [android_manifest_ldy_an00](https://github.com/iodn/android_manifest_ldy_an00).
