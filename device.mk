@@ -78,6 +78,9 @@ PRODUCT_COPY_FILES += \
 # Stock TEE binaries/configs qualified against the retained vendor policy.
 $(call inherit-product, vendor/honor/ldy_an00/tee-framework.mk)
 
+# Stock public MediaTek NPU clients for ordinary applications.
+$(call inherit-product, vendor/honor/ldy_an00/npu-framework.mk)
+
 # Personal userdebug diagnostics; no capture package in user builds.
 ifeq ($(TARGET_BUILD_VARIANT),userdebug)
 PRODUCT_PACKAGES += ldy-guest-capture LdyAn00HnRadioMetadataProbe
