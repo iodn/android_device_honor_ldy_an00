@@ -15,3 +15,5 @@ sys.lineage.ldy_an00.shell_temp u:object_r:ldy_an00_shell_temperature_prop:s0 ex
 ro.audio.honor_legacy_parameters u:object_r:ldy_an00_audio_config_prop:s0 exact bool
 
 ro.display.sdr_hdr_caps u:object_r:ldy_an00_display_caps_prop:s0 exact bool
+
+ro.audio.honor_sws_output u:object_r:ldy_an00_audio_config_prop:s0 exact bool

@@ -7,4 +7,8 @@
         <item>0</item> <item>0.6</item> <item>0.6</item>
         <item>0</item> <item>3.2</item> <item>3.2</item>
     </string-array>
+    <!-- Front 2160p and 720p PRIVATE streams advertise a 33.3 ms minimum frame duration. -->
+    <string-array name="config_additionalVideoConfigurations">
+        <item>1</item> <item>uhd|hd</item> <item>-60</item>
+    </string-array>
 </resources>
