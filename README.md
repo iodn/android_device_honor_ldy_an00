@@ -87,5 +87,14 @@ The personal DSU test profile requires `LDY_AN00_REVIEWED_DSU_CANDIDATE=true`.
 It is accepted only for the `lineage_ldy_an00` product with the `userdebug` variant;
 native release targets reject this opt-in.
 
+Select the product before enabling the personal test profile:
+
+```sh
+unset LDY_AN00_REVIEWED_DSU_CANDIDATE
+source build/envsetup.sh
+lunch lineage_ldy_an00 cp2a userdebug
+export LDY_AN00_REVIEWED_DSU_CANDIDATE=true
+```
+
 Installation and releases:
 [android_manifest_ldy_an00](https://github.com/iodn/android_manifest_ldy_an00).
