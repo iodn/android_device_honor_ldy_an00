@@ -1,0 +1,6 @@
+; Native gsid follows block-device links labelled by the retained vendor policy.
+; Platform-only policy tests do not include this private vendor type.
+(optional honor_ldy_an00_native_gsid_block_links
+  (allow gsid sys_dev_block (dir (search)))
+  (allow gsid sys_dev_block (lnk_file (read)))
+)

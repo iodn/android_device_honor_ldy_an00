@@ -29,3 +29,6 @@ endif
 
 # Generated host top-level vbmeta/fastboot-info is NOT a phone write manifest.
 # Never flash super_empty, update-super, fastboot update, or generated vbmeta.img.
+
+# Resolve block-device links labelled by the retained vendor policy during DSU installs.
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/native/system_ext/private
