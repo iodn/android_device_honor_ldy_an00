@@ -1,0 +1,5 @@
+# Exact retained DisplayEngine client for the framework-owned APL bridge.
+# No app membership, hardware access or feature enablement is granted here.
+attribute honor_ldy_an00_apl_bridge_client;
+expandattribute honor_ldy_an00_apl_bridge_client false;
+typeattribute system_server honor_ldy_an00_apl_bridge_client;

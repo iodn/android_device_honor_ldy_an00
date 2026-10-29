@@ -3,6 +3,16 @@
   "revision": "136af1c298cff8b994aaae2a4f99f92ebebbeb0f",
   "tree": "ac7c6cc8482d2e18e5c7dbe4eb030a0475f395b9",
   "excluded_inputs": [
+    "displayplugin/stock-policy-assets/proprietary/sources/aps.decoded.xml",
+    "displayplugin/stock-policy-assets/proprietary/sources/manual-lux.xml",
+    "displayplugin/stock-policy-assets/proprietary/sources/panel.xml",
+    "displayplugin/stock-policy-assets/proprietary/sources/product-local.prop",
+    "displayplugin/stock-policy-assets/proprietary/sources/thermal-asset.decoded.xml",
+    "displayplugin/stock-policy-assets/proprietary/sources/thermal-custom.decoded.xml",
+    "displayplugin/stock-policy-assets/proprietary/stock-aps-fullscreen.json",
+    "displayplugin/stock-policy-assets/proprietary/stock-lcd-panel.json",
+    "displayplugin/stock-policy-assets/proprietary/stock-manual-lux.json",
+    "displayplugin/stock-policy-assets/proprietary/thermal-display-policy.json",
     "prebuilts/display/lib64/libsf_cpupolicy.so"
   ],
   "export": "Tracked source/configuration only; excluded proprietary inputs must be supplied separately.",

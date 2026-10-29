@@ -17,3 +17,10 @@ ro.audio.honor_legacy_parameters u:object_r:ldy_an00_audio_config_prop:s0 exact 
 ro.display.sdr_hdr_caps u:object_r:ldy_an00_display_caps_prop:s0 exact bool
 
 ro.audio.honor_sws_output u:object_r:ldy_an00_audio_config_prop:s0 exact bool
+
+# Atomic read-only raw policy batch from the existing shell-temperature domain.
+sys.lineage.ldy_an00.thermal_batch u:object_r:ldy_an00_shell_temperature_prop:s0 exact string
+
+ro.display.stock_thermal_policy u:object_r:ldy_an00_display_caps_prop:s0 exact bool
+
+ro.display.apl_bridge u:object_r:ldy_an00_display_caps_prop:s0 exact bool

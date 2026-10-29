@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
+# The sampler service remains disabled outside this explicitly packaged DSU profile.
+on property:sys.boot_completed=1 && property:ro.display.stock_thermal_policy=true
+    start ldy-an00-shell-temperature

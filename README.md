@@ -16,7 +16,7 @@ Device configuration for unofficial LineageOS 24.0 / Android 17.
 - `overlay*`, `displayconfig`, `keylayout`: framework/app configuration and input mappings.
 - `rootdir`, `sepolicy`: init integration and SELinux policy.
 - `ims`: device-specific IMS compatibility source, tests and reconstruction tools.
-- `proprietary-inputs.json`: required excluded binary inputs and hashes.
+- `proprietary-inputs.json`: required excluded build inputs and hashes.
 - `EXPORT-PROVENANCE.json`: original source identities and component mapping.
 
 Use this tree with the pinned manifest and its upstream patch series. The stock
@@ -67,6 +67,25 @@ python3 -m unittest discover -s tools -p 'test_power_profile.py'
 # After updating the verified source data:
 python3 tools/generate_power_profile.py
 ```
+
+## Private display inputs
+
+The source files and four generated payloads are listed in
+`display-policy-inputs.json`. Place the verified extracted sources at their
+listed `proprietary_path` locations, then generate and verify the payloads:
+
+```sh
+python3 tools/prepare_display_policy.py
+python3 tools/verify_display_policy_inputs.py
+python3 tools/test_display_policy_inputs.py
+```
+
+Decoded policy XML is an offline firmware-extraction prerequisite. Source XML,
+decoded policies and generated payloads remain excluded from Git.
+
+The personal DSU test profile requires `LDY_AN00_REVIEWED_DSU_CANDIDATE=true`.
+It is accepted only for the `lineage_ldy_an00` product with the `userdebug` variant;
+native release targets reject this opt-in.
 
 Installation and releases:
 [android_manifest_ldy_an00](https://github.com/iodn/android_manifest_ldy_an00).

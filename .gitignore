@@ -10,3 +10,6 @@ __pycache__/
 *.pfx
 *.jks
 *.keystore
+
+# Generated stock display-policy data must never enter public source exports.
+/displayplugin/stock-policy-assets/*.json

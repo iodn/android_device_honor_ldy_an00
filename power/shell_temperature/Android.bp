@@ -3,7 +3,7 @@
 cc_library_static {
     name: "libldy_an00_shell_temperature",
     system_ext_specific: true,
-    srcs: ["Estimator.cpp", "SysfsIo.cpp"],
+    srcs: ["Estimator.cpp", "SysfsIo.cpp", "PolicyBatch.cpp", "ReporterValidity.cpp"],
     export_include_dirs: ["."],
     cflags: ["-Wall", "-Wextra", "-Werror"],
 }
@@ -30,5 +30,12 @@ cc_binary {
     static_libs: ["libldy_an00_shell_temperature"],
     shared_libs: ["libbase", "liblog"],
     init_rc: ["ldy-an00-shell-temperature.rc"],
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}
+
+cc_test_host {
+    name: "ldy_an00_thermal_policy_batch_test",
+    srcs: ["PolicyBatch.cpp", "ReporterValidity.cpp", "tests/PolicyBatchTest.cpp"],
+    gtest: false,
     cflags: ["-Wall", "-Wextra", "-Werror"],
 }

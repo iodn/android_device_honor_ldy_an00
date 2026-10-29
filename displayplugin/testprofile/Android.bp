@@ -1,0 +1,8 @@
+// SPDX-License-Identifier: Apache-2.0
+prebuilt_etc {
+    name: "ldy_an00_display_policy_test_init",
+    src: "ldy-an00-display-policy-test.rc",
+    filename: "ldy-an00-display-policy-test.rc",
+    sub_dir: "init",
+    system_ext_specific: true,
+}

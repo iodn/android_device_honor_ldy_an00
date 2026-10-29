@@ -3,7 +3,32 @@
 java_library {
     name: "LdyAn00DisplayPlugin",
     srcs: ["src/**/*.java"],
+    exclude_srcs: [
+        "src/org/lineageos/ldy_an00/display/StockAplBridge.java",
+        "src/org/lineageos/ldy_an00/display/StockAplEvent.java",
+        "src/org/lineageos/ldy_an00/display/StockDisplayAuxNotice.java",
+    ],
+    static_libs: ["LdyAn00StockAplBridge"],
     libs: ["services.core"],
     installable: true,
     system_ext_specific: true,
+}
+
+
+// Generated exact stock V1 AIDL interface. No HAL implementation or legacy DE library.
+java_library {
+    name: "LdyAn00DisplayEngineAidl",
+    srcs: ["aidl-generated/**/*.java"],
+    installable: false,
+}
+
+java_library {
+    name: "LdyAn00StockAplBridge",
+    srcs: [
+        "src/org/lineageos/ldy_an00/display/StockAplBridge.java",
+        "src/org/lineageos/ldy_an00/display/StockAplEvent.java",
+        "src/org/lineageos/ldy_an00/display/StockDisplayAuxNotice.java",
+    ],
+    static_libs: ["LdyAn00DisplayEngineAidl"],
+    installable: false,
 }

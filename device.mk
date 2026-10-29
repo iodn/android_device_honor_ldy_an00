@@ -135,3 +135,7 @@ PRODUCT_PACKAGES += libhonor_ldy_an00_sf_cpupolicy
 
 # Native Settings controls use the modes advertised by the display HAL.
 PRODUCT_PACKAGES += LdyAn00SettingsRefreshRateOverlay
+
+
+# Explicit personal DSU qualification only; native release targets cannot opt in.
+$(call inherit-product, device/honor/ldy_an00/reviewed-dsu-candidate.mk)

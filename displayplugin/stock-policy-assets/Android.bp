@@ -1,0 +1,33 @@
+// Private source-pinned calibration. Component definitions only; no product activation.
+prebuilt_etc {
+    name: "ldy_an00_stock_lcd_panel",
+    src: "proprietary/stock-lcd-panel.json",
+    filename: "stock-lcd-panel.json",
+    sub_dir: "honor",
+    system_ext_specific: true,
+}
+
+prebuilt_etc {
+    name: "ldy_an00_stock_manual_lux",
+    src: "proprietary/stock-manual-lux.json",
+    filename: "stock-manual-lux.json",
+    sub_dir: "honor",
+    system_ext_specific: true,
+}
+
+prebuilt_etc {
+    name: "ldy_an00_thermal_display_policy",
+    src: "proprietary/thermal-display-policy.json",
+    filename: "thermal-display-policy.json",
+    sub_dir: "honor",
+    system_ext_specific: true,
+}
+
+
+prebuilt_etc {
+    name: "ldy_an00_stock_aps_fullscreen",
+    src: "proprietary/stock-aps-fullscreen.json",
+    filename: "stock-aps-fullscreen.json",
+    sub_dir: "honor",
+    system_ext_specific: true,
+}

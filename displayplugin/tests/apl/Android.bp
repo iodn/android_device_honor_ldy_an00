@@ -1,0 +1,16 @@
+android_test {
+    name: "LdyAn00StockAplBridgeTests",
+    srcs: ["*.java"],
+    static_libs: [
+        "LdyAn00StockAplBridge",
+        "androidx.test.runner",
+        "androidx.test.rules",
+        "mockito-target-minus-junit4",
+        "testables",
+        "frameworks-base-testutils",
+    ],
+    platform_apis: true,
+    certificate: "platform",
+    manifest: "AndroidManifest.xml",
+    test_suites: ["device-tests"],
+}

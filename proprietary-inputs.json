@@ -35,6 +35,56 @@
       "path": "power/proprietary/powerscntbl-stock113.xml",
       "size": 19629,
       "sha256": "b8923a5046d1a5fd4df584148f0273ad0a8a5cb8efb715d0dbb7d96d15c1ee44"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/sources/aps.decoded.xml",
+      "size": 31549,
+      "sha256": "4a2611b90bd2044ed948aecab4e71ef02d0d926330219e2cbc8552d31c416c8d"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/sources/manual-lux.xml",
+      "size": 2289,
+      "sha256": "7e2796607e9bd7fd16181e99cb2d34b28a2b5cdd99ce1cf0ea15b7710240d719"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/sources/panel.xml",
+      "size": 52387,
+      "sha256": "15385bc3829a53ee78c5f47feae7a45f10b55ffac2421aa80ae2bb9d640dbbdd"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/sources/product-local.prop",
+      "size": 13338,
+      "sha256": "2dd8f4fcf872ffaff69e8d259201731ce3ac63dcfe393ea92ec480637142bf8a"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/sources/thermal-asset.decoded.xml",
+      "size": 11601,
+      "sha256": "3dd3d73cad59d6dd2f7520e5b157755d15db4017fa9f29c2e5cd131d3b864e09"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/sources/thermal-custom.decoded.xml",
+      "size": 676524,
+      "sha256": "a5c896d295125f1ceac621acdbe3c3ced712884be60f7f8a693a245c3ac025c4"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/stock-aps-fullscreen.json",
+      "size": 686,
+      "sha256": "b4566bb4f80f2eeb85a3077d900a142586d6722382c318515e8006c878358bae"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/stock-lcd-panel.json",
+      "size": 4239,
+      "sha256": "a69df5666d65e23f3f421516ee263dcfc0b551886c0810cb17f17f61841d26bc"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/stock-manual-lux.json",
+      "size": 579,
+      "sha256": "3eb3b502bb48ebff0c7c293a36c14e5cbca04e44e3909baf2fe8701d3effff6d"
+    },
+    {
+      "path": "displayplugin/stock-policy-assets/proprietary/thermal-display-policy.json",
+      "size": 100253,
+      "sha256": "3a82ca45508b254259344da82aae5de7c36f7b5c55e821d17d3b896cb0439572"
     }
   ],
   "notice": "Required proprietary build inputs. Some IMS files are derived by the integration tools; not every file exists in stock firmware. Personal ADB keys are excluded."

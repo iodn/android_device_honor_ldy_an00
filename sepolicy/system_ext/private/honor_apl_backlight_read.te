@@ -1,0 +1,11 @@
+# One policy-derived sysfs attribute, not generic LED/backlight access.
+type honor_ldy_an00_apl_backlight_hw_state, fs_type, sysfs_type;
+attribute honor_ldy_an00_apl_backlight_existing_reader;
+expandattribute honor_ldy_an00_apl_backlight_existing_reader false;
+attribute honor_ldy_an00_apl_backlight_existing_stat;
+expandattribute honor_ldy_an00_apl_backlight_existing_stat false;
+
+allow system_server honor_ldy_an00_apl_backlight_hw_state:file { open read getattr };
+# Preserve existing read/stat access, not generic write/ioctl/map authority.
+allow honor_ldy_an00_apl_backlight_existing_reader honor_ldy_an00_apl_backlight_hw_state:file { open read };
+allow honor_ldy_an00_apl_backlight_existing_stat honor_ldy_an00_apl_backlight_hw_state:file getattr;

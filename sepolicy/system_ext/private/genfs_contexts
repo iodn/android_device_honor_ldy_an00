@@ -1,0 +1,1 @@
+genfscon sysfs /devices/platform/mtk-leds/leds/lcd-backlight/mt_brightness_hw_changed u:object_r:honor_ldy_an00_apl_backlight_hw_state:s0
