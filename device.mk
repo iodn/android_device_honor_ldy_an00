@@ -126,3 +126,6 @@ PRODUCT_PACKAGE_OVERLAYS += device/honor/ldy_an00/overlay-aperture
 
 # Exact stock CPU policy plugin for the complete typed display engine.
 PRODUCT_PACKAGES += libhonor_ldy_an00_sf_cpupolicy
+
+# Native Settings controls use the modes advertised by the display HAL.
+PRODUCT_PACKAGES += LdyAn00SettingsRefreshRateOverlay
