@@ -16,7 +16,17 @@ final class LensHandoffSamples {
         final long frame;
         final Float zoom;
         final String physicalId;
+        final Integer aeFpsLower;
+        final Integer aeFpsUpper;
+        final Long frameDuration;
         Sample(long timestamp, long frame, Float zoom, String physicalId) {
+            this(timestamp, frame, zoom, physicalId, null, null, null);
+        }
+        Sample(long timestamp, long frame, Float zoom, String physicalId,
+                Integer aeFpsLower, Integer aeFpsUpper, Long frameDuration) {
+            this.aeFpsLower = aeFpsLower;
+            this.aeFpsUpper = aeFpsUpper;
+            this.frameDuration = frameDuration;
             this.timestamp = timestamp;
             this.frame = frame;
             this.zoom = zoom;
@@ -32,6 +42,17 @@ final class LensHandoffSamples {
     LensHandoffSamples(int wanted) {
         if (wanted < 1 || wanted > PENDING_LIMIT) throw new IllegalArgumentException("sample count");
         this.wanted = wanted;
+    }
+
+    static Integer fixedFps(String value) {
+        if (value == null) return null;
+        if ("30".equals(value)) return 30;
+        if ("60".equals(value)) return 60;
+        throw new IllegalArgumentException("ae_fps must be 30 or 60");
+    }
+
+    static boolean supportsFixedFps(long minimumFrameDuration, int fps) {
+        return minimumFrameDuration > 0 && minimumFrameDuration <= 1_000_000_000L / fps + 1;
     }
 
     static List<Float> zoomPlan(float min, float max) {

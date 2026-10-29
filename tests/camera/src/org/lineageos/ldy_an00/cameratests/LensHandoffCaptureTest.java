@@ -113,9 +113,25 @@ public final class LensHandoffCaptureTest {
                 CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
         assertTrue("No stream map", map != null);
         Size size = outputSize(map);
+        Integer requestedFps = LensHandoffSamples.fixedFps(
+                InstrumentationRegistry.getArguments().getString("ae_fps"));
+        Range<Integer> aeRange = requestedFps == null ? null
+                : new Range<>(requestedFps, requestedFps);
+        if (aeRange != null) {
+            Range<Integer>[] ranges = chars.get(
+                    CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
+            assertTrue("Fixed AE FPS range not advertised",
+                    ranges != null && Arrays.asList(ranges).contains(aeRange));
+            long minimumDuration = map.getOutputMinFrameDuration(ImageFormat.YUV_420_888, size);
+            assertTrue("Selected YUV size does not qualify requested fixed FPS",
+                    LensHandoffSamples.supportsFixedFps(minimumDuration, requestedFps));
+        }
         report(new JSONObject().put("phase", "configuration").put("camera_id", id)
                 .put("physical_ids", new JSONArray(chars.getPhysicalCameraIds()))
                 .put("zoom_plan", new JSONArray(plan)).put("size", size.toString())
+                .put("requested_ae_fps", requestedFps == null ? JSONObject.NULL : requestedFps)
+                .put("capture_kind", requestedFps == null ? "UNCONSTRAINED_PREVIEW"
+                        : requestedFps == 30 ? "LENS_BASELINE_30" : "LOGICAL_CAMERA_60_DIAGNOSTIC")
                 .put("frames_per_step", FRAMES).put("settle_ms", SETTLE_MS)
                 .put("scope", "YUV preview capture only; no image-quality or video-mode verdict"));
 
@@ -206,10 +222,15 @@ public final class LensHandoffCaptureTest {
                     }
                     // Use a delta within the sensor clock, not callback arrival time.
                     if (!step.samples.afterSettling(timestamp, SETTLE_MS * 1_000_000L)) return;
+                    Range<Integer> resultAeRange = result.get(
+                            CaptureResult.CONTROL_AE_TARGET_FPS_RANGE);
                     LensHandoffSamples.Sample sample = new LensHandoffSamples.Sample(
                             timestamp, result.getFrameNumber(),
                             result.get(CaptureResult.CONTROL_ZOOM_RATIO),
-                            result.get(CaptureResult.LOGICAL_MULTI_CAMERA_ACTIVE_PHYSICAL_ID));
+                            result.get(CaptureResult.LOGICAL_MULTI_CAMERA_ACTIVE_PHYSICAL_ID),
+                            resultAeRange == null ? null : resultAeRange.getLower(),
+                            resultAeRange == null ? null : resultAeRange.getUpper(),
+                            result.get(CaptureResult.SENSOR_FRAME_DURATION));
                     if (step.samples.result(sample)) step.done.countDown();
                 }
                 @Override public void onCaptureFailed(CameraCaptureSession value,
@@ -223,6 +244,7 @@ public final class LensHandoffCaptureTest {
             Set<String> observedIds = new TreeSet<>();
             int missingIds = 0;
             int unconfirmedZoomFrames = 0;
+            int unconfirmedAeRangeFrames = 0;
             for (int index = 0; index < plan.size(); index++) {
                 assertTrue("Activity is not foreground", activity.foreground);
                 Step step = new Step(index, plan.get(index));
@@ -231,6 +253,7 @@ public final class LensHandoffCaptureTest {
                         CameraDevice.TEMPLATE_PREVIEW);
                 request.addTarget(reader.getSurface());
                 request.set(CaptureRequest.CONTROL_ZOOM_RATIO, step.requested);
+                if (aeRange != null) request.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, aeRange);
                 request.setTag(index);
                 session.setRepeatingRequest(request.build(), callback, handler);
                 boolean completed = step.done.await(STEP_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -246,8 +269,18 @@ public final class LensHandoffCaptureTest {
                             > Math.max(0.001f, step.requested * 0.01f)) {
                         unconfirmedZoomFrames++;
                     }
+                    if (requestedFps != null && (!requestedFps.equals(sample.aeFpsLower)
+                            || !requestedFps.equals(sample.aeFpsUpper))) {
+                        unconfirmedAeRangeFrames++;
+                    }
                     samples.put(new JSONObject().put("sensor_timestamp_ns", sample.timestamp)
                             .put("frame", sample.frame)
+                            .put("result_ae_fps_lower", sample.aeFpsLower == null
+                                    ? JSONObject.NULL : sample.aeFpsLower)
+                            .put("result_ae_fps_upper", sample.aeFpsUpper == null
+                                    ? JSONObject.NULL : sample.aeFpsUpper)
+                            .put("result_frame_duration_ns", sample.frameDuration == null
+                                    ? JSONObject.NULL : sample.frameDuration)
                             .put("result_zoom", sample.zoom == null ? JSONObject.NULL : sample.zoom)
                             .put("active_physical_id",
                                     sample.physicalId == null ? JSONObject.NULL : sample.physicalId));
@@ -279,6 +312,10 @@ public final class LensHandoffCaptureTest {
                     .put("observed_physical_ids", new JSONArray(observedIds))
                     .put("missing_active_id_frames", missingIds)
                     .put("unconfirmed_zoom_frames", unconfirmedZoomFrames)
+                    .put("unconfirmed_ae_range_frames", unconfirmedAeRangeFrames)
+                    .put("cadence_result", requestedFps == null ? "UNCONSTRAINED_NOT_FPS_TESTED"
+                            : unconfirmedAeRangeFrames > 0 ? "INCONCLUSIVE_AE_RANGE_RESULT"
+                            : "AE_RANGE_CONFIRMED_REVIEW_ACTUAL_TIMESTAMPS")
                     .put("interpretation",
                             "Null/unchanged active ID does not prove all physical lenses work.");
         } finally {
