@@ -7,3 +7,6 @@ system_internal_prop(ldy_an00_shell_temperature_prop)
 
 # Boot configuration for the Honor audio parameter adapter.
 system_internal_prop(ldy_an00_audio_config_prop)
+
+# Read-only opt-in for the coherent SDR/HDR cap consumer and plugin type.
+system_internal_prop(ldy_an00_display_caps_prop)
