@@ -137,5 +137,5 @@ PRODUCT_PACKAGES += libhonor_ldy_an00_sf_cpupolicy
 PRODUCT_PACKAGES += LdyAn00SettingsRefreshRateOverlay
 
 
-# Explicit personal DSU qualification only; native release targets cannot opt in.
+# Explicit reviewed qualification profiles; each requires its matching product.
 $(call inherit-product, device/honor/ldy_an00/reviewed-dsu-candidate.mk)
