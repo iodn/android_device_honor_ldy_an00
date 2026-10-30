@@ -1,1 +1,4 @@
 type vtservice_exec, exec_type, file_type, system_file_type;
+
+# Stock vendor-private AVB type used by the finite updater aliases.
+type vbmeta_block_device, dev_type;

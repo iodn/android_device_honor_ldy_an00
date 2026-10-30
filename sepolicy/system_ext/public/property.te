@@ -4,3 +4,6 @@ system_public_prop(htee_basic_prop)
 
 # Exact retained-vendor boot mode, exported only to the measured bridge consumers.
 vendor_public_prop(vendor_honor_face_mode_prop)
+
+# Stock public touch-boost control consumed by retained vendor.
+system_public_prop(touch_boost_enable_prop)
