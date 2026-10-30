@@ -63,6 +63,7 @@ public final class ThermalPolicyPlugin implements Plugin {
     // Stock controller clinit defaults; changed only by coherent, source-qualified intents.
     private boolean mHdrRestricted;
     private volatile String mDump = "not started";
+    private volatile String mAplDump = "not started";
 
     public ThermalPolicyPlugin(Context context, PluginStorage storage) {
         mContext = context; mStorage = storage;
@@ -305,6 +306,7 @@ public final class ThermalPolicyPlugin implements Plugin {
             mCoordinator.observe(null,null,null,false);
             mDump = "not-ready: framework input retrieval";
         } finally {
+            if (mAplRuntime != null) mAplDump = mAplRuntime.diagnostics();
             mHandler.postDelayed(mPoll,POLL_MS);
         }
     }
@@ -394,5 +396,8 @@ public final class ThermalPolicyPlugin implements Plugin {
         }
         mPublisher.offer(dispatch,context,outdoorCommand,present);
     }
-    @Override public void dump(PrintWriter pw) { pw.println("LDY-AN00 LCD policy: "+mDump); }
+    @Override public void dump(PrintWriter pw) {
+        pw.println("LDY-AN00 LCD policy: "+mDump);
+        pw.println("LDY-AN00 APL request/callback evidence: "+mAplDump);
+    }
 }

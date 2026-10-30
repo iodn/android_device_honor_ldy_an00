@@ -57,6 +57,18 @@ public final class StockAplBridge implements AutoCloseable {
         return mCollectorOutcome;
     }
 
+    /** Owner-thread snapshot; request receipts and callback delivery are distinct evidence. */
+    String diagnostics() {
+        requireOwner();
+        Session session = mSession;
+        return "requestOutcome=" + mCollectorOutcome
+                + " boundGeneration=" + (session == null ? "none" : session.generation)
+                + " alive=" + (session != null && session.alive.get())
+                + " lastRequestSnapshotBytes=" + (mLastAcceptedSnapshot == null ? 0 : mLastAcceptedSnapshot.length)
+                + " event8Delivered=" + (session == null ? 0 : session.event8Delivered)
+                + " lastEvent8ElapsedNs=" + (session == null ? 0 : session.lastEvent8ElapsedNs);
+    }
+
     public StockAplBridge(Handler owner, Consumer<StockAplEvent> sink, Runnable invalidated) {
         this(owner, sink, ignored -> {}, invalidated);
     }
@@ -226,6 +238,8 @@ public final class StockAplBridge implements AutoCloseable {
         final long generation;
         final AtomicBoolean alive = new AtomicBoolean(true);
         final Callback callback;
+        long event8Delivered;
+        long lastEvent8ElapsedNs;
 
         Session(StockAplBridge owner, IBinder binder, IDisplayEngineWrapper service,
                 long generation) {
@@ -277,7 +291,11 @@ public final class StockAplBridge implements AutoCloseable {
             }
             owner.mOwner.post(() -> {
                 if (session.alive.get() && owner.mSession == session) {
-                    if (decoded != null) owner.mSink.accept(decoded);
+                    if (decoded != null) {
+                        session.event8Delivered++;
+                        session.lastEvent8ElapsedNs = elapsed;
+                        owner.mSink.accept(decoded);
+                    }
                     if (auxiliary != null) owner.mAuxiliary.accept(auxiliary);
                 }
             });

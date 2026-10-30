@@ -23,6 +23,8 @@ final class StockAplRuntime {
     // SourceReset preserves these; future private scene senders must implement their own FSM.
     private final boolean mThirdPartyHdr=false,mEhdrApl=false,mSdrApl=false;
     private byte[] mLast;
+    private long mPublisherCalls;
+    private long mLastPublisherGeneration = -1;
     StockAplRuntime(Handler owner,ThermalPolicyPublisher publisher) {
         this(owner,publisher,()->{});
     }
@@ -36,8 +38,22 @@ final class StockAplRuntime {
         var lifetime=mBridge.lifetimeGuard(event.generation());
         if(!mReady.get() || !mOwnedCollectorActive || !lifetime.getAsBoolean())return;
         refreshBacklight();
-        if(mReady.get() && mOwnedCollectorActive && lifetime.getAsBoolean())
+        if(mReady.get() && mOwnedCollectorActive && lifetime.getAsBoolean()) {
             mPublisher.packedApl(event.generation(),event.packedExtra(),lifetime);
+            mPublisherCalls++;
+            mLastPublisherGeneration = event.generation();
+        }
+    }
+    /** Counts publisher calls only; downstream display acceptance is a separate boundary. */
+    String diagnostics() {
+        requireOwner();
+        return "observedAtElapsedMs=" + android.os.SystemClock.elapsedRealtime()
+                + " ready=" + mReady.get() + " collectorRequestOwned=" + mOwnedCollectorActive
+                + " screenOn=" + mScreenOn + " hdr=" + mHdr
+                + " ownedFullscreen=" + mOwnedFullscreen + " backlightAbove=" + mThreshold.above()
+                + " publisherCalls=" + mPublisherCalls
+                + " lastPublisherGeneration=" + mLastPublisherGeneration
+                + " " + mBridge.diagnostics();
     }
     boolean ready() { return mReady.get(); }
     boolean bind(boolean exclusiveQualified) {
