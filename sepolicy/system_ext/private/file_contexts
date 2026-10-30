@@ -7,3 +7,5 @@
 /mnt/vendor/lineage_power(/.*)? u:object_r:ldy_an00_power_config_file:s0
 
 /(system_ext|system/system_ext)/bin/ldy-an00-shell-temperature u:object_r:ldy_an00_shell_temperature_exec:s0
+/dev/block/by-name/(recovery_vbmeta|vbmeta_system_dlkm)_[ab] u:object_r:vbmeta_block_device:s0
+/dev/block/platform/soc/16810000\.ufshci/by-name/(recovery_vbmeta|vbmeta_system_dlkm)_[ab] u:object_r:vbmeta_block_device:s0
