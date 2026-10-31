@@ -27,7 +27,7 @@ PRODUCT_NAME := lineage_ldy_an00_native
 PRODUCT_ADB_KEYS :=
 
 AB_OTA_UPDATER := true
-AB_OTA_PARTITIONS := system vbmeta_system
+AB_OTA_PARTITIONS := boot system system_dlkm vbmeta_system vbmeta_system_dlkm
 PRODUCT_VIRTUAL_AB_OTA := true
 PRODUCT_VIRTUAL_AB_OTA_RETROFIT := false
 PRODUCT_VIRTUAL_AB_COMPRESSION := true
@@ -39,7 +39,7 @@ PRODUCT_PACKAGES += snapuserd
 # Android partial-update synthesis reads this VENDOR-named property first.
 # It must override retained vendor firmware lists in the later product props map.
 PRODUCT_PRODUCT_PROPERTIES += \
-    ro.vendor.build.ab_ota_partitions=system,vbmeta_system
+    ro.vendor.build.ab_ota_partitions=boot,system,system_dlkm,vbmeta_system,vbmeta_system_dlkm
 ifeq ($(LDY_AN00_NATIVE_STAGE),production)
 PRODUCT_PRODUCT_PROPERTIES += lineage.updater.uri=$(LDY_AN00_NATIVE_UPDATER_URI)
 endif
