@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "cohort": "ldy_an00-kernel-6.12.38-0cd88f62757f",
+  "cohort": "ldy_an00-kernel-6.12.38-275da71428d7",
   "purpose": "Explicit three-image input contract for native five-part OTA assembly. Other two OS images must come from the separately qualified current native build.",
   "inputs": [
     {
@@ -9,12 +9,12 @@
       "file_bytes": 67108864,
       "partition_bytes": 67108864,
       "payload_new_partition_bytes": 67108864,
-      "sha256": "79220e851d11a2481bcfdcfc06bc052e1a619b63df2d4ca178543c045386ac73",
+      "sha256": "cf97a313cd3443fc72a72915113c7b3bcc2146f9c6cfd2e5713c2deafd87e34c",
       "copy_policy": "Exact complete image bytes; no truncation, repadding, re-signing or rebuilding.",
       "layout": {
         "avb_original_image_bytes": 18980864,
-        "compressed_kernel_bytes": 18957600,
-        "compressed_kernel_sha256": "701544317c4b6b90919f3890003a4fa9efc2441a121a1e1e25fee60fec43dec8",
+        "compressed_kernel_bytes": 18957978,
+        "compressed_kernel_sha256": "a65de57cd0d7063785b082459057016d20f73478d6f58badf0ee717d7c6ecbf3",
         "note": "The complete 64 MiB boot image includes the existing inner signatures and trailer, outer AVB metadata, padding and terminal footer. The original-image length is not the payload file length."
       }
     },
@@ -24,7 +24,7 @@
       "file_bytes": 33554432,
       "partition_bytes": 33554432,
       "payload_new_partition_bytes": 33554432,
-      "sha256": "678a49cd37f90eee68d069df98b144c76c2bda155d06309d3932f0f35c5c91ea",
+      "sha256": "7b70f982c07a4af9fff965d588158afbae46a038c7460f7080017a718170025f",
       "copy_policy": "Exact complete image bytes; no truncation, repadding, re-signing or rebuilding.",
       "layout": {
         "filesystem_original_image_bytes": 8187904,
@@ -41,11 +41,11 @@
       "file_bytes": 1048576,
       "partition_bytes": 1048576,
       "payload_new_partition_bytes": 1048576,
-      "sha256": "4c6fc258fb04fc086380b40debcbb5643a841272899fd7c86b55ca09f6016e3e",
+      "sha256": "f33a32da89415b83210dee95776d5210897a39bb033cab8e9ea1854a3f0a7b1d",
       "copy_policy": "Exact complete image bytes; no truncation, repadding, re-signing or rebuilding.",
       "layout": {
         "signed_vbmeta_prefix_bytes": 2496,
-        "signed_vbmeta_prefix_sha256": "fa35038bf97b0e32e1b50c85033ee6b5a0e301fbf45f6a080a712b32e7aa4276",
+        "signed_vbmeta_prefix_sha256": "722b7e2c468cc674b28d424f909c3d3efa0c3d4349ef0b55856909e037f57b3b",
         "zero_padding_bytes": 1046080,
         "zero_padding_verified": true,
         "note": "The complete 1 MiB child image contains a 2,496-byte signed VBMeta prefix and zero padding. The prefix alone is not the admitted payload."
@@ -53,19 +53,21 @@
     }
   ],
   "kernel_provenance": {
-    "source_commit": "0cd88f62757fad1920f8c2135284ce282584d437",
-    "source_tree": "94c3b2650ab75692888451f5c842b7386dab1661",
-    "source_binding": "Compiled source bytes were committed after successful qualification; this records source equivalence, not a post-commit rebuild.",
-    "release": "6.12.38-android16-5-maybe-dirty-4k",
+    "source_commit": "275da71428d7cc471f576284038a050191339c65",
+    "source_tree": "9e60a124a152b6fe12ece49ceadffe2cbea6d7e5",
+    "source_binding": "Built and host-qualified from this exact committed source revision using the maintained stamped build entrypoint; no post-qualification source substitution.",
+    "release": "6.12.38-LDY-AN00-g275da71428d7-4k",
     "raw_kernel_bytes": 40290816,
-    "raw_kernel_sha256": "bf62105f10d01d45de87ca0750ea4c940d2c7b187d42a0cac41aaec09efd5846",
-    "kernel_build_id": "bc6efd14c4ef6af902588092f7bbb65824bd0573",
+    "raw_kernel_sha256": "1e34a7a7af4dc11403c56deb29bc28e6e203928611ec630d4ccfb6cbfef5615a",
+    "kernel_build_id": "6ab27b70b156b6f8c7dd2cb7d817fd39e761fa4c",
     "config_bytes": 220233,
     "config_sha256": "cfd4c412605ce7d87f19d613baa7a5029702a39bcca30b32436c36709e9d80e5",
     "module_public_certificate_der_bytes": 1357,
-    "module_public_certificate_der_sha256": "be95ed546e63db506e900f5f125de1249a64b7c55a82a52c776d1d44a7644444",
+    "module_public_certificate_der_sha256": "e6e0fbbbaeca8e76ff79daa1c81ab803ab8002defea2f9f04dd6e4c72a5a6e54",
     "selected_signed_system_modules": 103,
-    "additional_unselected_module": "exynos-hvm.ko"
+    "additional_unselected_module": "exynos-hvm.ko",
+    "build_timestamp_utc": "Sat Oct 31 00:17:24 UTC 2026",
+    "build_entrypoint": "scripts/build-ldy-an00.sh"
   },
   "avb_contract": {
     "parent_authorized_public_key_sha256": "1595b33c834e1b0b29174c4aececd21cadd3d9fae9c3c3f95dacd7173c73f99c",
