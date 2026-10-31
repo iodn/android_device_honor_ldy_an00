@@ -42,6 +42,9 @@ PRODUCT_PRODUCT_PROPERTIES += ro.sf.lcd_density=560
 # Select first-stage mount exclusions for embedded product/system_ext.
 PRODUCT_PACKAGES += gsi_skip_mount.cfg
 
+# Stock Honor supports SIM hot-swap without restarting Android.
+PRODUCT_PACKAGES += LdyAn00FrameworkSimHotSwapOverlay
+
 # Stock Honor exposes software navigation; the navigation mode remains selectable.
 PRODUCT_PACKAGES += LdyAn00FrameworkNavigationBarOverlay
 # Restore the measured stock ambient-light curve and availability.
