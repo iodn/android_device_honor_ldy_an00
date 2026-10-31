@@ -6,6 +6,9 @@ BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 17569939456
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_dlkm
 BOARD_PARTIAL_OTA_UPDATE_PARTITIONS_LIST := boot system system_dlkm vbmeta_system vbmeta_system_dlkm
 
+# Reserve space for optional add-on variants before image signing.
+BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 1073741824
+
 # Keep native OTA compatibility independent of the retained vendor board alias.
 TARGET_OTA_ASSERT_DEVICE := ldy_an00
 
