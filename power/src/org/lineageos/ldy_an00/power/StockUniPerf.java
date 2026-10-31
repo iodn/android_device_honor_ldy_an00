@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.lineageos.ldy_an00.power;
 
-import android.os.BadParcelableException;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /** Wire contract from the retained V1 NDK interface; no root or policy changes. */
 final class StockUniPerf implements PowerController.Backend {
@@ -69,6 +71,9 @@ final class StockUniPerf implements PowerController.Backend {
     }
 
     public void request(int[] limits) throws RemoteException {
+        if (!PowerPolicy.validRequest(limits)) {
+            throw new IllegalArgumentException("Invalid CPU-only UniPerf request");
+        }
         IBinder remote = connect();
         Parcel data = Parcel.obtain(remote);
         try {
@@ -85,46 +90,20 @@ final class StockUniPerf implements PowerController.Backend {
         }
     }
 
-    private static int objectEnd(Parcel reply, int minimumSize) {
-        if (reply.readInt() != 1) throw new BadParcelableException("Missing UniPerf object");
-        int start = reply.dataPosition();
-        int size = reply.readInt();
-        if (size < minimumSize || size > reply.dataSize() - start) {
-            throw new BadParcelableException("Invalid UniPerf object size");
+    public int[] readLimits() throws RemoteException, IOException {
+        connect();
+        int[] policies = {0, 4, 7};
+        int[] result = new int[policies.length];
+        for (int i = 0; i < policies.length; i++) {
+            String path = "/sys/devices/system/cpu/cpufreq/policy" + policies[i]
+                    + "/scaling_max_freq";
+            try (FileInputStream input = new FileInputStream(path)) {
+                result[i] = PowerPolicy.parseCpuCeiling(input.readNBytes(33));
+            }
         }
-        return start + size;
-    }
-
-    public int[] readLimits() throws RemoteException {
-        IBinder remote = connect();
-        Parcel data = Parcel.obtain(remote);
-        Parcel reply = Parcel.obtain();
-        try {
-            data.writeInterfaceToken(DESCRIPTOR);
-            data.writeIntArray(PowerPolicy.TAGS);
-            if (!remote.transact(2, data, reply, 0)) {
-                throw new RemoteException("Missing UniPerf getter transaction");
-            }
-            reply.readException();
-            int end = objectEnd(reply, 8);
-            int status = reply.readInt();
-            reply.setDataPosition(end);
-            if (status != 0) throw new IllegalStateException("UniPerf backend status " + status);
-            end = objectEnd(reply, 8 + PowerPolicy.TAGS.length * 4);
-            if (reply.readInt() != PowerPolicy.TAGS.length) {
-                throw new BadParcelableException("Invalid UniPerf limit count");
-            }
-            int[] result = new int[PowerPolicy.TAGS.length];
-            for (int i = 0; i < result.length; i++) result[i] = reply.readInt();
-            reply.setDataPosition(end);
-            reply.enforceNoDataAvail();
-            if (!PowerPolicy.validReadback(result)) {
-                throw new IllegalStateException("Invalid UniPerf frequency/OPP readback");
-            }
-            return result;
-        } finally {
-            reply.recycle();
-            data.recycle();
+        if (!PowerPolicy.validReadback(result)) {
+            throw new IllegalStateException("Invalid CPU ceiling readback");
         }
+        return result;
     }
 }

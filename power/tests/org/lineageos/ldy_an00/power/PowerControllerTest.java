@@ -7,19 +7,25 @@ import java.util.ArrayList;
 public final class PowerControllerTest {
     private static final class Backend implements PowerController.Backend {
         final ArrayList<int[]> requests = new ArrayList<>();
-        int[] observed = {2700000, 3500000, 4210000, 0};
+        int[] observed = {2600000, 2600000, 3200000};
+        int reads;
         boolean failRead;
         boolean failSend;
         boolean ignore;
         public int[] readLimits() throws Exception {
+            reads++;
             if (failRead) throw new Exception("Backend unavailable");
             return observed.clone();
         }
         public void request(int[] limits) throws Exception {
+            if (limits.length != 4 || limits[3] != -1) {
+                throw new AssertionError("GPU release request invariant");
+            }
             requests.add(limits.clone());
             if (failSend) throw new Exception("Delivery unknown");
             if (!ignore) observed = PowerPolicy.released(limits)
-                    ? new int[]{2700000, 3500000, 4210000, 0} : limits.clone();
+                    ? new int[]{2600000, 2600000, 3200000}
+                    : new int[]{limits[0], limits[1], limits[2]};
         }
     }
 
@@ -76,6 +82,7 @@ public final class PowerControllerTest {
         f.controller.update(true, true, false);
         f.drain();
         f.count(0); // An uninitialized getter cannot authorize tuning.
+        if (f.backend.reads != 4) throw new AssertionError("Expected initial read and three retries");
         f.controller.update(false, true, false);
         f.drain();
         f.count(1); // A broken getter must not block release.

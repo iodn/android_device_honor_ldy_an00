@@ -54,7 +54,7 @@ final class PowerController {
             mRetries = 0;
             mScheduler.post(() -> verify(generation, desired, 0), 250);
         } catch (Exception e) {
-            mLog.accept("Frequency policy unavailable", e);
+            mLog.accept("CPU ceiling policy unavailable", e);
             if (requestAttempted) {
                 // A transport failure is not proof that a one-way request was not delivered.
                 releaseAfterFailure(desired);
@@ -71,8 +71,8 @@ final class PowerController {
         try {
             int[] observed = mBackend.readLimits();
             if (PowerPolicy.matches(desired, observed)) {
-                mLog.accept((PowerPolicy.released(desired) ? "Release requested; observed "
-                        : "Aggregate limits observed ") + Arrays.toString(observed), null);
+                mLog.accept((PowerPolicy.released(desired) ? "Release requested; observed CPU ceilings "
+                        : "Aggregate CPU ceilings observed ") + Arrays.toString(observed), null);
                 return;
             }
             // A synchronous getter can overtake the one-way setter.
@@ -80,9 +80,9 @@ final class PowerController {
                 mScheduler.post(() -> verify(generation, desired, attempt + 1), 250);
                 return;
             }
-            mLog.accept("Requested limits not observed", null);
+            mLog.accept("Requested CPU ceilings not observed", null);
         } catch (Exception e) {
-            mLog.accept("Cannot verify frequency policy", e);
+            mLog.accept("Cannot verify CPU ceilings", e);
         }
         if (!PowerPolicy.released(desired)) releaseAfterFailure(desired);
     }
