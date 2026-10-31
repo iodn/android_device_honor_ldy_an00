@@ -28,6 +28,12 @@ PRODUCT_ADB_KEYS :=
 
 AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS := boot system system_dlkm vbmeta_system vbmeta_system_dlkm
+# Lineage update_engine runs addon.d backup/restore before mounting postinstall read-only.
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_system=true \
+    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
+    FILESYSTEM_TYPE_system=ext4 \
+    POSTINSTALL_OPTIONAL_system=true
 PRODUCT_VIRTUAL_AB_OTA := true
 PRODUCT_VIRTUAL_AB_OTA_RETROFIT := false
 PRODUCT_VIRTUAL_AB_COMPRESSION := true
