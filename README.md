@@ -10,8 +10,8 @@ Device configuration for unofficial LineageOS 24.0 / Android 17.
 | Branch | `lineage-24.0` |
 | Tested firmware baseline | `10.0.0.113(C00E100R101P1)` |
 
-GhostLock's vulnerable code was also found in **10.0.0.170**; older releases may
-be affected. This device configuration retains the tested **10.0.0.113** inputs.
+See the [GhostLock firmware table](https://github.com/iodn/honor-ldy-an00-ghostlock#firmware-downloads-and-ghostlock-status) for vulnerable versions.
+This device configuration uses the tested **10.0.0.113** inputs.
 
 ## Layout
 
