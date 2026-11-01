@@ -8,7 +8,10 @@ Device configuration for unofficial LineageOS 24.0 / Android 17.
 | Android source path | `device/honor/ldy_an00` |
 | Native product | `lineage_ldy_an00_native` |
 | Branch | `lineage-24.0` |
-| Firmware baseline | `10.0.0.113(C00E100R101P1)` |
+| Tested firmware baseline | `10.0.0.113(C00E100R101P1)` |
+
+GhostLock's vulnerable code was also found in **10.0.0.170**; older releases may
+be affected. This device configuration retains the tested **10.0.0.113** inputs.
 
 ## Layout
 
