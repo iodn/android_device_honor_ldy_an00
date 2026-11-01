@@ -2,6 +2,47 @@
 
 Device configuration for unofficial LineageOS 24.0 / Android 17.
 
+## Getting started
+
+For installation, use the [ROM installation guide](https://github.com/iodn/android_manifest_ldy_an00#first-installation).
+For compilation, follow the manifest's [build instructions](https://github.com/iodn/android_manifest_ldy_an00#source),
+use the pinned source revisions and supply the matching excluded inputs.
+The native build product is `lineage_ldy_an00_native`.
+
+## Prepare display inputs
+
+The source files and four generated payloads are listed in
+`display-policy-inputs.json`. Place the verified extracted sources at their
+listed `proprietary_path` locations, then generate and verify the payloads:
+
+```sh
+python3 tools/prepare_display_policy.py
+python3 tools/verify_display_policy_inputs.py
+python3 tools/test_display_policy_inputs.py
+```
+
+Decoded policy XML is an offline firmware-extraction prerequisite. Source XML,
+decoded policies and generated payloads remain excluded from Git.
+
+## Validation
+
+Run the power-policy tests with JDK 17 or newer and Python 3:
+
+```sh
+./power/test.sh
+```
+
+Validate or regenerate the profile:
+
+```sh
+python3 tools/generate_power_profile.py --check
+python3 -m unittest discover -s tools -p 'test_power_profile.py'
+# After updating the verified source data:
+python3 tools/generate_power_profile.py
+```
+
+## Device reference
+
 | Item | Value |
 | --- | --- |
 | Device/model | `ldy_an00` / `LDY-AN00` |
@@ -14,7 +55,7 @@ Official downloads and GhostLock status are listed in the
 [firmware table](https://github.com/iodn/honor-ldy-an00-ghostlock#firmware-downloads-and-ghostlock-status).
 This device configuration uses the tested **10.0.0.113** inputs.
 
-## Layout
+## Source layout
 
 - Root makefiles: product, board, AVB and Virtual A/B configuration.
 - `overlay*`, `displayconfig`, `keylayout`: framework/app configuration and input mappings.
@@ -29,7 +70,7 @@ personal ADB keys are excluded. Preserve existing licenses and notices.
 
 IMS is included in this device tree rather than a separate hardware repository.
 
-## Power profile
+## Power integration
 
 The framework overlay uses the stock power estimates and the verified 5,500 mAh
 design capacity. Android 17 CPU scaling-step arrays follow the retained kernel's
@@ -55,37 +96,9 @@ the stock touch resources. The candidate sustained profile uses stock balanced
 CPU ceilings; capability advertising remains disabled pending hardware tests.
 The vendor partition is unchanged.
 
-Run the power-policy tests with JDK 17 or newer and Python 3:
+## DSU development profile
 
-```sh
-./power/test.sh
-```
-
-Validate or regenerate the profile:
-
-```sh
-python3 tools/generate_power_profile.py --check
-python3 -m unittest discover -s tools -p 'test_power_profile.py'
-# After updating the verified source data:
-python3 tools/generate_power_profile.py
-```
-
-## Private display inputs
-
-The source files and four generated payloads are listed in
-`display-policy-inputs.json`. Place the verified extracted sources at their
-listed `proprietary_path` locations, then generate and verify the payloads:
-
-```sh
-python3 tools/prepare_display_policy.py
-python3 tools/verify_display_policy_inputs.py
-python3 tools/test_display_policy_inputs.py
-```
-
-Decoded policy XML is an offline firmware-extraction prerequisite. Source XML,
-decoded policies and generated payloads remain excluded from Git.
-
-The personal DSU test profile requires `LDY_AN00_REVIEWED_DSU_CANDIDATE=true`.
+The DSU development profile requires `LDY_AN00_REVIEWED_DSU_CANDIDATE=true`.
 It is accepted only for the `lineage_ldy_an00` product with the `userdebug` variant;
 native release targets reject this opt-in.
 
@@ -97,6 +110,3 @@ source build/envsetup.sh
 lunch lineage_ldy_an00 cp2a userdebug
 export LDY_AN00_REVIEWED_DSU_CANDIDATE=true
 ```
-
-Installation and releases:
-[android_manifest_ldy_an00](https://github.com/iodn/android_manifest_ldy_an00).
