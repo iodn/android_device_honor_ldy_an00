@@ -10,7 +10,8 @@ Device configuration for unofficial LineageOS 24.0 / Android 17.
 | Branch | `lineage-24.0` |
 | Tested firmware baseline | `10.0.0.113(C00E100R101P1)` |
 
-See the [GhostLock firmware table](https://github.com/iodn/honor-ldy-an00-ghostlock#firmware-downloads-and-ghostlock-status) for vulnerable versions.
+Official downloads and GhostLock status are listed in the
+[firmware table](https://github.com/iodn/honor-ldy-an00-ghostlock#firmware-downloads-and-ghostlock-status).
 This device configuration uses the tested **10.0.0.113** inputs.
 
 ## Layout
@@ -22,13 +23,11 @@ This device configuration uses the tested **10.0.0.113** inputs.
 - `proprietary-inputs.json`: required excluded build inputs and hashes.
 - `EXPORT-PROVENANCE.json`: original source identities and component mapping.
 
-Use this tree with the pinned manifest and its upstream patch series. The stock
-kernel and vendor firmware are retained. Proprietary files and personal ADB keys
-are excluded. Preserve existing source licenses and copyright notices.
+Use this tree with the pinned manifest and its upstream patch series. The
+maintained kernel uses matching stock vendor firmware. Proprietary files and
+personal ADB keys are excluded. Preserve existing licenses and notices.
 
 IMS is included in this device tree rather than a separate hardware repository.
-The reorganized tree requires a clean-build qualification before a new release.
-Existing RC3 release images are unchanged by this source reorganization.
 
 ## Power profile
 
