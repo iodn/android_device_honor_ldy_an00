@@ -1,5 +1,5 @@
 # C6-derived native Virtual A/B. Inventory artifacts must never be installed.
-# Retained stock113 reader/handoff compatibility is source-controlled.
+# Kernel snapshot policy is source-controlled for writable add-on postinstall.
 include device/honor/ldy_an00/native-vab-snapshot.mk
 
 ifeq ($(LDY_AN00_NATIVE_STAGE),unsigned-inventory)
@@ -36,7 +36,7 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_OPTIONAL_system=true
 PRODUCT_VIRTUAL_AB_OTA := true
 PRODUCT_VIRTUAL_AB_OTA_RETROFIT := false
-PRODUCT_VIRTUAL_AB_COMPRESSION := true
+PRODUCT_VIRTUAL_AB_COMPRESSION := false
 
 # Permit host child/top metadata construction, never stock top-vbmeta installation.
 PRODUCT_BUILD_VBMETA_IMAGE := true
