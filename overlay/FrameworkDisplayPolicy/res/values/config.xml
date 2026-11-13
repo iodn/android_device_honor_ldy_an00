@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="config_pluginsProviderJarPath" translatable="false">/system_ext/framework/LdyAn00DisplayPlugin.jar</string>
+    <!-- Match GrapheneOS's warmer Night Light range using the standard color curve. -->
+    <integer name="config_nightDisplayColorTemperatureMin">686</integer>
 </resources>
