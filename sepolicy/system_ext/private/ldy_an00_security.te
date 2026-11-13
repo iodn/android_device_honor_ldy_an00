@@ -1,0 +1,8 @@
+# Runtime commands for the init-backed automatic reboot timer.
+# No shell, application or platform-app setter grant.
+system_internal_prop(ldy_an00_security_prop)
+set_prop(system_server, ldy_an00_security_prop)
+get_prop(init, ldy_an00_security_prop)
+
+# CLOCK_BOOTTIME_ALARM keeps the init timer effective during suspend.
+allow init self:global_capability2_class_set wake_alarm;

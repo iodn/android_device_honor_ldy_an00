@@ -145,7 +145,13 @@ final class CameraOsTorchSource {
 
         @Override protected boolean onTransact(int code, Parcel in, Parcel out, int flags)
                 throws RemoteException {
-            if (code >= 1 && code <= 16777215) in.enforceInterface(CALLBACK);
+            if (code >= 1 && code <= 16777215) {
+                if (Binder.getCallingPid() != android.os.Process.myPid()
+                        && Binder.getCallingUid() != android.os.Process.CAMERASERVER_UID) {
+                    throw new SecurityException("CameraOS callbacks require the camera server UID");
+                }
+                in.enforceInterface(CALLBACK);
+            }
             if (code == INTERFACE_TRANSACTION) {
                 out.writeString(CALLBACK);
                 return true;

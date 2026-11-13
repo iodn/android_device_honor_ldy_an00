@@ -27,3 +27,6 @@ ro.display.apl_bridge u:object_r:ldy_an00_display_caps_prop:s0 exact bool
 
 # Preserve the stock prefix and unconstrained value contract.
 sys.perf.touch_boost.enable u:object_r:touch_boost_enable_prop:s0 prefix
+
+sys.ldy_security.reboot_ctl u:object_r:ldy_an00_security_prop:s0 exact string
+sys.ldy_security.reboot_inhibit u:object_r:ldy_an00_security_prop:s0 exact bool

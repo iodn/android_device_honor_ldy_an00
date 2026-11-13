@@ -142,3 +142,6 @@ PRODUCT_PACKAGES += LdyAn00SettingsRefreshRateOverlay
 
 # Explicit reviewed qualification profiles; each requires its matching product.
 $(call inherit-product, device/honor/ldy_an00/reviewed-dsu-candidate.mk)
+
+# Optional keyguard security controls; both policies remain off until selected.
+PRODUCT_SYSTEM_EXT_PROPERTIES += ro.lineage.ldy_an00.security_controls=true

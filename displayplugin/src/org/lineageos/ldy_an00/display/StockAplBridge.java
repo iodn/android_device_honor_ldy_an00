@@ -277,6 +277,10 @@ public final class StockAplBridge implements AutoCloseable {
 
         @Override
         public void onEventWithData(int event, byte[] data) {
+            if (android.os.Binder.getCallingPid() != android.os.Process.myPid()
+                    && android.os.Binder.getCallingUid() != android.os.Process.SYSTEM_UID) {
+                throw new SecurityException("Display engine callbacks require the system UID");
+            }
             Session session = mSession.get();
             if (session == null || !session.alive.get()) {
                 return;

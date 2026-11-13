@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "scope": [
+    "custom integration authorization",
+    "optional automatic reboot",
+    "optional USB data restriction while locked"
+  ],
+  "defaults": {
+    "settings_reboot_after_timeout": 0,
+    "usb_data_when_locked": 0
+  },
+  "settings_location": "Security & privacy > More security & privacy > Device protection",
+  "automatic_reboot": {
+    "timer_owner": "init",
+    "clock": "CLOCK_BOOTTIME_ALARM",
+    "minimum_seconds": 600,
+    "maximum_seconds": 259200,
+    "before_first_unlock": "not armed",
+    "unlock": "cancel timer",
+    "duplicates": "do not extend deadline",
+    "defer": [
+      "cellular call",
+      "communication audio mode",
+      "emergency callback mode",
+      "unknown call state",
+      "unknown update state",
+      "active update",
+      "pending update reboot",
+      "snapshot cleanup"
+    ],
+    "control_writer_uid": 1000
+  },
+  "usb": {
+    "backend": "Android USB HAL enableUsbData and AOSP disable-request accounting",
+    "modes": {
+      "0": "allow data",
+      "1": "restrict while locked",
+      "2": "restrict while locked except when USB debugging is enabled"
+    },
+    "preserves_other_disable_requesters": true,
+    "hardware_data_line_isolation_proven": false,
+    "alternate_modes_blocked": false
+  },
+  "custom_callbacks": {
+    "face": 1000,
+    "display_engine": 1000,
+    "camera_os_torch": 1047,
+    "local_calls": "same-process calls retained for existing isolated tests"
+  },
+  "upstream": [
+    {
+      "repository": "https://github.com/GrapheneOS/platform_system_core",
+      "revision": "322ff5129d865a5e8d958667e6c63ac943449493",
+      "path": "init/property_service.cpp",
+      "usage": "adapted timer with bounded input, locking, stale callback guard, inhibit and explicit UID checks"
+    },
+    {
+      "repository": "https://github.com/GrapheneOS/platform_frameworks_base",
+      "revision": "865521d49280706d6877d0a0636de2cdd8210c36",
+      "path": "services/core/java/com/android/server/policy/keyguard/AutoReboot.java",
+      "usage": "adapted keyguard and init-property integration; settings and call/update dependencies use Lineage/AOSP APIs"
+    }
+  ],
+  "validation_limits": [
+    "Host timer tests replace OS timer and shutdown operations.",
+    "Host USB tests execute request accounting with a simulated port.",
+    "Hardware lock/unlock, calls and OTA interaction require a combined firmware test.",
+    "This does not provide GrapheneOS-equivalent boot or USB hardware guarantees."
+  ]
+}
