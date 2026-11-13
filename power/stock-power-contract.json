@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "device": "LDY-AN00",
+  "stock_reference": "10.0.0.113",
+  "status": "Offline control-path audit; caller coverage and hardware qualification remain incomplete.",
+  "binary_sha256": {
+    "vendor/lib64/android.hardware.power-service-mediatek.so": "d4486e15db9d9a23cedee9fe970d7f281d60e309ff1b86589cf378e8a47f24ab",
+    "vendor/lib64/libpowerhal.so": "8bc192265e7b95842284e879f19a075af8baa4038c5544f98d844648e00120f0",
+    "vendor/lib64/libiawareperf_server.so": "b4a9ee59efbe28141bf32fa4814ea7bc69b32ed6e310158b3c493f6dac77dcb1",
+    "vendor/lib64/libmtk_wrapper.so": "ec587ee69f996915f3e961a752dc6cf6e1ca4a96ae0dbb725e46c766fc920f11",
+    "system_ext/lib64/libsf_cpupolicy.so": "0e1f86711e5cd508b41be59b88bb440341564df984bb4e740fc8f3dea11d6bb7"
+  },
+  "address_convention": "Virtual addresses in ARM64 ELF programs imported at image base 0x100000.",
+  "standard_power_hal": {
+    "binary": "vendor/lib64/android.hardware.power-service-mediatek.so",
+    "entrypoints": {
+      "setMode": "0x10cf70",
+      "setBoost": "0x10d290",
+      "isModeSupported": "0x10d1f0",
+      "isBoostSupported": "0x10d370"
+    },
+    "advertisement": "Modes 0..18 and boosts 0..5 are advertised; this does not imply an implemented resource action.",
+    "modes": [
+      {
+        "value": 0,
+        "name": "DOUBLE_TAP_TO_WAKE",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 1,
+        "name": "LOW_POWER",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 2,
+        "name": "SUSTAINED_PERFORMANCE",
+        "action": "Enable: CusLockHint(78,0,pid), replace/release previous handle. Disable: release stored handle and zero."
+      },
+      {
+        "value": 3,
+        "name": "FIXED_PERFORMANCE",
+        "action": "Log only; no resource action."
+      },
+      {
+        "value": 4,
+        "name": "VR",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 5,
+        "name": "LAUNCH",
+        "action": "Enable if interactive-off flag clear: CusLockHint(81,30000,pid), replace/release previous handle. Disable or screen-off flag: release stored handle and zero."
+      },
+      {
+        "value": 6,
+        "name": "EXPENSIVE_RENDERING",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 7,
+        "name": "INTERACTIVE",
+        "action": "Capability0xd4 nonzero required. false: UserScnDisableAll and set flag1; true: UserScnRestoreAll and flag0."
+      },
+      {
+        "value": 8,
+        "name": "DEVICE_IDLE",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 9,
+        "name": "DISPLAY_INACTIVE",
+        "action": "Log only; no resource action."
+      },
+      {
+        "value": 10,
+        "name": "AUDIO_STREAMING_LOW_LATENCY",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 11,
+        "name": "CAMERA_STREAMING_SECURE",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 12,
+        "name": "CAMERA_STREAMING_LOW",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 13,
+        "name": "CAMERA_STREAMING_MID",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 14,
+        "name": "CAMERA_STREAMING_HIGH",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 15,
+        "name": "GAME",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 16,
+        "name": "GAME_LOADING",
+        "action": "Enable: CusLockHint(92,5000,pid), rotate modeCount0..99 and replace/release handle. Disable: release stored handle and zero."
+      },
+      {
+        "value": 17,
+        "name": "DISPLAY_CHANGE",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      },
+      {
+        "value": 18,
+        "name": "AUTOMOTIVE_PROJECTION",
+        "action": "Unknown-type log then AStatus_newOk; no implemented resource action."
+      }
+    ],
+    "boosts": [
+      {
+        "value": 0,
+        "name": "INTERACTION",
+        "action": "CusLockHint(70,duration,pid). Any duration<1 becomes80ms, including negative cancellation requests; explicit cancellation not implemented."
+      },
+      {
+        "value": 1,
+        "name": "DISPLAY_UPDATE_IMMINENT",
+        "action": "CusLockHint(71,rawDuration,pid); no default/cancellation special handling in wrapper."
+      },
+      {
+        "value": 2,
+        "name": "ML_ACC",
+        "action": "No action, returnsOK."
+      },
+      {
+        "value": 3,
+        "name": "AUDIO_LAUNCH",
+        "action": "No action, returnsOK."
+      },
+      {
+        "value": 4,
+        "name": "CAMERA_LAUNCH",
+        "action": "No action, returnsOK."
+      },
+      {
+        "value": 5,
+        "name": "CAMERA_SHOT",
+        "action": "No action, returnsOK."
+      }
+    ],
+    "table": "/vendor/etc/powerscntbl.xml",
+    "stock_table_gap": "Hints 70, 71, 78 and 81 have no resources in the pinned stock table.",
+    "lineage_table": "Generator adds exact stock touch resources for 70 and a candidate sustained profile for 78; 71 and 81 remain empty.",
+    "screen_off": "libpowerhal perfUserScnDisableAll at 0x152f80 exempts screen-off states 1 and 3. Restore at 0x1531e0 changes the interactive flag; it does not eagerly replay all handles.",
+    "known_api_gap": "Negative INTERACTION durations become an 80 ms boost. XML cannot repair this cancellation behavior."
+  },
+  "uniperf": {
+    "server_binary": "vendor/lib64/libiawareperf_server.so",
+    "adapter_binary": "vendor/lib64/libmtk_wrapper.so",
+    "server_entrypoints": {
+      "event": "0x1141a0",
+      "configuration_set": "0x1184a0",
+      "configuration_get": "0x118b50"
+    },
+    "backend_loading": {
+      "address": "0x10ef60",
+      "acquire_release": "libmtkperf_client_vendor.so: perf_lock_acq / perf_lock_rel",
+      "query": "libpowerhalwrap_vendor.so: PowerHal_Wrap_querySysInfo"
+    },
+    "configuration_ownership": {
+      "client_1": "PowerGenie frequency policy; used by the Lineage device service.",
+      "client_2": "Thermal policy; must retain its independent handle.",
+      "translation": "DoPerfSetConfig at 0x114c40 updates separate maps for clients 1 and 2 and emits the selected client map.",
+      "replacement": "PerfServiceSetConfig at 0x115b20 releases the previous client handle before acquiring a new duration-0 handle and caching its result.",
+      "release": "DoSetconfigReleaseHandle at 0x115e40 looks up that client, releases a positive handle and clears its cache entry.",
+      "cache": "DoSetconfigCacheHandle at 0x116020 stores the new handle under that client.",
+      "screen_off_resource": {
+        "opcode": "0x03400000",
+        "value": 1
+      },
+      "warning": "A successful Binder transaction or an aggregate ceiling read does not prove that a specific client vote has been removed."
+    },
+    "frequency_units": [
+      {
+        "tags": [
+          0,
+          1
+        ],
+        "meaning": "Little CPU minimum/maximum",
+        "unit": "kHz",
+        "maximum_release": 0
+      },
+      {
+        "tags": [
+          3,
+          4
+        ],
+        "meaning": "Middle CPU minimum/maximum on the three-cluster path",
+        "unit": "kHz",
+        "maximum_release": 0
+      },
+      {
+        "tags": [
+          6,
+          7
+        ],
+        "meaning": "Prime CPU minimum/maximum on the three-cluster path",
+        "unit": "kHz",
+        "maximum_release": 0
+      },
+      {
+        "tags": [
+          9,
+          10
+        ],
+        "meaning": "GPU minimum/maximum",
+        "unit": "Performance-level index, not Hz or kHz",
+        "maximum_release": -1
+      }
+    ],
+    "gpu_rules": {
+      "initialize": "InitDefaultValue at 0x1106e0 sets default maximum index 0 and minimum index querySysInfo(5,0)-1.",
+      "maximum": "UpdateMaxGpuFreq at 0x114ae0 accepts 0..defaultMinimumIndex; negative or larger inputs select default maximum index 0.",
+      "minimum": "UpdateMinGpuFreq at 0x114ab0 constrains the minimum index relative to the maximum and available range.",
+      "conflict": "For a valid maximum index greater than the current minimum index, initialization state 1 also moves that minimum index to the maximum.",
+      "xml_opcodes": {
+        "gpu_min_level": "0x00c00000",
+        "gpu_max_level": "0x00c04000"
+      },
+      "evidence_limit": "No current GPU level-count or runtime readback was queried for this audit."
+    },
+    "getter": "DoPerfGetConfig at 0x116100 reads nodes for frequency tags and returns cached defaults for tags 43..50. Its final return value can be success without establishing valid output for every tag.",
+    "scheduler_level": {
+      "server": "Any tag 55 or 56 routes the entire configuration batch to SchedLevelManager.",
+      "address": "0x120d40",
+      "clients": [
+        1,
+        2
+      ],
+      "tag_55": "A single value 0 resets to defaults, 1 steps down and 2 steps up.",
+      "tag_56": "Explicit level values use a separate validated path; do not mix ordinary frequency tags into this batch.",
+      "adapter": "DoSchedLevelAction at 0x1166e0 is mov w0,wzr; ret. It performs no scheduler operation in this adapter.",
+      "limitation": "Successful scheduler-level bookkeeping is not proof of a scheduler change."
+    },
+    "event_lifecycle": {
+      "dispatch": "EnterActionProc at 0x1154c0 parses configuration and payload before selecting immediate, long-term or deferred actions.",
+      "duration": "DoAction at 0x1176e0 routes duration 0 to DoLongTermAction (0x117ca0), positive durations to the platform action, and negative durations to no action.",
+      "timer": "NewPerfRequest at 0x117440 copies the action and payload, creates a request timer, and arms SetTimer at 0x126440 in milliseconds.",
+      "callback": "RequestTimerCallback at 0x125e50 dispatches DoCallbackAction, deletes the timer and disposes of its temporary action. It has a latest-request guard for window-switch cancellation.",
+      "event_handles": "PerfServiceEvent at 0x112ff0 reuses and caches event handles for selected command/payload combinations; other requests use a new handle.",
+      "touch_up": "DoTouchUpRelease at 0x113540 checks list-fling and slide-normal handles before allowing touch cancellation.",
+      "no_blanket_cleanup": "ClearAllCacheHandle at 0x116c00 is a bare ret. It is not a global release mechanism.",
+      "remaining": "Exact cancellation and replacement behavior must be qualified per event and caller; these mechanisms do not establish that an arbitrary event is suitable for a new framework hook."
+    }
+  },
+  "surfaceflinger_scheduling": {
+    "binary": "system_ext/lib64/libsf_cpupolicy.so",
+    "controls": {
+      "0x1071a0": "uclamp_task uses sched_setattr syscall 274, a 56-byte attribute and a minimum clamped to 0..1024.",
+      "0x105fd0": "cpuPolicyThread creates its own SfCpu worker with SCHED_FIFO priority 2 and waits on a condition variable when its queue is empty.",
+      "0x107e70": "changeToSystem applies SFMainPolicy to SF, RenderEngine, worker and cached HWC thread IDs when the mask-only path is disabled.",
+      "0x1080b0": "changeToSystemMask applies a default or configured CPU affinity mask.",
+      "0x1081c0": "initForeground applies task profiles and affinity to the same thread groups when mask mode is enabled.",
+      "0x108640": "resetPerf resets the calculated performance indices. It is not a general task-attribute restore.",
+      "0x10a270": "Destructor stops and joins the worker, closes its descriptor and frees state. It does not restore every surviving external thread attribute."
+    },
+    "owner": "The stock CpuAdapter is process-scoped; compositor Binder reconnection is not a policy-destruction boundary.",
+    "lineage": "SfCpuPolicyBridge retains this native plugin and its process lifetime, supplies real frame observations and forwards HWC thread IDs.",
+    "remaining": "Physical scheduling effect, thread turnover and performance/battery impact remain unmeasured in this offline audit."
+  },
+  "stock_callers": [
+    {
+      "class": "PowerGenie ScalingFreqAdapterUniPerf",
+      "method": "resgovernor.m.O at DEX 0x178124",
+      "behavior": "Reflection invokes uniPerfSetConfig with client 1 and tag/value arrays; result 0 is accepted."
+    },
+    {
+      "class": "PowerGenie UniCpuGovernorPolicy",
+      "method": "resgovernor.t.D at DEX 0x17b668",
+      "behavior": "Selects scene policies, handles multi-window/game exceptions, clamps limits to discovered ranges and applies changed CPU/GPU values."
+    },
+    {
+      "class": "PowerGenie ScalingFreqAdapter",
+      "method": "resgovernor.l.W at DEX 0x178654",
+      "behavior": "Maps relative scheduler-level changes to tag 55; zero resets, negative steps use 1, positive steps use 2."
+    },
+    {
+      "class": "PowerGenie UniCpuGovernorPolicy",
+      "method": "resgovernor.t.i0 at DEX 0x17bec0",
+      "behavior": "Requests scheduler reset through l.W(0); success is bookkeeping, not proof of native action."
+    },
+    {
+      "class": "Honor thermal adapter",
+      "method": "thermal.core.e1 at DEX 0x194594",
+      "behavior": "Sends uniPerfSetConfig with independent client 2."
+    },
+    {
+      "class": "HwPowerManagerService",
+      "method": "wakeUpNoUpdateWithoutInteractiveLocked at DEX 0x467360; stopWakeUpReadyInternal at 0x46a200",
+      "behavior": "Sends event 4102 start payload 0 and cancellation -1 during a proprietary wake-readiness flow. Not evidence for a generic screen-on broadcast boost."
+    }
+  ],
+  "lineage_comparison": {
+    "present": [
+      "Stock frequency policy installed for retained Uniperf service",
+      "Battery Saver/screen-off CPU ceiling bridge",
+      "Camera/audio protection releases client-1 limits",
+      "Generation fencing for delayed observations",
+      "SurfaceFlinger frame-driven scheduling adapter"
+    ],
+    "fixed_in_this_audit": "Release transport failures now receive at most three delayed retries; stale retries cannot replace a newer policy, and failed releases are not permanently suppressed.",
+    "not_implemented": [
+      "Stock application classification and per-app scene selection",
+      "Battery Saver GPU caps: current bridge sends only GPU release -1",
+      "Proprietary wake-readiness event 4102 hook",
+      "Standard negative-duration INTERACTION cancellation repair"
+    ],
+    "qualification": "Existing CPU values and stock GPU tables do not establish complete stock policy parity. No performance or battery improvement is claimed."
+  },
+  "validation_scope": {
+    "phone_access": false,
+    "image_build": false,
+    "hardware_performance_test": false,
+    "host_tests": "power/test.sh"
+  }
+}

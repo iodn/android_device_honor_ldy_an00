@@ -11,6 +11,7 @@ public final class PowerControllerTest {
         int reads;
         boolean failRead;
         boolean failSend;
+        int failedSendsRemaining;
         boolean ignore;
         public int[] readLimits() throws Exception {
             reads++;
@@ -23,6 +24,10 @@ public final class PowerControllerTest {
             }
             requests.add(limits.clone());
             if (failSend) throw new Exception("Delivery unknown");
+            if (failedSendsRemaining > 0) {
+                failedSendsRemaining--;
+                throw new Exception("Delivery unknown");
+            }
             if (!ignore) observed = PowerPolicy.released(limits)
                     ? new int[]{2600000, 2600000, 3200000}
                     : new int[]{limits[0], limits[1], limits[2]};
@@ -100,7 +105,37 @@ public final class PowerControllerTest {
         f.backend.failSend = true;
         f.controller.update(true, true, false);
         f.drain();
-        f.count(2); // Unknown setter delivery causes one best-effort release.
+        f.count(5); // Unknown delivery and failed releases have bounded retries.
+        f.releaseLast();
+
+        f = new Fixture();
+        f.controller.update(true, true, false);
+        f.drain();
+        f.backend.failedSendsRemaining = 2;
+        f.controller.update(false, true, false);
+        f.drain(); // Release recovers from a transport outage without a new screen event.
+        f.count(4);
+        f.releaseLast();
+
+        f = new Fixture();
+        f.backend.failedSendsRemaining = 2;
+        f.controller.update(true, true, false);
+        f.controller.update(false, false, false);
+        f.drain(); // The old release retry cannot clear a newer screen-off ceiling.
+        f.count(3);
+        if (PowerPolicy.released(f.backend.requests.get(2))) {
+            throw new AssertionError("Stale release replaced the newer policy");
+        }
+
+        f = new Fixture();
+        f.backend.failSend = true;
+        f.controller.update(false, true, false);
+        f.drain();
+        f.count(5);
+        f.backend.failSend = false;
+        f.controller.update(false, true, false);
+        f.drain(); // Exhausting release retries must not block a later recovery event.
+        f.count(6);
         f.releaseLast();
 
         f = new Fixture();

@@ -88,9 +88,14 @@ final class PowerController {
     }
 
     private void releaseAfterFailure(int[] desired) {
-        mBlocked = desired;
+        // A failed release must not suppress later attempts to release this client's limits.
+        mBlocked = PowerPolicy.released(desired) ? null : desired;
         mRequested = null;
-        mGeneration++;
+        requestRelease(++mGeneration, 0);
+    }
+
+    private void requestRelease(int generation, int attempt) {
+        if (generation != mGeneration) return;
         try {
             int[] release = PowerPolicy.select(false, true, true);
             mBackend.request(release.clone());
@@ -98,6 +103,9 @@ final class PowerController {
             mLog.accept("Frequency release requested after failure", null);
         } catch (Exception e) {
             mLog.accept("Frequency release delivery failed; outcome unverified", e);
+            if (attempt < 3) {
+                mScheduler.post(() -> requestRelease(generation, attempt + 1), 5000);
+            }
         }
     }
 }

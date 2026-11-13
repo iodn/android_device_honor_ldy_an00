@@ -85,9 +85,9 @@ The proprietary policy is excluded from Git.
 
 The power model corrects battery accounting; it does not establish a battery-life
 improvement. A device service separately connects Battery Saver and screen-off
-state to stock CPU/GPU ceilings, releasing them for Android-reported camera use or non-normal
-audio modes. Existing MediaTek interaction, sustained-performance and thermal
-controls remain in place. Device validation of this integration is pending.
+state to stock CPU ceilings, releasing its limits for Android-reported camera use
+or non-normal audio modes. The bridge currently releases its GPU vote. Existing
+MediaTek interaction, sustained-performance and thermal controls remain in place. Device validation of this integration is pending.
 
 The standard HAL hint table is generated from
 `power/proprietary/powerscntbl-stock113.xml`. Init stages both power tables in RAM with a
@@ -95,6 +95,12 @@ vendor-data label before the HALs start. The interaction hint reuses
 the stock touch resources. The candidate sustained profile uses stock balanced
 CPU ceilings; capability advertising remains disabled pending hardware tests.
 The vendor partition is unchanged.
+
+The offline [power-control audit](power/stock-power-contract.json) maps the stock
+HAL modes, UniPerf client ownership, GPU index units and compositor scheduling.
+It records remaining integration gaps separately from implemented behavior.
+Release transport failures receive bounded retries; a stale retry cannot replace
+a newer policy. Aggregate readback does not prove removal of a specific client vote.
 
 ## DSU development profile
 
