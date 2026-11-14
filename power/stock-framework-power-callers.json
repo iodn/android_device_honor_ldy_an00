@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "device": "LDY-AN00",
+  "stock_reference": "10.0.0.113",
+  "source": "services-magic.jar/classes.dex",
+  "sha256": "5fd53e3c90e7f181d1b3eab6ee0f4e0f9b494165dddbe059a0a5b818b346a13c",
+  "scope": "26 direct UniPerf event-calling methods in this DEX. PowerGenie and compositor callers are documented separately. Dynamic IDs depend on their configuration; this catalog is not evidence for every external configuration.",
+  "methods": [
+    {
+      "class": "com.android.server.am.HwActivityManagerServiceEx",
+      "method": "finishBooting",
+      "dex_address": "0x1ada64",
+      "behavior": "Watch-only finishBooting sends event 13242; absent from the pinned action table."
+    },
+    {
+      "class": "com.android.server.audio.HwSoundTrigger",
+      "method": "startWakeupService",
+      "dex_address": "0x1e3fc0",
+      "behavior": "Voice wakeup sends event 4108; absent from the pinned action table."
+    },
+    {
+      "class": "com.android.server.power.HwPowerManagerService",
+      "method": "wakeUpNoUpdateWithoutInteractiveLocked",
+      "dex_address": "0x467360",
+      "behavior": "Wake-readiness gates stale timestamps, boot/system readiness and proximity before event 4102 start [0]. Not a generic screen-on hook."
+    },
+    {
+      "class": "com.android.server.power.HwPowerManagerService",
+      "method": "stopWakeUpReadyInternal",
+      "dex_address": "0x46a200",
+      "behavior": "Wake-readiness cancellation in the active brightness-wait path emits 4102 [-1]; successful normal wake completion takes another path."
+    },
+    {
+      "class": "com.android.server.rms.iaware.appmng.ContinuePowerDevMng",
+      "method": "handleMessageEx",
+      "dex_address": "0x4b447c",
+      "behavior": "Handler key-down boost sends event 13200 with an empty payload; absent from the pinned table."
+    },
+    {
+      "class": "com.android.server.rms.iaware.appmng.MobileTestBenchmarkMng",
+      "method": "updateUniperfInfo",
+      "dex_address": "0x4ba448",
+      "behavior": "Nonzero configured benchmark command: [0] on enable, [-1] on disable. Benchmark exceptions are not ported."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.AwareMode$LevelMng",
+      "method": "applyConfig",
+      "dex_address": "0x4ca0ac",
+      "behavior": "Configured game level resolves a command; null configuration or unresolved command -1 is rejected; enter [0], exit [-1]."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuAppStartOnFire",
+      "method": "resetOnFire",
+      "dex_address": "0x4cc6b8",
+      "behavior": "Cancel app-start-on-fire with 4121 [-1]; command absent from the pinned table."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuAppStartOnFire",
+      "method": "setOnFire",
+      "dex_address": "0x4cc6ec",
+      "behavior": "Start app-start-on-fire with 4121 [0]; command absent from the pinned table."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuFeature",
+      "method": "sendSubSwitchToUniperf",
+      "dex_address": "0x4d09c8",
+      "behavior": "Notification 20225 carries the feature bitmask; native notification handling also updates the on-demand-boost switch."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuFeature",
+      "method": "reportData",
+      "dex_address": "0x4cee9c",
+      "behavior": "Screen notifications 20226 [1/0], replace pending screen messages and delay screen-off work 5000ms. Input-method show 13119 uses event34 and positive PID; hide 13121 uses event37 and >150ms debounce. Installer event3 starts 4117 [0], event1 cancels [-1]."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuFeatureAmsCommunicator",
+      "method": "doSpecialAppStart",
+      "dex_address": "0x4ce148",
+      "behavior": "Positive per-app configured command from mSpecialAppMap starts with an empty payload."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuFeatureAmsCommunicator",
+      "method": "sendUniperfOffEvent",
+      "dex_address": "0x4ce2a4",
+      "behavior": "Cancel each positive queued app command with [-1], then clear the queue."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuFeatureSpecialAppCmd",
+      "method": "doSpecialAppCmd",
+      "dex_address": "0x4ce798",
+      "behavior": "Positive supplied command ID forwards the supplied single value; nonpositive IDs are rejected."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuGameScene",
+      "method": "resetGameScene",
+      "dex_address": "0x4d1550",
+      "behavior": "Reset game scene sends 4120 [-1]; absent from the pinned action table."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuGameScene",
+      "method": "setGameScene",
+      "dex_address": "0x4d1590",
+      "behavior": "Enter game scene sends 4120 [0]; absent from the pinned action table."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.CpuHighFgControl",
+      "method": "doHighLoadControl",
+      "dex_address": "0x4d2c94",
+      "behavior": "High-load configuration requires positive control time and interval, rate-limits requests and sends the selected command with an empty payload."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.SlideNormalBoost$SlideNormalBoostHandler",
+      "method": "handleMessage",
+      "dex_address": "0x4e1b40",
+      "behavior": "Handler1 finishes normal scrolling; handler2 renews 4402 [0] every 2800ms while boosted, bounded by a property default17; handler3 finishes horizontal scrolling."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.SlideNormalBoost",
+      "method": "doHorizontalSlideNormalBoost",
+      "dex_address": "0x4e1eac",
+      "behavior": "Suppress for foreground game or full-screen mini-game; replace message3, send 4404 [0], mark horizontal boost and schedule its finish using the app/type-limited duration."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.SlideNormalBoost",
+      "method": "doSlideNormalBoost",
+      "dex_address": "0x4e1fdc",
+      "behavior": "Suppress for foreground game or full-screen mini-game; remove pending messages1/2. Nonpositive duration starts 4402 [0] and renewal at 2800ms; positive duration conditionally renews and schedules finish."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.SlideNormalBoost",
+      "method": "finishHorizontalSlideNormalBoost",
+      "dex_address": "0x4e20e4",
+      "behavior": "If horizontal boost active, cancel 4404 [-1] and clear the flag."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.SlideNormalBoost",
+      "method": "finishSlideNormalBoost",
+      "dex_address": "0x4e2124",
+      "behavior": "If normal boost active, cancel 4402 [-1], trigger frame checking and clear the flag."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.UxPerformance$AppSwitchCallBack",
+      "method": "onGoBg",
+      "dex_address": "0x4e2bd0",
+      "behavior": "For tracked app background, clear foreground flag, cancel cached command [-1] and zero the cache."
+    },
+    {
+      "class": "com.android.server.rms.iaware.cpu.UxPerformance",
+      "method": "applyUniperfCmdId",
+      "dex_address": "0x4e2f04",
+      "behavior": "Resolve exact configured info-string match. Zero cancels cached command; unchanged command or nonforeground activity does nothing; replacement cancels old [-1] before new [0]."
+    },
+    {
+      "class": "com.android.server.rms.iaware.memory.data.handle.DataAppHandle",
+      "method": "mayNeedEnterSpecialScene",
+      "dex_address": "0x507078",
+      "behavior": "Stock camera updates the big-memory/LMKD indication without starting 13250 here. Classified non-camera big-memory apps set the flag and start 13250 [0]; other apps trigger scene exit."
+    },
+    {
+      "class": "com.android.server.rms.iaware.memory.data.handle.DataAppHandle",
+      "method": "mayNeedExitSpecialScene",
+      "dex_address": "0x507118",
+      "behavior": "If big-memory mode active, cancel 13250 [-1] and clear the flag."
+    }
+  ]
+}

@@ -269,7 +269,8 @@
       "event_handles": "PerfServiceEvent at 0x112ff0 reuses and caches event handles for selected command/payload combinations; other requests use a new handle.",
       "touch_up": "DoTouchUpRelease at 0x113540 checks list-fling and slide-normal handles before allowing touch cancellation.",
       "no_blanket_cleanup": "ClearAllCacheHandle at 0x116c00 is a bare ret. It is not a global release mechanism.",
-      "remaining": "Exact cancellation and replacement behavior must be qualified per event and caller; these mechanisms do not establish that an arbitrary event is suitable for a new framework hook."
+      "remaining": "Exact cancellation and replacement behavior must be qualified per event and caller; these mechanisms do not establish that an arbitrary event is suitable for a new framework hook.",
+      "native_resource_cleanup": "libpowerhal perfScnUpdate 0x150b70 arbitrates active votes and invokes registry +0x38 with the default on final release; one-shot controls have separate unset and replay paths. Registry +0x30/+0x38 are apply/release callbacks, not min/max controls."
     },
     "cpu_backend": {
       "binary": "vendor/lib64/libpowerhal.so",
@@ -361,6 +362,16 @@
         13242
       ],
       "absent_commands_meaning": "These IDs occur in examined Java callers but have no action in the pinned table; emitting them alone does not establish a hardware effect."
+    },
+    "interactive_notification": {
+      "event": 20226,
+      "payload": "[1] interactive, [0] noninteractive; empty string",
+      "caller": "CpuFeature.reportData, DEX 0x4cee9c",
+      "native": "DoNotificationEvent 0x115130 updates UniPerfServer+0x10 for a single integer payload. UniPerfEvent 0x1141a0 uses this state to reject selected start/launch boosts while the screen is off unless canBoost overrides it.",
+      "wire": "V1 NDK interface: Bp 0x1089f0, dispatcher 0x108440; transaction1, command int32, string, int32 array, one-way.",
+      "lineage": "DevicePowerService supplies observed interactive state through PowerController. Repeated states are deduplicated; failed delivery has three delayed retries, fenced by screen generation; HAL death invalidates the cache.",
+      "initialization": "Release before observers are ready does not invent a screen state.",
+      "limit": "One-way delivery is not a native completion acknowledgement."
     }
   },
   "surfaceflinger_scheduling": {
@@ -417,7 +428,8 @@
       "Camera/audio protection releases client-1 limits",
       "Generation fencing for delayed observations",
       "SurfaceFlinger frame-driven scheduling adapter",
-      "Battery Saver GPU ceiling 10 awake / 12 asleep, gated on readable driver level count; missing or insufficient capability releases GPU vote"
+      "Battery Saver GPU ceiling 10 awake / 12 asleep, gated on readable driver level count; missing or insufficient capability releases GPU vote",
+      "Stock UniPerf interactive-state notification 20226 with bounded retries, stale callback fencing and replay after service death"
     ],
     "fixed_in_this_audit": "Release transport failures now receive at most three delayed retries; stale retries cannot replace a newer policy, and failed releases are not permanently suppressed.",
     "not_implemented": [
@@ -459,5 +471,9 @@
       "source": "super_cpu_policy.xml default_front and screen_off"
     },
     "port_limit": "The Lineage Battery Saver bridge uses these default limits, not the full stock application classifier."
+  },
+  "configuration_catalogs": {
+    "mediatek_scenarios": "stock-mtk-resources.json",
+    "framework_event_callers": "stock-framework-power-callers.json"
   }
 }

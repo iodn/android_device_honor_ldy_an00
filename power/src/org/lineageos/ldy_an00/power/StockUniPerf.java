@@ -93,6 +93,23 @@ final class StockUniPerf implements PowerController.Backend {
         }
     }
 
+    public void notifyInteractive(boolean interactive) throws RemoteException {
+        IBinder remote = connect();
+        Parcel data = Parcel.obtain(remote);
+        try {
+            data.writeInterfaceToken(DESCRIPTOR);
+            data.writeInt(20226);
+            data.writeString("");
+            data.writeIntArray(new int[]{interactive ? 1 : 0});
+            // Stock notification: update server admission state, not a timed boost.
+            if (!remote.transact(1, data, null, IBinder.FLAG_ONEWAY)) {
+                throw new RemoteException("Missing UniPerf event transaction");
+            }
+        } finally {
+            data.recycle();
+        }
+    }
+
     public int gpuLevelCount() throws IOException {
         // Same GED source used by stock libpowerhal get_gpu_freq_level_count.
         try (FileInputStream input = new FileInputStream(

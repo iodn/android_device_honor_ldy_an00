@@ -1,0 +1,2156 @@
+{
+  "schema_version": 1,
+  "device": "LDY-AN00",
+  "stock_reference": "10.0.0.113",
+  "source_sha256": {
+    "powerscntbl.xml": "b8923a5046d1a5fd4df584148f0273ad0a8a5cb8efb715d0dbb7d96d15c1ee44",
+    "powercontable.xml": "2acdbe22e494441a71d4f743c8896a7fef67e2c13a9c4ebe3cb74ffc08ac2ae4"
+  },
+  "binary_sha256": "8bc192265e7b95842284e879f19a075af8baa4038c5544f98d844648e00120f0",
+  "evidence": {
+    "resource_constructor": "0x138030",
+    "control_table_loader": "0x15e800",
+    "name_to_opcode": "0x152560",
+    "scenario_append": "0x152b20",
+    "xml_reader": "0x15b5c0",
+    "vote_update_and_release": "0x150b70"
+  },
+  "scope": "All resource names used by the 29 scenarios in the pinned stock powerscntbl.xml; declarations do not prove writable nodes or physical effect.",
+  "counts": {
+    "scenarios": 29,
+    "distinct_scenario_resources": 100,
+    "control_table_entries": 279
+  },
+  "parser_behavior": "cmdSetting resolves special metadata, XML control-table entries and native registry entries. Unknown names return -1; Scn_cmdSetting still appends the returned resource ID. Do not infer hardware action from the XML name.",
+  "resources": [
+    {
+      "name": "PERF_RES_ADPF_CPU_TIMING_HINT_ENABLE",
+      "opcode": "0x03404300",
+      "control_table": {
+        "path": "/proc/powerhal_cpu_ctrl/enable_cpu_timing_hint",
+        "Compare": "less",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_CFP_ENABLE",
+      "opcode": "0x03008000",
+      "control_table": {
+        "path": "/sys/module/mtk_fpsgo_v8/parameters/cfp_onoff",
+        "Compare": "less",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_CPUCORE_MIN_CLUSTER_1",
+      "opcode": "0x00800100",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x17d960",
+        "release": "0x17d960"
+      },
+      "control_table": {
+        "path": null,
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "3",
+        "DefaultValue": "0"
+      },
+      "dispatch": "native_and_control_table"
+    },
+    {
+      "name": "PERF_RES_CPUCORE_PERF_MODE",
+      "opcode": "0x808000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x187fc0",
+        "release": "0x187fc0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+      "opcode": "0x404000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x17c560",
+        "release": "0x17c560"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+      "opcode": "0x404100",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x17c6b0",
+        "release": "0x17c6b0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+      "opcode": "0x404200",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x17c800",
+        "release": "0x17c800"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+      "opcode": "0x400000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x17c4c0",
+        "release": "0x17c4c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+      "opcode": "0x400100",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x17c610",
+        "release": "0x17c610"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_2",
+      "opcode": "0x400200",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x17c760",
+        "release": "0x17c760"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_DRAM_CM_THERMAL_HINT",
+      "opcode": "0x01014900",
+      "control_table": {
+        "path": "/sys/kernel/thermal/thermal_hint",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0",
+        "Prefix": "thermal_hint^"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_DRAM_OPP_MIN",
+      "opcode": "0x1000000",
+      "native_callbacks": {
+        "initialize_callback": "0x180c50",
+        "apply": "0x180c80",
+        "release": "0x180c80"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_C_MINFREQ_ENABLE",
+      "opcode": "0x02064c00",
+      "control_table": {
+        "path": "/sys/module/mtk_fpsgo_v8/parameters/ceiling_min_enable_EARA",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_BHR_OPP",
+      "dispatch": "unknown_to_pinned_parser"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_BOOST_AFFINITY_BY_PID",
+      "opcode": "0x205c400",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16dcf0",
+        "release": "0x16dde0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_BOOST_LR_BY_PID",
+      "opcode": "0x205c500",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16ded0",
+        "release": "0x16dfc0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_BOOST_VIP_BY_PID",
+      "opcode": "0x203d000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x1727f0",
+        "release": "0x1728e0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_CEILING_ENABLE",
+      "opcode": "0x02064400",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/fbt/enable_ceiling",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_CHECK_BUFFER_QUOTA_BY_PID",
+      "opcode": "0x203ce00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x1747d0",
+        "release": "0x1748c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_EXPECTED_FPS_MARGIN_BY_PID",
+      "opcode": "0x206dc00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x1749b0",
+        "release": "0x174aa0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_FILTER_FRAME_ENABLE_BY_PID",
+      "opcode": "0x2064800",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16d750",
+        "release": "0x16d840"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_GCC_ENABLE_BY_PID",
+      "opcode": "0x206cf00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x170090",
+        "release": "0x170180"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_LIMIT_CFREQ2CAP_BY_PID",
+      "opcode": "0x2045e00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x171e90",
+        "release": "0x171f80"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_LIMIT_CFREQ2CAP_M_BY_PID",
+      "opcode": "0x2046000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x172250",
+        "release": "0x172340"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_LIMIT_RFREQ2CAP_BY_PID",
+      "opcode": "0x2045f00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x172070",
+        "release": "0x172160"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_LIMIT_RFREQ2CAP_M_BY_PID",
+      "opcode": "0x2046100",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x172430",
+        "release": "0x172520"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_MINITOP_THRS_HEAVY",
+      "opcode": "0x02064600",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/minitop/thrs_heavy",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "101",
+        "DefaultValue": "70",
+        "InitWrite": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_MIN_RESCUE_PERCENT",
+      "opcode": "0x0200c100",
+      "control_table": {
+        "path": "/sys/module/mtk_fpsgo_v8/parameters/min_rescue_percent",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "100",
+        "DefaultValue": "10"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_NORMALIZED_FPS_PCT",
+      "opcode": "0x0206e400",
+      "control_table": {
+        "path": "/sys/module/mtk_fpsgo_v8/parameters/exp_normal_fps_pct",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "150",
+        "DefaultValue": "101"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_QR_ENABLE_BY_PID",
+      "opcode": "0x2068b00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16f910",
+        "release": "0x16fa00"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_QR_T2WNT_X_BY_PID",
+      "opcode": "0x2068c00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16faf0",
+        "release": "0x16fbe0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_QR_T2WNT_Y_P_BY_PID",
+      "opcode": "0x2068d00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16fcd0",
+        "release": "0x16fdc0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_RESCUE_ENABLE_BY_PID",
+      "opcode": "0x203cd00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16cdf0",
+        "release": "0x16cee0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_RESCUE_F",
+      "opcode": "0x0203c000",
+      "control_table": {
+        "path": "/sys/module/mtk_fpsgo_v8/parameters/rescue_enhance_f",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "100",
+        "DefaultValue": "25"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_RESCUE_PERCENT",
+      "opcode": "0x0203c100",
+      "control_table": {
+        "path": "/sys/module/mtk_fpsgo_v8/parameters/rescue_percent",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "100",
+        "DefaultValue": "33"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_RESCUE_SECOND_ENABLE_BY_PID",
+      "opcode": "0x203cb00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16cfd0",
+        "release": "0x16d0c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_SECOND_NUM_BY_PID",
+      "opcode": "0x203dc00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x172d90",
+        "release": "0x172e80"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_SEPARATE_AA_BY_PID",
+      "opcode": "0x2045200",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16d930",
+        "release": "0x16da20"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_SEPARATE_PCT_OTHER_BY_PID",
+      "opcode": "0x2045d00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x171ad0",
+        "release": "0x171bc0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_SET_L3_CACHE_CT_BY_PID",
+      "opcode": "0x203f100",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x1738d0",
+        "release": "0x1739c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_SHORT_RESCUE_NS",
+      "opcode": "0x0200c000",
+      "control_table": {
+        "path": "/sys/module/mtk_fpsgo_v8/parameters/short_rescue_ns",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "2000000000",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_TARGET_T_UP_BOUND_BY_PID",
+      "opcode": "0x2046300",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x172610",
+        "release": "0x172700"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_TP_STRICT_MIDDLE_BY_PID",
+      "opcode": "0x203f300",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x174050",
+        "release": "0x174140"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_TUNEPOINT_BM_TH_BY_PID",
+      "opcode": "0x203e600",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x173ab0",
+        "release": "0x173ba0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_TUNEPOINT_ML_TH_BY_PID",
+      "opcode": "0x203e800",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x173c90",
+        "release": "0x173d80"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_VIP_FOLLOW_GH",
+      "opcode": "0x0203ed00",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/fbt/vip_follow_gh",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_VIP_MASK_BY_PID",
+      "opcode": "0x203e200",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x173330",
+        "release": "0x173420"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FBT_VIP_THROTTLE_BY_PID",
+      "opcode": "0x203ef00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x1736f0",
+        "release": "0x1737e0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_AA_B_MINUS_IDLE_BY_PID",
+      "opcode": "0x2040500",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x174b90",
+        "release": "0x174c80"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_AA_ENABLE_BY_PID",
+      "opcode": "0x2040900",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x175a90",
+        "release": "0x175b80"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_BYPASS_NONSF_BY_PID",
+      "opcode": "0x2004800",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16bf90",
+        "release": "0x16c070"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_CALCULATE_DEP_ENABLE_BY_PID",
+      "opcode": "0x2078200",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16b120",
+        "release": "0x16b200"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_CAM_WINDOW_MS_BY_PID",
+      "opcode": "0x2004f00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16ca70",
+        "release": "0x16cb50"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_CONTROL_API_MASK_BY_PID",
+      "opcode": "0x2004900",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16c150",
+        "release": "0x16c230"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_CONTROL_BY_PID",
+      "opcode": "0x2004700",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16ab10",
+        "release": "0x16abf0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_DEP_FRAMES",
+      "opcode": "0x02048000",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/xgf/xgf_dep_frames",
+        "Compare": "more",
+        "MinValue": "2",
+        "MaxValue": "20",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_DEP_LOADING_THR_BY_PID",
+      "opcode": "0x2004d00",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16c8b0",
+        "release": "0x16c990"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_EMA2_ENABLE_BY_PID",
+      "opcode": "0x2078100",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16af60",
+        "release": "0x16b040"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_FILTER_DEP_TASK_ENABLE",
+      "dispatch": "unknown_to_pinned_parser"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_FILTER_DEP_TASK_ENABLE_BY_PID",
+      "opcode": "0x2060400",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16b2e0",
+        "release": "0x16b3c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_FORCE_NO_SUB_QUE_DEQUE_PERIOD",
+      "opcode": "0x02048900",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/xgf/xgf_force_no_extra_sub",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_FORCE_SET_PERF_MIN",
+      "opcode": "0x02060500",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/xgf/xgf_force_set_perf_min",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "100"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_RECEIVE_FW_INFO_ENABLE",
+      "opcode": "0x02090100",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/composer/receive_fw_info_enable",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "65535"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_RECORD_TRACE_ENABLE",
+      "opcode": "0x02090200",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/xgf/xgf_record_trace_enable",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_SPID",
+      "opcode": "0x02060000",
+      "control_table": {
+        "path": "/sys/kernel/fpsgo/xgf/xgf_cfg_spid",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0",
+        "InitWrite": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_FPS_FPSGO_THRM_ENABLE",
+      "dispatch": "unknown_to_pinned_parser"
+    },
+    {
+      "name": "PERF_RES_FPS_FSTB_TARGET_FPS_ENABLE_BY_PID",
+      "opcode": "0x2080100",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x16b4a0",
+        "release": "0x16b580"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FRS_ENABLE",
+      "opcode": "0x2070000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x165220",
+        "release": "0x1652b0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FRS_MIN_FPS",
+      "opcode": "0x2070400",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x165640",
+        "release": "0x1656c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FRS_PTIME",
+      "opcode": "0x2070700",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x165940",
+        "release": "0x1659c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FRS_TARGET_TEMP",
+      "opcode": "0x2070200",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x165440",
+        "release": "0x1654c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_FRS_TZ_INDEX",
+      "opcode": "0x2071200",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x166500",
+        "release": "0x166580"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_MBRAIN_GAME_MODE_ENABLE",
+      "opcode": "0x04000000",
+      "control_table": {
+        "path": "/sys/devices/platform/mbraink-plat/mbraink_platform_info",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0",
+        "Prefix": "5^"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_NET_BT_AUDIO_LOW_LATENCY",
+      "opcode": "0x2810000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x17ef40",
+        "release": "0x17ef40"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_NET_WIFI_CAM",
+      "dispatch": "unknown_to_pinned_parser"
+    },
+    {
+      "name": "PERF_RES_PERF_TASK_TURBO",
+      "opcode": "0x0300c000",
+      "control_table": {
+        "path": "/sys/module/task_turbo/parameters/feats",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "15",
+        "DefaultValue": "0",
+        "InitWrite": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_POWERHAL_SCREEN_OFF_STATE",
+      "opcode": "0x3400000",
+      "dispatch": "scenario_metadata"
+    },
+    {
+      "name": "PERF_RES_POWERHAL_TOUCH_BOOST_ENABLE",
+      "opcode": "0x03408500",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x163fb0",
+        "release": "0x163fb0"
+      },
+      "control_table": {
+        "path": "/proc/touch_boost/enable",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "1",
+        "InitWrite": "1"
+      },
+      "dispatch": "native_and_control_table"
+    },
+    {
+      "name": "PERF_RES_POWER_HINT_EXT_HINT",
+      "opcode": "0x3410100",
+      "dispatch": "scenario_metadata"
+    },
+    {
+      "name": "PERF_RES_POWER_HINT_EXT_HINT_HOLD_TIME",
+      "opcode": "0x3410200",
+      "dispatch": "scenario_metadata"
+    },
+    {
+      "name": "PERF_RES_POWER_HINT_HOLD_TIME",
+      "opcode": "0x3410000",
+      "dispatch": "scenario_metadata"
+    },
+    {
+      "name": "PERF_RES_SCHED_BTASK_UP_THRESH_CLUSTER_1",
+      "opcode": "0x143c600",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x188650",
+        "release": "0x188650"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_SCHED_CACHE_SET_CT_TA",
+      "opcode": "0x1420300",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x1893c0",
+        "release": "0x1893c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_SCHED_CORE_CTL_POLICY_ENABLE",
+      "opcode": "0x0143c100",
+      "control_table": {
+        "path": "/sys/module/mtk_core_ctl/parameters/policy_enable",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "2",
+        "DefaultValue": "1",
+        "InitWrite": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_SCHED_DPT_CTRL",
+      "opcode": "0x1464000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x191460",
+        "release": "0x191460"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_SCHED_IGNORE_IDLE_UTIL_CTRL",
+      "opcode": "0x144c000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x18f4e0",
+        "release": "0x18f4e0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_SCHED_PLUS_SYNC_FLAG",
+      "opcode": "0x1424200",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x18c7c0",
+        "release": "0x18c7c0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_SCHED_PREFER_IDLE_FG",
+      "opcode": "0x01404100",
+      "control_table": {
+        "path": "/dev/cpuctl/foreground/cpu.uclamp.latency_sensitive",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_SCHED_PREFER_IDLE_TA",
+      "opcode": "0x01404300",
+      "control_table": {
+        "path": "/dev/cpuctl/top-app/cpu.uclamp.latency_sensitive",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+      "opcode": "0x1468000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x1915b0",
+        "release": "0x191700"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_SCHED_TA_MASK",
+      "opcode": "0x1448000",
+      "native_callbacks": {
+        "initialize_callback": "0x0",
+        "apply": "0x18edf0",
+        "release": "0x18edf0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_SCHED_UCLAMP_MAX_TA",
+      "opcode": "0x01408900",
+      "control_table": {
+        "path": "/dev/cpuctl/top-app/cpu.uclamp.max",
+        "Compare": "less",
+        "MinValue": "0",
+        "MaxValue": "100",
+        "DefaultValue": "100"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_SCHED_UCLAMP_MIN_FG",
+      "opcode": "0x01408100",
+      "control_table": {
+        "path": "/dev/cpuctl/foreground/cpu.uclamp.min",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "100",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+      "opcode": "0x01408300",
+      "control_table": {
+        "path": "/dev/cpuctl/top-app/cpu.uclamp.min",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "100",
+        "DefaultValue": "0"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_SLC_CPU_SETTING",
+      "opcode": "0x03414100",
+      "control_table": {
+        "path": "/proc/slbc/dbg_slbc",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "1",
+        "DefaultValue": "0",
+        "Prefix": "slc_cpu_setting^"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_THERMAL_POLICY",
+      "opcode": "0x3000000",
+      "native_callbacks": {
+        "initialize_callback": "0x168af0",
+        "apply": "0x1643c0",
+        "release": "0x164dc0"
+      },
+      "dispatch": "native_callback"
+    },
+    {
+      "name": "PERF_RES_UX_SBE_DY_FRAME_THRESHOLD",
+      "opcode": "0x03004c00",
+      "control_table": {
+        "path": "/sys/module/mtk_sbe/parameters/sbe_dy_frame_threshold",
+        "Compare": "more",
+        "MinValue": "1",
+        "MaxValue": "100",
+        "DefaultValue": "2"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_UX_SBE_DY_MAX_ENHANCE",
+      "opcode": "0x03004d00",
+      "control_table": {
+        "path": "/sys/module/mtk_sbe/parameters/sbe_dy_max_enhance",
+        "Compare": "more",
+        "MinValue": "1",
+        "MaxValue": "100",
+        "DefaultValue": "80"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_UX_SBE_RESCUE_ENHANS",
+      "opcode": "0x03004300",
+      "control_table": {
+        "path": "/sys/module/mtk_sbe/parameters/sbe_enhance_f",
+        "Compare": "more",
+        "MinValue": "0",
+        "MaxValue": "100",
+        "DefaultValue": "50",
+        "InitWrite": "1"
+      },
+      "dispatch": "control_table"
+    },
+    {
+      "name": "PERF_RES_UX_SBE_SCROLL_CNT",
+      "opcode": "0x03004f00",
+      "control_table": {
+        "path": "/sys/module/mtk_sbe/parameters/scroll_cnt",
+        "Compare": "more",
+        "MinValue": "1",
+        "MaxValue": "100",
+        "DefaultValue": "6"
+      },
+      "dispatch": "control_table"
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "MTKPOWER_HINT_ACT_SWITCH",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "1600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "2600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_2",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "1800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "2900000"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_EXT_HINT",
+          "parameter": "59"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_EXT_HINT_HOLD_TIME",
+          "parameter": "1500"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_PACK_SWITCH",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "1600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "2600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_2",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "1800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "2900000"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "100"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_HOT_LAUNCH",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "1800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "2900000"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_HOLD_TIME",
+          "parameter": "1500"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_EXT_ACT_SWITCH",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "1800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "2900000"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_PROCESS_CREATE",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "1800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "2900000"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_HOLD_TIME",
+          "parameter": "6000"
+        },
+        {
+          "name": "PERF_RES_PERF_TASK_TURBO",
+          "parameter": "15"
+        },
+        {
+          "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+          "parameter": "0"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_APP_ROTATE",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "1700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_2",
+          "parameter": "2800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "1900000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "3000000"
+        },
+        {
+          "name": "PERF_RES_CPUCORE_PERF_MODE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_THRM_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_DRAM_OPP_MIN",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "100"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_PMS_INSTALL",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "1800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "2850000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_2",
+          "parameter": "3000000"
+        },
+        {
+          "name": "PERF_RES_CPUCORE_PERF_MODE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_THRM_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_DRAM_OPP_MIN",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_FG",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_SCHED_PREFER_IDLE_FG",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_SCREEN_OFF_STATE",
+          "parameter": "2"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_AUDIO_POWER_DL",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "400000"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_SCREEN_OFF_STATE",
+          "parameter": "1"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_AUDIO_POWER_UL",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "400000"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_SCREEN_OFF_STATE",
+          "parameter": "1"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_AUDIO_LATENCY_UL",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "1000000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "1000000"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_SCREEN_OFF_STATE",
+          "parameter": "1"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_AUDIO_DISABLE_WIFI_POWER_SAVE",
+      "resources": [
+        {
+          "name": "PERF_RES_NET_WIFI_CAM",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_SCREEN_OFF_STATE",
+          "parameter": "1"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_AUDIO_ROUTING",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "1500000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "1000000"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_SCREEN_OFF_STATE",
+          "parameter": "1"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_MULTI_DISPLAY_WITH_GPU_FPS_60",
+      "resources": []
+    },
+    {
+      "name": "MTKPOWER_HINT_MULTI_DISPLAY_WITH_GPU_FPS_90",
+      "resources": [
+        {
+          "name": "PERF_RES_FPS_FBT_BHR_OPP",
+          "parameter": "31"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_MULTI_DISPLAY_WITH_GPU_FPS_120",
+      "resources": [
+        {
+          "name": "PERF_RES_FPS_FBT_BHR_OPP",
+          "parameter": "31"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_GAME_MODE",
+      "resources": [
+        {
+          "name": "PERF_RES_FPS_FPSGO_CONTROL_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECEIVE_FW_INFO_ENABLE",
+          "parameter": "495"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_BYPASS_NONSF_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_CONTROL_API_MASK_BY_PID",
+          "parameter": "6"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECORD_TRACE_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FSTB_TARGET_FPS_ENABLE_BY_PID",
+          "parameter": "2"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_CALCULATE_DEP_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_AA_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_RESCUE_SECOND_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_THERMAL_POLICY",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_SCHED_CORE_CTL_POLICY_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_ADPF_CPU_TIMING_HINT_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_FILTER_FRAME_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_SEPARATE_AA_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_VIP_FOLLOW_GH",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_TUNEPOINT_ML_TH_BY_PID",
+          "parameter": "13"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_TUNEPOINT_BM_TH_BY_PID",
+          "parameter": "20"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_TP_STRICT_MIDDLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_SEPARATE_PCT_OTHER_BY_PID",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_BOOST_LR_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_BOOST_AFFINITY_BY_PID",
+          "parameter": "6"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_SPID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_EMA2_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_NET_BT_AUDIO_LOW_LATENCY",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_RESCUE_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_QR_T2WNT_Y_P_BY_PID",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_CHECK_BUFFER_QUOTA_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_GCC_ENABLE_BY_PID",
+          "parameter": "2"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_SECOND_NUM_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_SCHED_IGNORE_IDLE_UTIL_CTRL",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_BOOST_VIP_BY_PID",
+          "parameter": "2"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_VIP_MASK_BY_PID",
+          "parameter": "7"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_AA_B_MINUS_IDLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_FORCE_NO_SUB_QUE_DEQUE_PERIOD",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_FORCE_SET_PERF_MIN",
+          "parameter": "50"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_TOUCH_BOOST_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_SCHED_DPT_CTRL",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_TARGET_T_UP_BOUND_BY_PID",
+          "parameter": "150"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_VIP_THROTTLE_BY_PID",
+          "parameter": "1500"
+        },
+        {
+          "name": "PERF_RES_SCHED_CACHE_SET_CT_TA",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_SET_L3_CACHE_CT_BY_PID",
+          "parameter": "2"
+        },
+        {
+          "name": "PERF_RES_SCHED_PLUS_SYNC_FLAG",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_SLC_CPU_SETTING",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_MBRAIN_GAME_MODE_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_NORMALIZED_FPS_PCT",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_EXPECTED_FPS_MARGIN_BY_PID",
+          "parameter": "-2"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_FILTER_DEP_TASK_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_FILTER_DEP_TASK_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_LIMIT_CFREQ2CAP_M_BY_PID",
+          "parameter": "2400000"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_LIMIT_CFREQ2CAP_BY_PID",
+          "parameter": "2300000"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_LIMIT_RFREQ2CAP_M_BY_PID",
+          "parameter": "2600000"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_LIMIT_RFREQ2CAP_BY_PID",
+          "parameter": "2600000"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_UX_TOUCH_MOVE",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "700000"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_UX_SCROLLING_MOVING_MODE",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUCORE_MIN_CLUSTER_1",
+          "parameter": "1"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_UX_SCROLLING_NORMAL_MODE",
+      "resources": [
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MAX_TA",
+          "parameter": "70"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_RESCUE_ENHANS",
+          "parameter": "50"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_DY_FRAME_THRESHOLD",
+          "parameter": "3"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_DY_MAX_ENHANCE",
+          "parameter": "70"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_SCROLL_CNT",
+          "parameter": "6"
+        },
+        {
+          "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_TOUCH_BOOST_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECORD_TRACE_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECEIVE_FW_INFO_ENABLE",
+          "parameter": "495"
+        },
+        {
+          "name": "PERF_RES_SCHED_BTASK_UP_THRESH_CLUSTER_1",
+          "parameter": "80"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_UX_SCROLLING_BALANCE_MODE",
+      "resources": [
+        {
+          "name": "PERF_RES_SCHED_BTASK_UP_THRESH_CLUSTER_1",
+          "parameter": "80"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MAX_TA",
+          "parameter": "70"
+        },
+        {
+          "name": "PERF_RES_CPUCORE_MIN_CLUSTER_1",
+          "parameter": "3"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_RESCUE_ENHANS",
+          "parameter": "50"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_DY_FRAME_THRESHOLD",
+          "parameter": "3"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_DY_MAX_ENHANCE",
+          "parameter": "70"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_SCROLL_CNT",
+          "parameter": "6"
+        },
+        {
+          "name": "PERF_RES_SCHED_PREFER_IDLE_TA",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_SCHED_TA_MASK",
+          "parameter": "0x70"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_TOUCH_BOOST_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECORD_TRACE_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECEIVE_FW_INFO_ENABLE",
+          "parameter": "495"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_UX_SCROLLING_PERF_MODE",
+      "resources": [
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "25"
+        },
+        {
+          "name": "PERF_RES_CPUCORE_PERF_MODE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_RESCUE_PERCENT",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_SHORT_RESCUE_NS",
+          "parameter": "8333333"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_MIN_RESCUE_PERCENT",
+          "parameter": "50"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_RESCUE_F",
+          "parameter": "35"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_RESCUE_ENHANS",
+          "parameter": "50"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_DY_FRAME_THRESHOLD",
+          "parameter": "3"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_DY_MAX_ENHANCE",
+          "parameter": "70"
+        },
+        {
+          "name": "PERF_RES_UX_SBE_SCROLL_CNT",
+          "parameter": "6"
+        },
+        {
+          "name": "PERF_RES_SCHED_PREFER_IDLE_TA",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_TOUCH_BOOST_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECORD_TRACE_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECEIVE_FW_INFO_ENABLE",
+          "parameter": "495"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_UX_ANIM_LEVE_1",
+      "resources": [
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECORD_TRACE_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECEIVE_FW_INFO_ENABLE",
+          "parameter": "495"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_FRS_ACT",
+      "resources": [
+        {
+          "name": "PERF_RES_CFP_ENABLE",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_MINITOP_THRS_HEAVY",
+          "parameter": "101"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_CEILING_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_C_MINFREQ_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_DRAM_CM_THERMAL_HINT",
+          "parameter": "1"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_CAMERA_MODE",
+      "resources": [
+        {
+          "name": "PERF_RES_FPS_FPSGO_BYPASS_NONSF_BY_PID",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_CONTROL_API_MASK_BY_PID",
+          "parameter": "6"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_RECORD_TRACE_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_CALCULATE_DEP_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_AA_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_SEPARATE_AA_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_GCC_ENABLE_BY_PID",
+          "parameter": "2"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_EXPECTED_FPS_MARGIN_BY_PID",
+          "parameter": "-5"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_CHECK_BUFFER_QUOTA_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_RESCUE_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_QR_ENABLE_BY_PID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_QR_T2WNT_X_BY_PID",
+          "parameter": "50"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_QR_T2WNT_Y_P_BY_PID",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_TUNEPOINT_ML_TH_BY_PID",
+          "parameter": "10"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_TUNEPOINT_BM_TH_BY_PID",
+          "parameter": "30"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_DEP_FRAMES",
+          "parameter": "20"
+        },
+        {
+          "name": "PERF_RES_POWERHAL_SCREEN_OFF_STATE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_SPID",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_SCHED_IGNORE_IDLE_UTIL_CTRL",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_DEP_LOADING_THR_BY_PID",
+          "parameter": "58"
+        },
+        {
+          "name": "PERF_RES_FPS_FPSGO_CAM_WINDOW_MS_BY_PID",
+          "parameter": "1000"
+        },
+        {
+          "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_TARGET_T_UP_BOUND_BY_PID",
+          "parameter": "150"
+        },
+        {
+          "name": "PERF_RES_FRS_ENABLE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_FRS_TARGET_TEMP",
+          "parameter": "48600"
+        },
+        {
+          "name": "PERF_RES_FRS_TZ_INDEX",
+          "parameter": "48"
+        },
+        {
+          "name": "PERF_RES_THERMAL_POLICY",
+          "parameter": "2"
+        },
+        {
+          "name": "PERF_RES_FRS_MIN_FPS",
+          "parameter": "20"
+        },
+        {
+          "name": "PERF_RES_FRS_PTIME",
+          "parameter": "5"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_SCENE_TRANSITION",
+      "resources": [
+        {
+          "name": "PERF_RES_DRAM_OPP_MIN",
+          "parameter": "0"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_0",
+          "parameter": "2000000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "2850000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_2",
+          "parameter": "3250000"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_PROCESS_CREATE_PERF_MODE_GAME",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_2",
+          "parameter": "3500000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "3500000"
+        },
+        {
+          "name": "PERF_RES_CPUCORE_PERF_MODE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_DRAM_OPP_MIN",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_HOLD_TIME",
+          "parameter": "6000"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_EXT_HINT",
+          "parameter": "55"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_EXT_HINT_HOLD_TIME",
+          "parameter": "30000"
+        },
+        {
+          "name": "PERF_RES_PERF_TASK_TURBO",
+          "parameter": "15"
+        },
+        {
+          "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+          "parameter": "0"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_PROCESS_CREATE_BALANCE_MODE_GAME",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "1800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2600000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "2900000"
+        },
+        {
+          "name": "PERF_RES_DRAM_OPP_MIN",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_HOLD_TIME",
+          "parameter": "6000"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_EXT_HINT",
+          "parameter": "55"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_EXT_HINT_HOLD_TIME",
+          "parameter": "30000"
+        },
+        {
+          "name": "PERF_RES_PERF_TASK_TURBO",
+          "parameter": "15"
+        },
+        {
+          "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+          "parameter": "0"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_EXT_LAUNCH_FOR_GAME",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "1800000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "3300000"
+        },
+        {
+          "name": "PERF_RES_FPS_FBT_BHR_OPP",
+          "parameter": "31"
+        },
+        {
+          "name": "PERF_RES_DRAM_OPP_MIN",
+          "parameter": "2"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "40"
+        }
+      ]
+    },
+    {
+      "name": "MTKPOWER_HINT_PROCESS_CREATE_PERF_MODE",
+      "resources": [
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_0",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_1",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_1",
+          "parameter": "2700000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MIN_CLUSTER_2",
+          "parameter": "3500000"
+        },
+        {
+          "name": "PERF_RES_CPUFREQ_MAX_CLUSTER_2",
+          "parameter": "3500000"
+        },
+        {
+          "name": "PERF_RES_CPUCORE_PERF_MODE",
+          "parameter": "1"
+        },
+        {
+          "name": "PERF_RES_SCHED_UCLAMP_MIN_TA",
+          "parameter": "100"
+        },
+        {
+          "name": "PERF_RES_POWER_HINT_HOLD_TIME",
+          "parameter": "6000"
+        },
+        {
+          "name": "PERF_RES_PERF_TASK_TURBO",
+          "parameter": "15"
+        },
+        {
+          "name": "PERF_RES_SCHED_RUNNABLE_BOOST",
+          "parameter": "0"
+        }
+      ]
+    }
+  ],
+  "validation_limits": [
+    "Static mapping of stock files and remote disassembly.",
+    "Native registry recovered by constant propagation; active scenario callback IDs cross-checked against ELF references.",
+    "Control-table node accessibility is checked by the stock HAL at initialization and is not established offline."
+  ],
+  "callback_semantics": "Native registry offsets +0x30 and +0x38 are apply and release callbacks, not minimum/maximum limits. perfScnUpdate arbitrates active votes and invokes the release/default callback when the last vote disappears."
+}

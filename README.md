@@ -100,7 +100,11 @@ The vendor partition is unchanged.
 The offline [power-control audit](power/stock-power-contract.json) maps the stock
 HAL modes, UniPerf client ownership, CPU/GPU arbitration, scene selection,
 configuration translation and compositor scheduling.
-It records remaining integration gaps separately from implemented behavior.
+The [resource map](power/stock-mtk-resources.json) covers all names used in the
+29 stock MediaTek scenarios; the [caller catalog](power/stock-framework-power-callers.json)
+records framework boost start, replacement and cancellation.
+The device service also forwards observed screen state to UniPerf's native boost
+admission gate. It records remaining integration gaps separately from implemented behavior.
 Release transport failures receive bounded retries; a stale retry cannot replace
 a newer policy. Aggregate readback does not prove removal of a specific client vote.
 

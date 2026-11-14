@@ -38,14 +38,14 @@ public final class DevicePowerService extends SystemService {
         mHandler = new Handler(mThread.getLooper());
         mUniPerf = new StockUniPerf(() -> mHandler.post(() -> {
             mController.invalidate();
-            if (mPower == null) mController.update(false, true, true);
+            if (mPower == null) mController.release();
             else update();
         }));
         mController = new PowerController(mUniPerf, mHandler::postDelayed, (message, error) -> {
             if (error == null) Slog.i(TAG, message);
             else Slog.w(TAG, message, error);
         });
-        mHandler.post(() -> mController.update(false, true, true));
+        mHandler.post(() -> mController.release());
     }
 
     @Override
@@ -109,7 +109,7 @@ public final class DevicePowerService extends SystemService {
             mController.update(mPower.isPowerSaveMode(), mPower.isInteractive(), protectedWorkload);
         } catch (RuntimeException e) {
             Slog.e(TAG, "Workload state unavailable; releasing frequency policy", e);
-            mController.update(false, true, true);
+            mController.release();
         }
     }
 }

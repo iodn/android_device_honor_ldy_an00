@@ -9,6 +9,15 @@ public final class PowerControllerTest {
         final ArrayList<int[]> requests = new ArrayList<>();
         int[] observed = {2600000, 2600000, 3200000};
         int reads;
+        final ArrayList<Boolean> screenStates = new ArrayList<>();
+        int failedScreenSendsRemaining;
+        boolean failScreenSend;
+        public void notifyInteractive(boolean interactive) throws Exception {
+            screenStates.add(interactive);
+            if (failScreenSend || failedScreenSendsRemaining-- > 0) {
+                throw new Exception("Screen delivery unknown");
+            }
+        }
         int gpuLevels = -1;
         boolean failGpuRead;
         public int gpuLevelCount() throws Exception {
@@ -175,6 +184,61 @@ public final class PowerControllerTest {
         f.controller.update(true, false, false);
         f.drain();
         f.releaseLast(); // Failed CPU verification also releases any GPU vote.
+        f = new Fixture();
+        f.controller.update(false, true, false);
+        f.controller.update(true, true, false);
+        f.controller.update(false, false, false);
+        f.drain();
+        if (!f.backend.screenStates.equals(java.util.List.of(true, false))) {
+            throw new AssertionError("Duplicate or missing screen notification");
+        }
+
+        f = new Fixture();
+        f.backend.failedScreenSendsRemaining = 1;
+        f.controller.update(false, false, false);
+        f.controller.update(false, true, false);
+        f.drain();
+        if (!f.backend.screenStates.equals(java.util.List.of(false, true))) {
+            throw new AssertionError("Stale screen retry changed the newer state");
+        }
+        f.controller.invalidate();
+        f.controller.update(false, true, false);
+        f.drain();
+        if (!f.backend.screenStates.equals(java.util.List.of(false, true, true))) {
+            throw new AssertionError("HAL restart did not replay screen state");
+        }
+
+        f = new Fixture();
+        f.backend.failScreenSend = true;
+        f.controller.update(false, false, false);
+        f.drain();
+        if (f.backend.screenStates.size() != 4) throw new AssertionError("Screen retries unbounded");
+        f.backend.failScreenSend = false;
+        f.controller.update(false, false, false);
+        f.drain();
+        if (f.backend.screenStates.size() != 5 || f.backend.screenStates.get(4)) {
+            throw new AssertionError("Screen notification did not recover");
+        }
+
+        f = new Fixture();
+        f.backend.failedScreenSendsRemaining = 1;
+        f.controller.update(false, false, false);
+        f.drain();
+        if (!f.backend.screenStates.equals(java.util.List.of(false, false))) {
+            throw new AssertionError("Transient failure was not retried");
+        }
+        f = new Fixture();
+        f.controller.release();
+        f.drain();
+        f.releaseLast();
+        if (!f.backend.screenStates.isEmpty()) {
+            throw new AssertionError("Initial release invented a screen state");
+        }
+        f.controller.update(false, false, true);
+        f.drain();
+        if (!f.backend.screenStates.equals(java.util.List.of(false))) {
+            throw new AssertionError("First real screen observation was lost");
+        }
         System.out.println("POWER_CONTROLLER_TESTS_OK");
     }
 }

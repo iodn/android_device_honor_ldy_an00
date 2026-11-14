@@ -9,6 +9,7 @@ final class PowerController {
     interface Backend {
         int[] readLimits() throws Exception;
         int gpuLevelCount() throws Exception;
+        void notifyInteractive(boolean interactive) throws Exception;
         void request(int[] limits) throws Exception;
     }
     interface Scheduler {
@@ -22,6 +23,8 @@ final class PowerController {
     private int[] mBlocked;
     private int mGeneration;
     private int mRetries;
+    private Boolean mInteractive;
+    private int mScreenGeneration;
 
     PowerController(Backend backend, Scheduler scheduler, BiConsumer<String, Exception> log) {
         mBackend = backend;
@@ -30,13 +33,24 @@ final class PowerController {
     }
 
     void invalidate() {
+        mScreenGeneration++;
+        mInteractive = null;
         mGeneration++;
         mRequested = null;
         mBlocked = null;
         mRetries = 0;
     }
 
+    /** Release our votes without inventing an interactive state before observers are ready. */
+    void release() {
+        apply(PowerPolicy.select(false, true, true));
+    }
+
     void update(boolean saver, boolean interactive, boolean protectedWorkload) {
+        if (mInteractive == null || mInteractive != interactive) {
+            mInteractive = interactive;
+            reportInteractive(++mScreenGeneration, interactive, 0);
+        }
         int gpuLevelCount = -1;
         if (saver && !protectedWorkload) {
             try {
@@ -47,6 +61,20 @@ final class PowerController {
         }
         int[] desired = PowerPolicy.select(saver, interactive, protectedWorkload, gpuLevelCount);
         apply(desired);
+    }
+
+    private void reportInteractive(int generation, boolean interactive, int attempt) {
+        if (generation != mScreenGeneration) return;
+        try {
+            mBackend.notifyInteractive(interactive);
+        } catch (Exception e) {
+            mLog.accept("UniPerf screen-state delivery failed", e);
+            if (attempt < 3) {
+                mScheduler.post(() -> reportInteractive(generation, interactive, attempt + 1), 5000);
+            } else {
+                mInteractive = null; // A later state observation can retry after recovery.
+            }
+        }
     }
 
     private void apply(int[] desired) {

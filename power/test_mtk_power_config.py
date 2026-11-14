@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+import hashlib
 import json
 from pathlib import Path
 import unittest
@@ -50,6 +51,26 @@ class MediaTekPowerConfigTest(unittest.TestCase):
         for data, policy in zip(list(sustained)[:3], ("0", "4", "7")):
             self.assertIn(int(data.get("param1")),
                           config["policies"][policy]["frequencies_khz"])
+
+    def test_resource_audit_matches_pinned_scenarios(self):
+        audit = json.loads((SOURCE.parent.parent / "stock-mtk-resources.json").read_text())
+        self.assertEqual(hashlib.sha256(self.source).hexdigest(),
+                         audit["source_sha256"]["powerscntbl.xml"])
+        self.assertEqual(audit["scenarios"], [
+            {"name":s.get("powerhint"), "resources":[
+                {"name":d.get("cmd"), "parameter":d.get("param1")} for d in s]}
+            for s in self.original])
+        used = {d.get("cmd") for s in self.original for d in s}
+        self.assertEqual(used, {r["name"] for r in audit["resources"]})
+
+    def test_generated_hints_use_resolved_native_resources(self):
+        audit = json.loads((SOURCE.parent.parent / "stock-mtk-resources.json").read_text())
+        by_name = {r["name"]:r for r in audit["resources"]}
+        for name in ("INTERACTION", "SUSTAINED_PERFORMANCE"):
+            for data in self.generated.find("./scenario[@powerhint='" + name + "']"):
+                resource = by_name[data.get("cmd")]
+                self.assertNotEqual(resource["dispatch"], "unknown_to_pinned_parser")
+                self.assertGreater(int(resource["opcode"], 16), 0)
 
     def test_unknown_source_rejected(self):
         with self.assertRaisesRegex(ValueError, "identity"):
