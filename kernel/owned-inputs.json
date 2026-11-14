@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "cohort": "ldy_an00-kernel-6.12.38-70f67f1acd5b",
+  "cohort": "ldy_an00-kernel-6.12.38-d8eddc5fb80b",
   "purpose": "Explicit three-image input contract for native five-part OTA assembly. Other two OS images must come from the separately qualified current native build.",
   "inputs": [
     {
@@ -9,12 +9,12 @@
       "file_bytes": 67108864,
       "partition_bytes": 67108864,
       "payload_new_partition_bytes": 67108864,
-      "sha256": "d93ffa4d468fb1369a2f6a1df3bb7e46cec8e6b4020d071ed9ae588c0fc5f962",
+      "sha256": "18b905fb401d80b6f3427fb53237f3c3cf4bb671a63b7b13e0c2db3ed4736509",
       "copy_policy": "Exact complete image bytes; no truncation, repadding, re-signing or rebuilding.",
       "layout": {
         "avb_original_image_bytes": 18980864,
-        "compressed_kernel_bytes": 18957868,
-        "compressed_kernel_sha256": "ed71fbec57eb2c037ed27efc8f90175a799faf83a0b75633475a920e9b43c004",
+        "compressed_kernel_bytes": 18958070,
+        "compressed_kernel_sha256": "20f2efd545bad8732667b7d0ef3a55f8ca8fea9b05e1b9224f5580b65277232e",
         "note": "The complete 64 MiB boot image includes the existing inner signatures and trailer, outer AVB metadata, padding and terminal footer. The original-image length is not the payload file length."
       }
     },
@@ -24,13 +24,13 @@
       "file_bytes": 33554432,
       "partition_bytes": 33554432,
       "payload_new_partition_bytes": 33554432,
-      "sha256": "c57fef42444e859c1098fc79416bf491e1c8bc8da2af7eee9d2a6fdf7e6e82f2",
+      "sha256": "126ada007f30cbc6d306392a8eb6b6567aad4fba206900ea866cac69e297a3c2",
       "copy_policy": "Exact complete image bytes; no truncation, repadding, re-signing or rebuilding.",
       "layout": {
-        "filesystem_original_image_bytes": 8192000,
-        "signed_vbmeta_offset": 8327168,
+        "filesystem_original_image_bytes": 8187904,
+        "signed_vbmeta_offset": 8323072,
         "signed_vbmeta_bytes": 2496,
-        "fec_offset": 8261632,
+        "fec_offset": 8257536,
         "fec_bytes": 65536,
         "note": "The complete 32 MiB partition image includes the filesystem, hashtree, FEC, signed metadata, padding and terminal footer."
       }
@@ -41,11 +41,11 @@
       "file_bytes": 1048576,
       "partition_bytes": 1048576,
       "payload_new_partition_bytes": 1048576,
-      "sha256": "814a7f1a28936f1763fe5727b8c6e7076f16827bf44cfd25a5ec59260549d726",
+      "sha256": "d54655e3fc4476a1d29e239aeac19274729c997d9a36a4f5dc55e41aa8ee2f89",
       "copy_policy": "Exact complete image bytes; no truncation, repadding, re-signing or rebuilding.",
       "layout": {
         "signed_vbmeta_prefix_bytes": 2496,
-        "signed_vbmeta_prefix_sha256": "785459a21b02ad8f19a85e7b24564acfd9afffb96e52784d00dbb2e1212f2723",
+        "signed_vbmeta_prefix_sha256": "56ababf19dc3261db774129c356b326926cf4802ddd42b9c2dd2b810ff134fae",
         "zero_padding_bytes": 1046080,
         "zero_padding_verified": true,
         "note": "The complete 1 MiB child image contains a 2,496-byte signed VBMeta prefix and zero padding. The prefix alone is not the admitted payload."
@@ -53,20 +53,20 @@
     }
   ],
   "kernel_provenance": {
-    "source_commit": "70f67f1acd5b4871106fb7e9e945fd8bd764816a",
-    "source_tree": "bc220f41560078b0302883a88a8a4972f2a84c8d",
+    "source_commit": "d8eddc5fb80b3061efc6541dda5ca97315374f0a",
+    "source_tree": "ed346641da7b123e986cd46f378cbbdc7c4b0422",
     "source_binding": "Built and host-qualified from this exact committed source revision using the maintained stamped build entrypoint; no post-qualification source substitution.",
-    "release": "6.12.38-LDY-AN00-android16-5-g70f67f1acd5b-4k",
+    "release": "6.12.38-LDY-AN00-android16-5-gd8eddc5fb80b-4k",
     "raw_kernel_bytes": 40290816,
-    "raw_kernel_sha256": "f848831a716c365391d56ce398fe6c2892913053a04087c88c0140d4569b6db2",
-    "kernel_build_id": "4d19bd1e1521851f96da15afdcfe707d341ccc6f",
+    "raw_kernel_sha256": "b2c28357a678596e619346789f84406c7e297a982b67441992821eb4e14c639e",
+    "kernel_build_id": "db0b8fbeab975498de2ee9cfbe0ef257067344b3",
     "config_bytes": 220233,
     "config_sha256": "cfd4c412605ce7d87f19d613baa7a5029702a39bcca30b32436c36709e9d80e5",
     "module_public_certificate_der_bytes": 1357,
-    "module_public_certificate_der_sha256": "01805b3fda4bf90a583b73c2af8deb91acc23a6533e7a56c097f393ee9370b1a",
+    "module_public_certificate_der_sha256": "a85a71cdefa29cba344ad6b76fc1d997aeb0bccd45a9a14ae775b85bf8458856",
     "selected_signed_system_modules": 103,
     "additional_unselected_module": "exynos-hvm.ko",
-    "build_timestamp_utc": "Wed Nov 11 20:24:47 UTC 2026",
+    "build_timestamp_utc": "Sat Nov 14 04:08:05 UTC 2026",
     "build_entrypoint": "scripts/build-ldy-an00.sh"
   },
   "avb_contract": {
@@ -95,11 +95,11 @@
   "source_publication": {
     "status": "Corresponding source archive identified by release URL and SHA-256.",
     "obligation": "Before distribution, publish or otherwise provide the corresponding complete source, applicable patches/configuration and build information required by the licenses for this exact kernel/module cohort. Confirm availability rather than treating a local commit hash as a public source release.",
-    "fetch_location": "https://github.com/iodn/android_manifest_ldy_an00/releases/download/lineage-24.0-20261111-UNOFFICIAL-ldy_an00/kernel-source-ldy_an00-6.12.38-70f67f1acd5b.tar.gz",
+    "fetch_location": "https://github.com/iodn/android_manifest_ldy_an00/releases/download/lineage-24.0-20261114-UNOFFICIAL-ldy_an00/kernel-source-ldy_an00-6.12.38-d8eddc5fb80b.tar.gz",
     "archive": {
-      "bytes": 321227799,
-      "sha256": "d630dd0a7d6b38925bd49763b543e3b4f53a151430d10246f0702d0029485d71",
-      "file": "kernel-source-ldy_an00-6.12.38-70f67f1acd5b.tar.gz"
+      "bytes": 321215171,
+      "sha256": "a1a975c83d3015ff1ff2b1e7fb51d184288d6384fb368db6d96da424d7cfb13e",
+      "file": "kernel-source-ldy_an00-6.12.38-d8eddc5fb80b.tar.gz"
     }
   },
   "scope": "Static input/provenance declaration only. No firmware update, runtime behavior, performance, battery, installation or redistribution admission."
