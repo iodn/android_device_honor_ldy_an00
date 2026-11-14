@@ -2150,7 +2150,8 @@
   "validation_limits": [
     "Static mapping of stock files and remote disassembly.",
     "Native registry recovered by constant propagation; active scenario callback IDs cross-checked against ELF references.",
-    "Control-table node accessibility is checked by the stock HAL at initialization and is not established offline."
+    "Control-table node accessibility is checked by the stock HAL at initialization and is not established offline.",
+    "All 100 scenario resource names also checked through actual stock cmdSetting in an ARM64 emulator; native bounds synthetic, no driver callbacks executed."
   ],
   "callback_semantics": "Native registry offsets +0x30 and +0x38 are apply and release callbacks, not minimum/maximum limits. perfScnUpdate arbitrates active votes and invokes the release/default callback when the last vote disappears."
 }

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "device": "LDY-AN00",
   "stock_reference": "10.0.0.113",
-  "status": "Offline CPU/GPU control-path map with partial Lineage implementation; app-scene parity and hardware qualification remain incomplete.",
+  "status": "Offline control-path mapping and initial Lineage integration completed; full app-scene parity and hardware qualification remain separate work.",
   "binary_sha256": {
     "vendor/lib64/android.hardware.power-service-mediatek.so": "d4486e15db9d9a23cedee9fe970d7f281d60e309ff1b86589cf378e8a47f24ab",
     "vendor/lib64/libpowerhal.so": "8bc192265e7b95842284e879f19a075af8baa4038c5544f98d844648e00120f0",
@@ -437,13 +437,85 @@
       "Proprietary wake-readiness event 4102 hook",
       "Standard negative-duration INTERACTION cancellation repair"
     ],
-    "qualification": "CPU observations do not verify GPU application. Driver access, performance and battery effects require the later combined hardware test; full stock app-scene parity is not claimed."
+    "qualification": "CPU observations do not verify GPU application. Driver access, performance and battery effects require the later combined hardware test; full stock app-scene parity is not claimed.",
+    "lifecycle_decisions": [
+      {
+        "stock": "Standard INTERACTION",
+        "lineage": "Retained HAL and exact stock touch resource in generated table",
+        "limit": "Native negative duration still becomes an 80ms boost; cancellation cannot be fixed in XML."
+      },
+      {
+        "stock": "Standard LAUNCH",
+        "lineage": "Existing Android power-mode call reaches retained HAL",
+        "limit": "Its hint 81 has no resources; not equivalent to proprietary cold/warm launch events."
+      },
+      {
+        "stock": "UniPerf screen state 20226",
+        "lineage": "Implemented from observed interactive state with retry/death handling",
+        "limit": "One-way delivery, no completion acknowledgement."
+      },
+      {
+        "stock": "PowerGenie client 1 CPU/GPU ceilings",
+        "lineage": "Implemented default saver/screen-off subset using the retained client-1 setter",
+        "limit": "Does not reproduce app-specific classification or alternate mode selection."
+      },
+      {
+        "stock": "Thermal client 2",
+        "lineage": "Retained independently; no direct proc/sysfs frequency writes added",
+        "limit": "Aggregate CPU readback cannot identify each vote owner."
+      },
+      {
+        "stock": "Scene-specific cold/warm launch",
+        "lineage": "Not hooked to generic LAUNCH",
+        "reason": "Stock requires pid/tid/canBoost/screenOn metadata, XML mode/scene selection and per-event cancellation; bare standard LAUNCH does not establish equivalent lifetime."
+      },
+      {
+        "stock": "Scrolling events 4402/4404",
+        "lineage": "Native policies retained; no synthetic gesture timer loop added",
+        "reason": "Stock uses game/window/app-type gates, delayed finish and bounded renewal. A generic touch event lacks those signals."
+      },
+      {
+        "stock": "Application command replacement",
+        "lineage": "Mapped, not globally replayed",
+        "reason": "Commands depend on exact configured foreground-app/activity matches; copying start without background cancellation would leak votes."
+      },
+      {
+        "stock": "Wake-readiness event 4102",
+        "lineage": "No generic screen-on boost added",
+        "reason": "Stock pairs admission with brightness-wait readiness/cancellation and proximity/boot gates."
+      },
+      {
+        "stock": "Big-memory event 13250",
+        "lineage": "No generic camera boost added",
+        "reason": "Examined stock camera path updates LMKD state; this event is emitted for classified non-camera big-memory apps."
+      },
+      {
+        "stock": "Scheduler tags 55/56",
+        "lineage": "No duplicate synthetic scheduler backend added",
+        "reason": "The retained adapter action is a no-op; real control-table uclamp/latency and compositor task scheduling remain separate."
+      },
+      {
+        "stock": "Compositor CPU plugin",
+        "lineage": "Retained process-scoped adapter with actual frame observations and thread IDs",
+        "limit": "Thread attributes and performance effect need hardware qualification."
+      }
+    ]
   },
   "validation_scope": {
     "phone_access": false,
     "image_build": false,
     "hardware_performance_test": false,
-    "host_tests": "power/test.sh"
+    "host_tests": "power/test.sh",
+    "native_gpu_emulation": {
+      "cases": 14,
+      "method": "Actual pinned ARM64 callbacks; intercepted driver calls; synthetic 20-level fixture"
+    },
+    "native_resource_lookup_emulation": {
+      "cases": 100,
+      "function": "0x152560",
+      "method": "Actual pinned ARM64 lookup; recovered registry and stock XML names; synthetic native bounds; no driver callbacks"
+    },
+    "android_api_check": "PowerPolicy, PowerController and StockUniPerf checked with javac against retained framework classes; not a firmware or full Android module build."
   },
   "powergenie_selection": {
     "dex_sha256": "9b7a57d63653ada4c9785e10013dadc1a141253ad4a469c3cb4a4ce4e7a67cc8",
