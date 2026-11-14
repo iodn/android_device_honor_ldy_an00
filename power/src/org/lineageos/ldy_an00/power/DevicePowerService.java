@@ -55,8 +55,8 @@ public final class DevicePowerService extends SystemService {
             mPower = getContext().getSystemService(PowerManager.class);
             mAudio = getContext().getSystemService(AudioManager.class);
             CameraManager camera = getContext().getSystemService(CameraManager.class);
-            if (mPower == null || mAudio == null || camera == null) {
-                Slog.e(TAG, "Missing workload observer; device frequency policy disabled");
+            if (mPower == null) {
+                Slog.e(TAG, "Power state unavailable; device frequency policy disabled");
                 return;
             }
             IntentFilter filter = new IntentFilter();
@@ -69,6 +69,11 @@ public final class DevicePowerService extends SystemService {
                     update();
                 }
             }, filter, null, mHandler, Context.RECEIVER_NOT_EXPORTED);
+            if (mAudio == null || camera == null) {
+                Slog.e(TAG, "Missing workload observer; device frequency policy disabled");
+                update(); // Screen-state admission remains independent of workload observers.
+                return;
+            }
             try {
                 mAudio.addOnModeChangedListener(mHandler::post, mode -> update());
                 if (getContext().checkSelfPermission(
@@ -102,14 +107,24 @@ public final class DevicePowerService extends SystemService {
     }
 
     private void update() {
-        if (mPower == null || mAudio == null) return;
+        if (mPower == null) return;
+        final boolean interactive;
         try {
-            boolean protectedWorkload = !mCameraObserverReady || !mOpenCameras.isEmpty()
+            interactive = mPower.isInteractive();
+        } catch (RuntimeException e) {
+            Slog.e(TAG, "Screen state unavailable; releasing frequency policy", e);
+            mController.release();
+            return;
+        }
+        boolean saver = false;
+        boolean protectedWorkload = true;
+        try {
+            saver = mPower.isPowerSaveMode();
+            protectedWorkload = mAudio == null || !mCameraObserverReady || !mOpenCameras.isEmpty()
                     || mAudio.getMode() != AudioManager.MODE_NORMAL;
-            mController.update(mPower.isPowerSaveMode(), mPower.isInteractive(), protectedWorkload);
         } catch (RuntimeException e) {
             Slog.e(TAG, "Workload state unavailable; releasing frequency policy", e);
-            mController.release();
         }
+        mController.update(saver, interactive, protectedWorkload);
     }
 }

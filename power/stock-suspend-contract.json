@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "device": "LDY-AN00",
+  "stock_reference": "10.0.0.113",
+  "status": "Offline sleep/wake ownership trace and screen-admission correction validated. Physical suspend/resume and idle-drain qualification remain untested.",
+  "address_convention": "Ghidra virtual addresses in explicitly selected ARM64 v8A ELF programs; imported kernel external symbols are references, not local implementations.",
+  "inventory": {
+    "vendor_ramdisk_sha256": "944f6c1ad1a0396dea519efe2c6882f08075f39dedb5ce530d9a2d614942d5cc",
+    "module_files_by_container": {
+      "vendor_ramdisk": 318,
+      "vendor_dlkm": 337,
+      "system_dlkm": 103
+    },
+    "unique_module_names": 713,
+    "unique_module_hashes": 717,
+    "files_with_pm_symbol_references": 242,
+    "scope": "ELF module symbol tables in the listed containers were scanned for PM references. Counts include duplicate files across containers; they do not report loaded modules or complete behavioral analysis of every driver.",
+    "selected_modules": [
+      {
+        "path": "vendor_ramdisk/lib/modules/honor_charger_manager_mtk.ko",
+        "sha256": "b76d8fa66e4a9d32143e58150f8f4f11ca1826c0b2df8222fc1e2b32127e5c1b",
+        "size": 1113424,
+        "depends": "power_common_mtk,honor_coul_cali_inf_mtk,honor_battery_model_mtk,power_common_intf_mtk,libc_sec_mtk,honor_charger_interface_mtk,hw_pd_interface_mtk,honor_adapter_protocol_core_mtk,power_platform_mtk"
+      },
+      {
+        "path": "vendor_ramdisk/lib/modules/smart_charge_mtk.ko",
+        "sha256": "28acc78f0776dd2497ea865022621540537502cc263483e563380bfae5bcb897",
+        "size": 72512,
+        "depends": "power_common_mtk,libc_sec_mtk,honor_battery_model_mtk"
+      },
+      {
+        "path": "vendor_dlkm/lib/modules/mtk-lpm-plat-v2.ko",
+        "sha256": "847158a29a4f01f33b119a2e3d7a4dd24864e854c63bad096dbcb0ad3275f3d1",
+        "size": 32152,
+        "depends": "mtk-lpm-dbg-common-v2,mtk-lpm"
+      },
+      {
+        "path": "vendor_dlkm/lib/modules/mtk-lpm.ko",
+        "sha256": "a172afb43c21cafdf07db155d0a76faa2aab4f95bf3012c51b75d79fd385da47",
+        "size": 121896,
+        "depends": ""
+      }
+    ]
+  },
+  "kernel_configuration": {
+    "CONFIG_SUSPEND": "y",
+    "CONFIG_SUSPEND_FREEZER": "y",
+    "CONFIG_PM_SLEEP": "y",
+    "CONFIG_PM_WAKELOCKS": "y",
+    "CONFIG_CPU_IDLE": "y",
+    "CONFIG_ANDROID_VENDOR_HOOKS": "y",
+    "CONFIG_PM_AUTOSLEEP": "not set",
+    "CONFIG_HZ": 250,
+    "meaning": "Userspace SystemSuspend owns the wakeup_count/state protocol; absence of kernel autosleep is not evidence of a defect.",
+    "preservation": "Keep the retained DTB, module load/dependency metadata, matching GKI interface and vendor-hook/CFI compatibility. No module or PM configuration is changed in this work."
+  },
+  "mtk_low_power": {
+    "core": {
+      "module": "mtk-lpm.ko",
+      "initialize": "0x105cd8",
+      "device_tree": "mediatek,mtk-lpm at /mtk-lpm; pinned stock DTB contains suspend-method=enable and common-sodi=1.",
+      "disable_gate": "Missing or non-enable suspend-method leaves the native disable bit set; the module registers and holds lpm_lock. This is a configuration safeguard, not a wake lock to suppress.",
+      "selection": "pm_suspend_default_s2idle selects the s2idle path; otherwise native registers its system suspend/resume syscore operations.",
+      "callbacks": "lpm_suspend_registry 0x1028a0 installs model callback pointers under the module spinlock. System enter 0x10277c honors the disable bit and invokes the model; resume 0x102820 invokes its paired callback.",
+      "s2idle": "0x103048 wraps the original cpuidle entry with model/notifier callbacks before and after idle. Preserve the native per-CPU/context-tracking lifecycle.",
+      "sync": "Early PM callback 0x103430 queues filesystem sync and sets sys_sync_ongoing. Worker 0x1029a0 syncs and clears the flag under its lock. Late PM callback 0x103514 waits in 10 ms intervals and can return a stop/bad notifier result if sync remains pending."
+    },
+    "platform": {
+      "module": "mtk-lpm-plat-v2.ko",
+      "initialize": "0x100fec",
+      "dependency_order": "Stock vendor_dlkm modules.load: mtk-lpm line 193, debug-common line 194, platform line 195, SoC debug line 196; platform declares dependencies on core and debug-common.",
+      "system_prepare": "0x100790 calls lpm_do_mcusys_prepare_pdn with status 0x1900.",
+      "system_resume": "0x1007f8 calls lpm_do_mcusys_prepare_on, then the optional resume observer.",
+      "s2idle": "0x10088c tracks CPUs entering idle and prepares only when all online CPUs have entered. 0x10097c restores on the corresponding all-CPU condition and clears each CPU bit.",
+      "hotplug_pair": "PM callback 0x100aa0 disables CPU hotplug on event 3 and reenables on event 4. Keep the prepare/post pairing.",
+      "wake_irqs": "Initialization registers the mediatek,sleep interrupt as wake-capable and communicates its IRQ through the retained SMC interface; PBUS IRQs have their own wake configuration."
+    }
+  },
+  "userspace_suspend": {
+    "power_manager": "PowerManagerService.updateSuspendBlockerLocked acquires required blockers before HAL transition, defers noninteractive until displays are ready, releases obsolete blockers, then enables autosuspend when allowed.",
+    "standard_hal": "Retained setMode 0x10cf70 routes INTERACTIVE through capability 0xd4. False invokes eligible scenario cleanup; true invokes restore. The capability gate must not be assumed enabled from API success alone.",
+    "native_cleanup": "libpowerhal perfUserScnDisableAll 0x152f80 skips screen-off states 1 and 3, disables eligible active scenarios and clears selected dead-process scenarios. perfUserScnRestoreAll 0x1531e0 sets its interactive flag; it does not eagerly restore all old handles.",
+    "system_suspend": "SystemSuspend checks live client tokens and its suspend counter, writes the observed wakeup_count back and writes mem to power/state while holding the suspend mutex. Framework restart reenables autosuspend and releases zygote_kwl. Preserve these ownership and race-prevention rules.",
+    "honor_power_service": {
+      "sha256": "25d3d5826d24a94a2533f251e4cd573b42c1250d19ea8521dd04a1e17869ae5b",
+      "event_thread": "UeventInit 0x10bb00 starts a detached event worker. UeventEvent 0x10b920 polls netlink when callbacks exist; without listeners it sleeps. These worker paths do not acquire a suspend blocker.",
+      "cleanup": "Power destructor 0x108350 destroys shared storage, death recipient and callback map. Do not treat this charging/event service as the Android autosuspend controller."
+    },
+    "uniperf_admission": "UniPerfServer::DoNotificationEvent 0x115130 handles event 20226 with one integer by updating its independent screen-admission field. This path is separate from standard Power HAL scenario cleanup."
+  },
+  "charging_safety": {
+    "owner": "Retained stock smart_charge_mtk and honor_charger_manager_mtk modules.",
+    "micro_short": "Stock category-1 event 8 enables delayed collection; event 9 disables/deletes it. Create 0x1025c4 acquires the safety wake source, delete 0x1026dc relaxes it. At CONFIG_HZ=250 the 7500-jiffy delay is 30 seconds, not a guaranteed collection duration.",
+    "charge_control": "Plugin/plugout handlers 0x125c6c/0x125d78 pair wake-source acquire/release. Full-charge unlock in routine 0x12639c has charger-type, status, capacity, support and watchdog-success gates.",
+    "init_scope": "Stock charger load_system_cfg writes pm_async=0; other stock boot/charger triggers set pm_freeze_timeout=2000. These are conditional init actions, not proof of current runtime values.",
+    "decision": "Keep stock charging and battery-safety wake locks. No blanket wake-lock blocking, charging change or forced suspend is introduced."
+  },
+  "lineage_correction": {
+    "file": "power/src/org/lineageos/ldy_an00/power/DevicePowerService.java",
+    "before": "Missing audio/camera services returned before registering screen events. Audio or Battery Saver query failures could release frequency votes without forwarding the observed sleep/wake state.",
+    "after": "Register screen events whenever the power source is present. Read interactive state independently. Missing/failing workload inputs force frequency release while the observed interactive state still reaches UniPerf.",
+    "unknown_screen": "An unavailable screen query releases this service frequency votes without inventing an interactive/noninteractive notification.",
+    "ownership": "Only this service client-1 CPU/GPU limits are released; thermal client 2 and native safety wake sources are retained."
+  },
+  "validation": {
+    "red_test": "The host service harness fails against the previous service with an empty screen-state history when audio is absent.",
+    "service_host_checks": 52,
+    "service_cases": [
+      "missing audio",
+      "missing camera",
+      "audio query failure and recovery",
+      "Battery Saver query failure",
+      "unknown interactive state",
+      "camera observer registration failure",
+      "audio observer registration failure",
+      "missing power source",
+      "HAL death/reconnection"
+    ],
+    "host_limits": "The service test compiles the actual service and policy/controller with explicit Android/backend fakes. It checks lifecycle logic, not Android Binder delivery or physical sleep.",
+    "other_checks": [
+      "PowerPolicy host tests",
+      "PowerController host tests",
+      "7 MediaTek configuration-generator tests"
+    ],
+    "phone_access": false,
+    "image_build": false,
+    "threshold_changes": false,
+    "charging_changes": false
+  },
+  "hardware_followup": [
+    "Unplugged suspend/resume and wake-source release",
+    "Incoming call, alarm, Bluetooth and fingerprint wake",
+    "Camera/audio continuity across screen-off",
+    "Idle-drain comparison with USB disconnected"
+  ]
+}

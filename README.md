@@ -117,6 +117,14 @@ Release transport failures receive bounded retries. Returning to an already-cach
 policy also cancels older retries, including when a call or camera needs this
 service's limits released. Aggregate readback does not prove removal of a specific client vote.
 
+## Sleep and wake integration
+
+The [suspend audit](power/stock-suspend-contract.json) maps retained kernel callbacks,
+suspend ownership and charging-safety wake locks. Screen-state admission continues
+when optional workload observers fail, while this service releases its CPU/GPU
+limits. Host tests cover this failure and recovery; physical standby validation
+remains separate.
+
 ## DSU development profile
 
 The DSU development profile requires `LDY_AN00_REVIEWED_DSU_CANDIDATE=true`.
