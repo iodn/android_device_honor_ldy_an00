@@ -70,6 +70,13 @@ personal ADB keys are excluded. Preserve existing licenses and notices.
 
 IMS is included in this device tree rather than a separate hardware repository.
 
+## Thermal integration
+
+The [thermal audit](power/stock-thermal-contract.json) traces stock sensor units,
+hysteresis and cooling ownership. The native MediaTek controller and stock thresholds are retained.
+The shell-temperature publisher rejects incomplete sensor discovery rather than
+accepting a partial map. CPU/GPU policy coordination review is still in progress.
+
 ## Power integration
 
 The framework overlay uses the stock power estimates and the verified 5,500 mAh

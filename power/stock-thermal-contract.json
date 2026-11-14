@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "device": "LDY-AN00",
+  "stock_reference": "10.0.0.113",
+  "status": "Sensor acquisition and native cooling paths traced; Android CPU/GPU policy coordination review remains in progress.",
+  "address_convention": "Ghidra virtual addresses in the explicitly selected ARM64 v8A program.",
+  "binary_sha256": {
+    "vendor/bin/thermal_core": "11b5e3e9a0c9c0261c5b18a9e6b0b1cbcc3b55eadcf809d688e32c444d650486",
+    "vendor/bin/hw/android.hardware.thermal-service.mediatek": "8abbdde73a7348115385967350e15818abd2bcc7e5c5c2e5fb8bd087356d45a1",
+    "system/bin/dubaid": "69727dc49467701fb1576e1c7f030f0b5620f95d858bbfe7a51ba75a276d9119"
+  },
+  "native_policy": {
+    "path": "/vendor/etc/thermal/thermal.conf",
+    "encoded_sha256": "986e0ecc126edb6457d65a01c8ead5e135115ef769aac05be937b3bbb6aa2338",
+    "decoded_sha256": "272f7d6344ac3ae15b1a17a56adb7d42677f7c9ef293405e628de08ad9c5a8ad",
+    "sensor": "ap_ntc",
+    "polling_seconds": 1,
+    "target_junction_milli_celsius": {
+      "maximum": 105000,
+      "minimum": 105000,
+      "steady": 55000
+    },
+    "board_target_milli_celsius": 85000,
+    "atc_mode": "disable",
+    "hint": {
+      "enter_milli_celsius": 47000,
+      "enter_comparison": ">=",
+      "release_milli_celsius": 45000,
+      "release_comparison": "<"
+    },
+    "LTF": {
+      "thermal_zone": "soc_max",
+      "mode": "enabled"
+    },
+    "decision": "Retain the native controller and calibration. No raised thresholds or disabled throttling are introduced."
+  },
+  "sensor_acquisition": {
+    "thermal_core": {
+      "physical": "get_tz_temp 0x111220 reads thermal_zoneN/temp as integer values.",
+      "modem": "Mode2 delegates to mipc_get_thermal_sensor_temp.",
+      "virtual": "get_virtual_tz_temp 0x110fc0 supports maximum or weighted-sum computation with a gate sensor and hysteresis; unresolved dependency returns -274000.",
+      "output": "Reserved virtual indices may publish U_VSENSOR records to /sys/kernel/thermal/user_vsensor; this is distinct from Honor shell caches."
+    },
+    "dubaid": {
+      "discovery": "HnThermalUtils::FindThermalZone 0x386b6c matches type names case-sensitively, selects the first match and resolves its temp path.",
+      "raw_read": "RealSensor::DefaultSensorUpdateValue 0x38e050 reads an integer without scaling and tracks read/fd failures.",
+      "conversion": "ReportTemperature::UpdateSensorTemperature 0x388994 applies the configured operation; division by 1000 stores truncated whole Celsius and a milli-Celsius remainder with CLOCK_BOOTTIME timestamps.",
+      "distinction": "Reporter filtering, shell estimation and Android HAL severity are separate stages, not interchangeable readings."
+    },
+    "lineage": {
+      "shell_input_names": [
+        "hot_pock",
+        "pa_3",
+        "mtkts_usbntc",
+        "wireless",
+        "nrpa_ntc"
+      ],
+      "unit": "milli-Celsius before the stock estimator/reporter conversions",
+      "discovery_fix": "A shared complete-scan routine now rejects unreadable, empty or truncated type files and directory failures before declaring uniqueness or sensor absence. Duplicate type names remain explicit; callers reject ambiguous required sources.",
+      "difference_from_stock": "The port deliberately rejects ambiguous discovery instead of selecting the first matching stock zone."
+    }
+  },
+  "native_cooling": {
+    "binary": "vendor/bin/thermal_core",
+    "threshold_callback": {
+      "function": "0x117b90",
+      "enter": "temperature > trip",
+      "release": "temperature < trip-hysteresis",
+      "state": "Enable is latched only when the callback returns 1; release clears the latch."
+    },
+    "general_cooler": {
+      "function": "0x136810",
+      "behavior": "Resolve configured cooling name and write its computed limit to cooling_deviceN/cur_state."
+    },
+    "catm": {
+      "settings": "0x1456c0",
+      "decision": "0x145720",
+      "behavior": "Calculate proportional/integral terms with retained state, direction-dependent gain and configured clamps."
+    },
+    "targets": {
+      "function": "0x117d30",
+      "path": "/sys/kernel/thermal/ttj",
+      "format": "TTJ cpu gpu apu",
+      "behavior": "Suppress unchanged targets; apply independent target caps unless bypassed. Publish CPU/GPU/NPU threshold notifications in Celsius for non-sentinel targets."
+    },
+    "hint_coordination": {
+      "function": "algorithm_thread 0x116950",
+      "owner": "Native perf_lock_acq/perf_lock_rel handle; separate from UniPerf clients 1 and 2.",
+      "resources": [
+        {
+          "opcode": "0x01014900",
+          "name": "PERF_RES_DRAM_CM_THERMAL_HINT",
+          "value": 1,
+          "path": "/sys/kernel/thermal/thermal_hint"
+        },
+        {
+          "opcode": "0x01000300",
+          "name": "PERF_RES_DRAM_OPP_THERMAL_ENABLE",
+          "value": 1,
+          "callback": "libpowerhal 0x180d50"
+        }
+      ],
+      "release": "Native releases and clears its stored handle on the traced disable/release path."
+    }
+  },
+  "android_thermal_hal": {
+    "binary": "vendor/bin/hw/android.hardware.thermal-service.mediatek",
+    "read_function": "0x10fd70",
+    "conversion": "Maximum configured raw sample multiplied by 0.001 into Celsius.",
+    "missing_sample": "The accumulator starts at -274000; the valid-type return flag does not prove a successful sensor sample.",
+    "cooling_inventory": "fill_cooling_devices 0x112390 discovers cooling_deviceN/type and cur_state; reporting a cooling device is distinct from deciding its limit.",
+    "warning": "Do not substitute Android SKIN severity for the Honor shell_back display policy."
+  },
+  "android_policy": {
+    "dex_sha256": "9b7a57d63653ada4c9785e10013dadc1a141253ad4a469c3cb4a4ce4e7a67cc8",
+    "level_engine": "Stock K0 converts XML thresholds and clear thresholds by 1000; warm enter >=, clear <=. The Lineage StockThermalLevelEngine retains this boundary behavior.",
+    "display_example": {
+      "cluster": "warm_shell_global",
+      "sensor_id": 29,
+      "sensor": "shell_back",
+      "restriction_level": 5,
+      "enter_milli_celsius": 40000,
+      "clear_milli_celsius": 38000
+    },
+    "soc_policy": {
+      "class": "com.hihonor.thermal.core.e1",
+      "client": 2,
+      "frequency_tags": {
+        "cpu": 1,
+        "cpu_m": 4,
+        "cpu_t": 16,
+        "cpu_a15": 7,
+        "gpu": 10,
+        "gpu_lvl": 68,
+        "gpu_level": 133
+      },
+      "coordination": "Separate current/previous maps support residual release followed by changed policy application. Additional paths cover core isolation, CATM, refresh rate and scene-specific hints.",
+      "port_gate": "Every field must be matched to the retained MediaTek adapter. Some stock GPU leaves contain legacy frequency-like values, whereas tag 10 expects a level index; copying the XML value is not a qualified GPU limit."
+    },
+    "lineage": "Display scene selection, reporter epochs, level hysteresis and seven display controls are already present. The CPU/GPU thermal-policy adapter review is still open."
+  },
+  "validation": {
+    "phone_access": false,
+    "image_build": false,
+    "threshold_changes": false,
+    "host_tests": [
+      "Thermal sensor discovery filesystem cases",
+      "Injected readdir/closedir failures",
+      "Existing policy batch/validity tests"
+    ],
+    "hardware_effect": "Not tested in this offline phase."
+  },
+  "remaining": [
+    "Finish native CATM/threshold configuration-field and cooling-owner reconciliation.",
+    "Qualify Honor CPU/GPU leaf dispatch, release values and mode predicates against this MTK adapter.",
+    "Review display/power cross-policy failures and add any evidence-backed missing integration.",
+    "Run focused component checks and final completion audit."
+  ]
+}

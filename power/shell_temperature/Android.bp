@@ -3,7 +3,7 @@
 cc_library_static {
     name: "libldy_an00_shell_temperature",
     system_ext_specific: true,
-    srcs: ["Estimator.cpp", "SysfsIo.cpp", "PolicyBatch.cpp", "ReporterValidity.cpp"],
+    srcs: ["Estimator.cpp", "SysfsIo.cpp", "SensorDiscovery.cpp", "PolicyBatch.cpp", "ReporterValidity.cpp"],
     export_include_dirs: ["."],
     cflags: ["-Wall", "-Wextra", "-Werror"],
 }
@@ -38,4 +38,19 @@ cc_test_host {
     srcs: ["PolicyBatch.cpp", "ReporterValidity.cpp", "tests/PolicyBatchTest.cpp"],
     gtest: false,
     cflags: ["-Wall", "-Wextra", "-Werror"],
+}
+
+cc_test_host {
+    name: "ldy_an00_thermal_sensor_discovery_test",
+    srcs: ["SensorDiscovery.cpp", "tests/SensorDiscoveryTest.cpp"],
+    gtest: false,
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}
+
+cc_test_host {
+    name: "ldy_an00_thermal_sensor_discovery_fault_test",
+    srcs: ["SensorDiscovery.cpp", "tests/SensorDiscoveryFaultTest.cpp"],
+    gtest: false,
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+    ldflags: ["-Wl,--wrap=readdir", "-Wl,--wrap=closedir"],
 }
