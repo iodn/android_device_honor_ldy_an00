@@ -7,7 +7,7 @@ import java.util.Arrays;
 /** Stock113 PowerGenie policy values, without app classifications or benchmark exceptions. */
 final class PowerPolicy {
     static final int[] TAGS = {1, 4, 7, 10};
-    // Requests retain CPU kHz and always release our GPU vote; observations contain only CPUs.
+    // CPU requests use kHz; GPU requests use driver level indices. Observations contain CPUs.
     private static final int[] RELEASE = {0, 0, 0, -1};
     private static final int[] NORMAL_ASLEEP = {1800000, 1200000, 600000, -1};
     private static final int[] SAVER_AWAKE = {1300000, 1500000, 1550000, -1};
@@ -18,13 +18,29 @@ final class PowerPolicy {
         return (saver ? (interactive ? SAVER_AWAKE : SAVER_ASLEEP) : NORMAL_ASLEEP).clone();
     }
 
+    /** Stock super-mode defaults: GPU maximum 10 awake, 12 asleep. */
+    static int[] select(boolean saver, boolean interactive, boolean protectedWorkload,
+            int gpuLevelCount) {
+        int[] limits = select(saver, interactive, protectedWorkload);
+        int gpuMaximum = interactive ? 10 : 12;
+        if (saver && !protectedWorkload && gpuLevelCount > gpuMaximum) {
+            limits[3] = gpuMaximum;
+        }
+        return limits;
+    }
+
     static boolean released(int[] limits) {
         return Arrays.equals(limits, RELEASE);
     }
 
-    /** Four setter tags, with only a release value permitted for our GPU vote. */
+    /** Only the audited CPU ranges and stock GPU policy indices are accepted. */
     static boolean validRequest(int[] requested) {
-        return requested != null && requested.length == TAGS.length && requested[3] == -1;
+        if (requested == null || requested.length != TAGS.length) return false;
+        int[] maximum = {2700000, 3500000, 4210000};
+        for (int i = 0; i < 3; i++) {
+            if (requested[i] < 0 || requested[i] > maximum[i]) return false;
+        }
+        return requested[3] == -1 || requested[3] == 10 || requested[3] == 12;
     }
 
     static int parseCpuCeiling(byte[] bytes) {

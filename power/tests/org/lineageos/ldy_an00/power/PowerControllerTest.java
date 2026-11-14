@@ -9,6 +9,12 @@ public final class PowerControllerTest {
         final ArrayList<int[]> requests = new ArrayList<>();
         int[] observed = {2600000, 2600000, 3200000};
         int reads;
+        int gpuLevels = -1;
+        boolean failGpuRead;
+        public int gpuLevelCount() throws Exception {
+            if (failGpuRead) throw new Exception("GPU unavailable");
+            return gpuLevels;
+        }
         boolean failRead;
         boolean failSend;
         int failedSendsRemaining;
@@ -19,8 +25,8 @@ public final class PowerControllerTest {
             return observed.clone();
         }
         public void request(int[] limits) throws Exception {
-            if (limits.length != 4 || limits[3] != -1) {
-                throw new AssertionError("GPU release request invariant");
+            if (!PowerPolicy.validRequest(limits)) {
+                throw new AssertionError("Invalid frequency request");
             }
             requests.add(limits.clone());
             if (failSend) throw new Exception("Delivery unknown");
@@ -145,6 +151,30 @@ public final class PowerControllerTest {
         f.drain(); // Stale initialization retry cannot reapply saver after disabling it.
         f.count(1);
         f.releaseLast();
+        f = new Fixture();
+        f.backend.gpuLevels = 20;
+        f.controller.update(true, true, false);
+        f.drain();
+        if (f.backend.requests.get(0)[3] != 10) throw new AssertionError("Awake GPU cap absent");
+        f.controller.update(true, false, false);
+        f.drain();
+        if (f.backend.requests.get(1)[3] != 12) throw new AssertionError("Asleep GPU cap absent");
+        f.controller.update(true, false, true);
+        f.drain();
+        f.releaseLast(); // Camera/call protection removes CPU and GPU votes.
+        f.backend.failGpuRead = true;
+        f.controller.update(true, true, false);
+        f.drain();
+        if (f.backend.requests.get(3)[3] != -1) throw new AssertionError("GPU failure retained cap");
+        f.backend.failGpuRead = false;
+        f.controller.update(true, true, false);
+        f.drain();
+        if (f.backend.requests.get(4)[3] != 10) throw new AssertionError("GPU did not recover");
+        f.backend.ignore = true;
+        f.backend.observed = new int[]{2600000, 2600000, 3200000};
+        f.controller.update(true, false, false);
+        f.drain();
+        f.releaseLast(); // Failed CPU verification also releases any GPU vote.
         System.out.println("POWER_CONTROLLER_TESTS_OK");
     }
 }

@@ -70,9 +70,12 @@ final class StockUniPerf implements PowerController.Backend {
         return remote;
     }
 
-    public void request(int[] limits) throws RemoteException {
+    public void request(int[] limits) throws RemoteException, IOException {
         if (!PowerPolicy.validRequest(limits)) {
-            throw new IllegalArgumentException("Invalid CPU-only UniPerf request");
+            throw new IllegalArgumentException("Invalid UniPerf frequency request");
+        }
+        if (limits[3] >= 0 && limits[3] >= gpuLevelCount()) {
+            throw new IllegalArgumentException("GPU index outside driver range");
         }
         IBinder remote = connect();
         Parcel data = Parcel.obtain(remote);
@@ -87,6 +90,14 @@ final class StockUniPerf implements PowerController.Backend {
             }
         } finally {
             data.recycle();
+        }
+    }
+
+    public int gpuLevelCount() throws IOException {
+        // Same GED source used by stock libpowerhal get_gpu_freq_level_count.
+        try (FileInputStream input = new FileInputStream(
+                "/sys/kernel/ged/hal/total_gpu_freq_level_count")) {
+            return PowerPolicy.parseCpuCeiling(input.readNBytes(33));
         }
     }
 

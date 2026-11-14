@@ -86,7 +86,8 @@ The proprietary policy is excluded from Git.
 The power model corrects battery accounting; it does not establish a battery-life
 improvement. A device service separately connects Battery Saver and screen-off
 state to stock CPU ceilings, releasing its limits for Android-reported camera use
-or non-normal audio modes. The bridge currently releases its GPU vote. Existing
+or non-normal audio modes. Battery Saver requests stock GPU ceiling indices only when the driver reports
+an adequate level count; otherwise the GPU vote is released. Existing
 MediaTek interaction, sustained-performance and thermal controls remain in place. Device validation of this integration is pending.
 
 The standard HAL hint table is generated from
@@ -97,7 +98,8 @@ CPU ceilings; capability advertising remains disabled pending hardware tests.
 The vendor partition is unchanged.
 
 The offline [power-control audit](power/stock-power-contract.json) maps the stock
-HAL modes, UniPerf client ownership, GPU index units and compositor scheduling.
+HAL modes, UniPerf client ownership, CPU/GPU arbitration, scene selection,
+configuration translation and compositor scheduling.
 It records remaining integration gaps separately from implemented behavior.
 Release transport failures receive bounded retries; a stale retry cannot replace
 a newer policy. Aggregate readback does not prove removal of a specific client vote.
@@ -120,3 +122,8 @@ export LDY_AN00_REVIEWED_DSU_CANDIDATE=true
 ## Optional device protection
 
 Security & privacy > More security & privacy > Device protection provides automatic reboot and USB data restrictions while locked. Both are off by default. USB debugging can be allowed explicitly. Calls and system updates defer automatic reboot. These controls require the matching framework and init patches; hardware validation is pending.
+
+The optional stock GPU test uses Python packages `unicorn` and `pyelftools`.
+Run `python3 power/tests/emulate_stock_gpu.py /path/to/libpowerhal.so`
+with the matching stock library supplied separately. It rejects other hashes and
+intercepts driver calls. It does not access hardware or establish GPU performance.

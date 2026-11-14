@@ -37,6 +37,17 @@ public final class PowerPolicyTest {
                 equal(PowerPolicy.select(saver, interactive, true), 0, 0, 0, -1);
             }
         }
+        equal(PowerPolicy.select(true, true, false, 20), 1300000, 1500000, 1550000, 10);
+        equal(PowerPolicy.select(true, false, false, 20), 1300000, 1500000, 1550000, 12);
+        equal(PowerPolicy.select(true, true, false, 10), 1300000, 1500000, 1550000, -1);
+        equal(PowerPolicy.select(true, true, false, 11), 1300000, 1500000, 1550000, 10);
+        equal(PowerPolicy.select(true, false, false, 12), 1300000, 1500000, 1550000, -1);
+        equal(PowerPolicy.select(true, false, false, 13), 1300000, 1500000, 1550000, 12);
+        equal(PowerPolicy.select(true, true, true, 20), 0, 0, 0, -1);
+        equal(PowerPolicy.select(false, false, false, 20), 1800000, 1200000, 600000, -1);
+        for (int count : new int[]{-1, 0, 1}) {
+            equal(PowerPolicy.select(true, false, false, count), 1300000, 1500000, 1550000, -1);
+        }
         int[] saver = PowerPolicy.select(true, true, false);
         if (!PowerPolicy.matches(saver, new int[]{1200000, 1400000, 1500000})) {
             throw new AssertionError("Stricter thermal constraints must remain valid");
@@ -81,7 +92,8 @@ public final class PowerPolicyTest {
         }
         for (int[] badRequest : new int[][]{
                 null, {1300000, 1500000, 1550000}, {1300000, 1500000, 1550000, -1, 0},
-                {1300000, 1500000, 1550000, 10}, {1300000, 1500000, 1550000, 12}
+                {-1, 1500000, 1550000, -1}, {2700001, 1500000, 1550000, -1},
+                {1300000, 1500000, 1550000, 11}
         }) {
             if (PowerPolicy.validRequest(badRequest)
                     || PowerPolicy.matches(badRequest, new int[]{1200000, 1400000, 1500000})) {

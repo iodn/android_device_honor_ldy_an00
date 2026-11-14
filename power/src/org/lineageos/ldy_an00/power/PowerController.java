@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 final class PowerController {
     interface Backend {
         int[] readLimits() throws Exception;
+        int gpuLevelCount() throws Exception;
         void request(int[] limits) throws Exception;
     }
     interface Scheduler {
@@ -36,7 +37,15 @@ final class PowerController {
     }
 
     void update(boolean saver, boolean interactive, boolean protectedWorkload) {
-        int[] desired = PowerPolicy.select(saver, interactive, protectedWorkload);
+        int gpuLevelCount = -1;
+        if (saver && !protectedWorkload) {
+            try {
+                gpuLevelCount = mBackend.gpuLevelCount();
+            } catch (Exception e) {
+                mLog.accept("GPU level count unavailable; releasing GPU vote", e);
+            }
+        }
+        int[] desired = PowerPolicy.select(saver, interactive, protectedWorkload, gpuLevelCount);
         apply(desired);
     }
 

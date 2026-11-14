@@ -2,7 +2,7 @@
   "schema_version": 1,
   "device": "LDY-AN00",
   "stock_reference": "10.0.0.113",
-  "status": "Offline control-path audit; caller coverage and hardware qualification remain incomplete.",
+  "status": "Offline CPU/GPU control-path map with partial Lineage implementation; app-scene parity and hardware qualification remain incomplete.",
   "binary_sha256": {
     "vendor/lib64/android.hardware.power-service-mediatek.so": "d4486e15db9d9a23cedee9fe970d7f281d60e309ff1b86589cf378e8a47f24ab",
     "vendor/lib64/libpowerhal.so": "8bc192265e7b95842284e879f19a075af8baa4038c5544f98d844648e00120f0",
@@ -228,7 +228,25 @@
         "gpu_min_level": "0x00c00000",
         "gpu_max_level": "0x00c04000"
       },
-      "evidence_limit": "No current GPU level-count or runtime readback was queried for this audit."
+      "evidence_limit": "No current GPU level-count or runtime readback was queried for this audit.",
+      "backend": {
+        "binary": "vendor/lib64/libpowerhal.so",
+        "count": "0x15a920 reads /sys/kernel/ged/hal/total_gpu_freq_level_count; capability query 5 at 0x1549a0 returns the cached count.",
+        "initialize": "0x17ffa0 checks driver support; minimum indices become count-1 and maximum votes -1.",
+        "callbacks": {
+          "soft_minimum": "0x1800c0",
+          "hard_minimum": "0x1802b0",
+          "soft_maximum": "0x1804a0",
+          "hard_maximum": "0x180680"
+        },
+        "writers": {
+          "0x15a9a0": "/sys/kernel/ged/hal/custom_boost_gpu_freq",
+          "0x15aa30": "/sys/kernel/ged/hal/custom_upbound_gpu_freq"
+        },
+        "arbitration": "Soft and hard votes are combined before driver writes. Releasing a soft ceiling preserves an independent hard ceiling.",
+        "api_boundary": "UniPerf invalid maximum indices select default 0. Raw MTK callback out-of-range handling differs; do not interchange these APIs.",
+        "validation": "tests/emulate_stock_gpu.py executes pinned ARM64 callbacks with intercepted driver calls: 14 cases, synthetic 20-level fixture, no hardware calibration."
+      }
     },
     "getter": "DoPerfGetConfig at 0x116100 reads nodes for frequency tags and returns cached defaults for tags 43..50. Its final return value can be success without establishing valid output for every tag.",
     "scheduler_level": {
@@ -252,6 +270,97 @@
       "touch_up": "DoTouchUpRelease at 0x113540 checks list-fling and slide-normal handles before allowing touch cancellation.",
       "no_blanket_cleanup": "ClearAllCacheHandle at 0x116c00 is a bare ret. It is not a global release mechanism.",
       "remaining": "Exact cancellation and replacement behavior must be qualified per event and caller; these mechanisms do not establish that an arbitrary event is suitable for a new framework hook."
+    },
+    "cpu_backend": {
+      "binary": "vendor/lib64/libpowerhal.so",
+      "arbitration": "0x14ed00 updates cluster soft/hard votes; 0x14f510 combines per-core and cluster votes, clamps hardware ranges and applies hard constraints.",
+      "soft_callbacks": {
+        "minimum_cluster_0": "0x17c4c0",
+        "maximum_cluster_0": "0x17c560"
+      },
+      "hard_callbacks": {
+        "minimum_cluster_0": "0x17c8b0",
+        "maximum_cluster_0": "0x17c950"
+      },
+      "driver_write": {
+        "function": "0x14f510",
+        "path": "/proc/powerhal_cpu_ctrl/perfserv_freq",
+        "format": "CPU minimum_kHz maximum_kHz followed by a space"
+      },
+      "ownership": "Retain native vote arbitration; do not write this proc node from the framework."
+    },
+    "event_selection": {
+      "function": "0x125870 in libiawareperf_server.so",
+      "mode_fields": {
+        "1": "0x28",
+        "3": "0x24",
+        "4": "0x2c",
+        "5": "0x30",
+        "6": "0x34",
+        "7": "0x20"
+      },
+      "scene": "Scene-specific lookup uses command_id*1000+scene for scene<1000; replacement requires an existing action with positive duration.",
+      "scene_payload": "0x114c50 parses pid/tid/sceneId/special_sceneId/pkg; single payload 0 starts, -1 ends. Special scene 100..999 overrides the general scene.",
+      "state_payload": "0x114e10 maintains validated state bits and forwards derived state to the platform.",
+      "duration_override": "OnDemandBoostServer::GetDuration at 0x104290 in libiawareperfpolicy_server.so can extend event 4098 and conditionally 4099; it does not shorten the original duration."
+    },
+    "xml_translation": {
+      "binary": "vendor/lib64/libmtk_wrapper.so",
+      "functions": {
+        "opcode_map": "0x108120",
+        "parse_document": "0x109c80",
+        "iterate_actions": "0x10b060",
+        "translate_action": "0x10b8b0"
+      },
+      "registered_opcode_count": 140,
+      "runtime_command_count": 131,
+      "active_resource_opcodes": {
+        "big_cpu0_max_freq": "0x40c100",
+        "big_cpu0_min_freq": "0x408100",
+        "boost_smart_freq_enable": "0x1000a000",
+        "cache_cpu_mode": "0x1420b00",
+        "cpu_perf_mode": "0x808000",
+        "cpuctl_bg_uclamp_max": "0x1408800",
+        "cpuctl_fg_uclamp_min": "0x1408100",
+        "cpuctl_topapp_uclamp_min": "0x1408300",
+        "cpuctl_vip_uclamp_min": "0x10001300",
+        "ddr_min_level": "0x1000000",
+        "dm_cache_clean": "0x1000b000",
+        "fg_prefer_idle": "0x1404100",
+        "fg_uclamp_min": "0x1408100",
+        "fps_fpsgo_enable": "0x2004000",
+        "fps_fpsgo_idleprefer": "0x2050000",
+        "gpu_max_level": "0xc04000",
+        "keybg_cpuset": "0x10001800",
+        "lit_cpu0_max_freq": "0x40c000",
+        "lit_cpu0_min_freq": "0x408000",
+        "prime_cpu0_max_freq": "0x40c200",
+        "prime_cpu0_min_freq": "0x408200",
+        "sched_down_rate_limit_big_cpu0": "0x1438700",
+        "sched_down_rate_limit_lit_cpu0": "0x1438600",
+        "sched_down_rate_limit_prime_cpu0": "0x1438800",
+        "sched_up_rate_limit_big_cpu0": "0x1438400",
+        "sched_up_rate_limit_lit_cpu0": "0x1438300",
+        "sched_up_rate_limit_prime_cpu0": "0x1438500",
+        "sched_util_est_control": "0x1444800",
+        "sched_vip_prefer_big": "0x10008000",
+        "ta_prefer_idle": "0x1404300",
+        "vip_cpuset": "0x10001700",
+        "webview_active_time": "0x10005000"
+      },
+      "field_limit": 36,
+      "maximum_stock_action_fields": 22,
+      "unknown_field": "Rejects the action. Command 4271 contains unregistered vip_prefer_idle/graphic_prefer_idle and is not a usable benchmark boost.",
+      "metadata": "CPU topology and frequency-level commands configure the parser. Duration, boost_limit_level and off-delay fields have special handling.",
+      "absent_commands": [
+        4108,
+        4120,
+        4121,
+        4126,
+        13200,
+        13242
+      ],
+      "absent_commands_meaning": "These IDs occur in examined Java callers but have no action in the pinned table; emitting them alone does not establish a hardware effect."
     }
   },
   "surfaceflinger_scheduling": {
@@ -307,21 +416,48 @@
       "Battery Saver/screen-off CPU ceiling bridge",
       "Camera/audio protection releases client-1 limits",
       "Generation fencing for delayed observations",
-      "SurfaceFlinger frame-driven scheduling adapter"
+      "SurfaceFlinger frame-driven scheduling adapter",
+      "Battery Saver GPU ceiling 10 awake / 12 asleep, gated on readable driver level count; missing or insufficient capability releases GPU vote"
     ],
     "fixed_in_this_audit": "Release transport failures now receive at most three delayed retries; stale retries cannot replace a newer policy, and failed releases are not permanently suppressed.",
     "not_implemented": [
       "Stock application classification and per-app scene selection",
-      "Battery Saver GPU caps: current bridge sends only GPU release -1",
       "Proprietary wake-readiness event 4102 hook",
       "Standard negative-duration INTERACTION cancellation repair"
     ],
-    "qualification": "Existing CPU values and stock GPU tables do not establish complete stock policy parity. No performance or battery improvement is claimed."
+    "qualification": "CPU observations do not verify GPU application. Driver access, performance and battery effects require the later combined hardware test; full stock app-scene parity is not claimed."
   },
   "validation_scope": {
     "phone_access": false,
     "image_build": false,
     "hardware_performance_test": false,
     "host_tests": "power/test.sh"
+  },
+  "powergenie_selection": {
+    "dex_sha256": "9b7a57d63653ada4c9785e10013dadc1a141253ad4a469c3cb4a4ce4e7a67cc8",
+    "mode_files": {
+      "1": "super_cpu_policy.xml",
+      "2": "normal_cpu_policy.xml",
+      "3": "performance_cpu_policy.xml",
+      "4": "extreme_cpu_policy.xml"
+    },
+    "mode_events": {
+      "1": 4123,
+      "3": 4118,
+      "4": 4126
+    },
+    "mode_transition": "PolicyService cancels the old mode event (-1), updates mode and notifies policy consumers, then starts the new event (0). Event 4126 is absent from the native table.",
+    "scene_loading": "resgovernor.f.k at DEX 0x1762e4 rebuilds the scene map from PolicyProvider rows for the selected power_mode.",
+    "classification": "CpuGovernor.e at 0x177528 dispatches mode changes and scene events; f.n at 0x17524c selects app/activity and parent-scene policies, including restore on scene end.",
+    "delays": "f.g at 0x176a28 and f.f at 0x176b30 select explicit and event-dependent delays; t.n at 0x17a1f0 coalesces pending message 100 before applying a changed policy.",
+    "apply": "t.D at 0x17b668 applies CPU/GPU/DDR limits and scheduler requests after multi-window/game exceptions and policy merging.",
+    "command_replacement": "ScalingFreqAdapter.l.b0 cancels the previous configured command with -1 before starting its replacement with 0; -1 alone cancels the stored command.",
+    "cleanup_limit": "A null selected policy clears Java/helper state but is not proof that every native handle was released.",
+    "saver_gpu_policy": {
+      "awake_index": 10,
+      "asleep_index": 12,
+      "source": "super_cpu_policy.xml default_front and screen_off"
+    },
+    "port_limit": "The Lineage Battery Saver bridge uses these default limits, not the full stock application classifier."
   }
 }
