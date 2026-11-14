@@ -39,6 +39,9 @@ PRODUCT_SYSTEM_PROPERTIES += ro.audio.honor_legacy_parameters=true
 # Stock logical density; TARGET_SCREEN_DENSITY only affects the unbuilt vendor image.
 PRODUCT_PRODUCT_PROPERTIES += ro.sf.lcd_density=560
 
+# Use upstream cached-app reclaim without Honor's iAware memory controller.
+PRODUCT_PRODUCT_PROPERTIES += ro.lmk.lowmem_min_oom_score=701
+
 # Select first-stage mount exclusions for embedded product/system_ext.
 PRODUCT_PACKAGES += gsi_skip_mount.cfg
 

@@ -125,6 +125,14 @@ when optional workload observers fail, while this service releases its CPU/GPU
 limits. Host tests cover this failure and recovery; physical standby validation
 remains separate.
 
+## Camera, codecs and memory
+
+The [integration map](media/stock-integration-contract.json) records retained
+camera/Codec2 services, stock-only framework dependencies and remaining checks.
+Cached-app low-watermark reclaim uses Lineage's upstream LMKD threshold (701);
+vendor zRAM configuration is retained. Camera preallocation and proprietary
+capture modes are not implied by basic camera operation.
+
 ## DSU development profile
 
 The DSU development profile requires `LDY_AN00_REVIEWED_DSU_CANDIDATE=true`.

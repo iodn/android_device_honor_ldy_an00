@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "device": "LDY-AN00",
+  "baseline": "10.0.0.113(C00E100R101P1)",
+  "scope": "Offline camera, Codec2 and memory-policy dependency review.",
+  "camera": {
+    "retained_services": [
+      {
+        "name": "camerahalserver",
+        "provider": "android.hardware.camera.provider.ICameraProvider/internal/0",
+        "aidl_version": 3,
+        "task_profiles": [
+          "CameraServiceCapacity",
+          "MaxPerformance"
+        ],
+        "dependencies": [
+          "vendor.honor.hardware.camera.resourcepool-V1-ndk-service-impl.so",
+          "vendor.mediatek.hardware.camera.atms_aidl@1.0-impl.so",
+          "libmtkcam_hal_aidl_provider.so"
+        ]
+      },
+      {
+        "name": "vendor.honor.hardware.camera.dme",
+        "interface": "vendor.honor.hardware.camera.dme.IDMEService/default",
+        "startup": "disabled/oneshot; not an unconditional boot service"
+      }
+    ],
+    "framework_integration": [
+      "Lineage camera service discovers the retained standard provider through VINTF.",
+      "Existing stock ro.vendor.qti.va_aosp.support=1 avoids provider truncation needed by the secure face path.",
+      "CameraServiceCapacity and MaxPerformance match upstream task-profile definitions; no duplicate scheduler service added.",
+      "Existing DevicePowerService camera-open observer releases its own frequency limits while camera is open."
+    ],
+    "native_evidence": [
+      {
+        "library": "vendor/lib64/hw/vendor.mediatek.hardware.camera.atms_aidl@1.0-impl.so",
+        "sha256": "27167d074aae9268a9c2d7d42088953606cc78a5aa95b70ea261fad9151affa5",
+        "functions": {
+          "set_atms_factor": "0x1041e0",
+          "ATMsWrap::setFactor": "0x1045b0",
+          "get_atms_factor": "0x104760"
+        },
+        "behavior": "Setter forwards string factors to ATMsEventMgr under a mutex; the examined getter returns a default result instead of querying that manager. It is not a trustworthy state-confirmation API.",
+        "dependent_inventory": "Direct native dependency scan found the interface in the retained camera server and ATMs implementation. No framework-side native client was identified in the examined extracted directories; active stock factor producers remain unverified."
+      },
+      {
+        "library_sha256": "02709e211f8d55be701848691389da99f4c55614e04344ae836b90f279321b46",
+        "functions": {
+          "getFreeMemorySize": "0x109c30",
+          "getSystemTotalMemorySize": "0x10a390"
+        },
+        "behavior": "Camera utility reads kernel memory information; that does not replace Honor framework preallocation or reclaim policy."
+      }
+    ],
+    "remaining_gaps": [
+      {
+        "feature": "Honor CameraX extension SPI",
+        "status": "Not enabled",
+        "reason": "Stock and prior Lineage provider observations lack the mandatory extensionType advertisement. The stock adapter also depends on private framework/native interfaces; do not synthesize capabilities."
+      },
+      {
+        "feature": "Honor camera preallocation, preread and scan policy",
+        "status": "Not ported",
+        "reason": "Stock DataAppHandle calls DmeServer, PostCamera and iAware policy. Standard provider operation does not prove these private features are reproduced."
+      },
+      {
+        "feature": "ATMs factor producers",
+        "status": "Not mapped end to end",
+        "reason": "The receiver is traced; forwarding arbitrary framework events without verified factor keys and lifecycle would be speculative."
+      }
+    ]
+  },
+  "codecs": {
+    "service": "android.hardware.media.c2.IComponentStore/default",
+    "aidl_version": 1,
+    "binary": {
+      "path": "vendor/bin/hw/android.hardware.media.c2-mediatek-64b",
+      "size": 52008,
+      "sha256": "03c9f969d52285db7a4c5741534b95b99324b005fc10ba8d6b2de58176cb9c73"
+    },
+    "store": {
+      "path": "vendor/lib64/libcodec2_mtk_c2store.so",
+      "size": 120040,
+      "sha256": "dbd0577547386df6e4931f86d8f611ddea4f165a0ef5e71feade002fc4308b88"
+    },
+    "native_evidence": {
+      "constructor": "0x10d0a0",
+      "component_loader": "0x10a150",
+      "createComponent": "0x111350",
+      "behavior": "Store selects matched libcodec2_mtk_vdec.so/libcodec2_mtk_venc.so factories using dlopen/dlsym, creates interfaces and queries their traits. XML alone does not instantiate or validate a codec."
+    },
+    "required_libraries": [
+      "libcodec2_mtk_vdec.so",
+      "libcodec2_mtk_venc.so"
+    ],
+    "advertised_hardware_components": [
+      "c2.mtk.avc.decoder",
+      "c2.mtk.avc.decoder.secure",
+      "c2.mtk.avc.decoder.lowlatency",
+      "c2.mtk.hevc.decoder",
+      "c2.mtk.hevc.decoder.secure",
+      "c2.mtk.hevc.decoder.lowlatency",
+      "c2.mtk.chdr.decoder",
+      "c2.mtk.chdr.decoder.secure",
+      "c2.mtk.heif.decoder",
+      "c2.mtk.vp9.decoder",
+      "c2.mtk.vp9.decoder.secure",
+      "c2.mtk.vp9.decoder.lowlatency",
+      "c2.mtk.av1.decoder",
+      "c2.mtk.av1.decoder.secure",
+      "c2.mtk.av1.decoder.lowlatency",
+      "c2.mtk.avc.encoder",
+      "c2.mtk.avc.encoder.secure",
+      "c2.mtk.hevc.encoder",
+      "c2.mtk.hevc.encoder.secure",
+      "c2.mtk.heif.encoder"
+    ],
+    "framework_parser_order": [
+      "Software media APEX XML",
+      "media_codecs_c2.xml and media_codecs_performance_c2.xml",
+      "Default media_codecs.xml and media_codecs_performance.xml"
+    ],
+    "configuration_warning": "Legacy vendor media_codecs.xml includes media_codecs_mediatek_audio.xml and media_codecs_google_audio.xml, absent from this extracted vendor directory. The active Codec2 XML is parsed separately. This inherited warning is not proof of lost hardware codecs; no replacement capabilities are manufactured.",
+    "remaining_validation": [
+      "Per-codec functional encode/decode, timestamp and audio synchronization checks on the combined image",
+      "Secure codecs require DRM/TEE-compatible content and cannot be qualified by an ordinary clear-content test",
+      "Stock application-only quality and high-speed policies must not be inferred from registration alone"
+    ],
+    "backends": [
+      {
+        "path": "vendor/lib64/libcodec2_mtk_vdec.so",
+        "sha256": "eef34601262e4c22eae0a77061c46ddf636af61ce5a52abb89bb41c299b386e6"
+      },
+      {
+        "path": "vendor/lib64/libcodec2_mtk_venc.so",
+        "sha256": "2217b38e0eca275413710309031e3e6f9c7f1a943cb2a8892241795d657d964a"
+      }
+    ]
+  },
+  "memory": {
+    "stock_dependencies": [
+      "DataAppHandle",
+      "LmkdKillerPolicy",
+      "IawareLmkdConnection",
+      "DmeServer",
+      "IAwaredConnection",
+      "PostCameraClassLoader"
+    ],
+    "stock_protocol": {
+      "big_memory_scene": 104,
+      "free_kill_configuration": 102,
+      "source": "services-magic DEX: DataAppHandle.mayNeedEnterSpecialScene and LmkdKillerPolicy.notifyBigMemScene/writeFreeKillConfig",
+      "compatibility": "These Honor commands are not present in upstream LMKD; no command sender is added.",
+      "native_receiver": {
+        "path": "system/bin/lmkd",
+        "sha256": "af83156cf159fdc060e93dc91eac36770f001f2a58c9f553c6ae0aa203cd7b9a",
+        "control_dispatch": "0x1128d0",
+        "honor_command_handler": "0x11681c",
+        "free_kill_configuration": "0x11098c",
+        "last_used_app_update": "0x116b0c",
+        "commands": {
+          "100": "kill-report configuration and subscription",
+          "101": "subscription",
+          "102": "free-kill enable, interval and six thresholds",
+          "103": "last-used app update",
+          "104": "mark big-memory scene if native support enabled",
+          "105": "bounded native list update (semantics not fully resolved)"
+        }
+      }
+    },
+    "retained": [
+      "Vendor zRAM lz4, 100% RAM swap size and 512M writeback backing-device configuration",
+      "Vendor page-cluster=0, swappiness=100 and multi-generation LRU init settings",
+      "Existing PSI, kill timeout and thrashing settings"
+    ],
+    "fix": {
+      "property": "ro.lmk.lowmem_min_oom_score",
+      "stock_value": 1001,
+      "lineage_product_value": 701,
+      "upstream_default": "PREVIOUS_APP_ADJ + 1 (700 + 1)",
+      "reason": "1001 exceeds OOM_SCORE_ADJ_MAX and disables upstream cached-app low-watermark reclaim. Restore the upstream default when Honor framework reclaim policy is absent.",
+      "precedence": "Product build properties load after vendor in init.PropertyLoadBootDefaults.",
+      "scope": "Restores one upstream reclaim path, not the complete Honor policy."
+    },
+    "remaining_validation": [
+      "Memory-pressure responsiveness and cached-app retention",
+      "Camera/video allocation and continuity while under memory pressure",
+      "Existing device_config LMKD experiments can override ro.lmk settings; inspect effective values during the next device test"
+    ]
+  },
+  "stock_init_inputs": [
+    {
+      "path": "vendor/etc/init/camerahalserver.rc",
+      "size": 776,
+      "sha256": "b29f577299f51078df511869fa97923d61f1a2a13967b61a23a925c470c8d14b"
+    },
+    {
+      "path": "vendor/etc/init/android.hardware.media.c2-mediatek-64b.rc",
+      "size": 314,
+      "sha256": "c0af96151ff59489800cf7a677fb70de3302d779eb6895f9e91d1c3c89fa5785"
+    },
+    {
+      "path": "vendor/etc/init/vendor.honor.hardware.camera.dme-service.rc",
+      "size": 465,
+      "sha256": "9d2926103883ebab9e812b0eebdbd1dc9cc4881fcf902532297a4c8ca7732665"
+    },
+    {
+      "path": "vendor/etc/init/init.honor.memory.rc",
+      "size": 878,
+      "sha256": "1246078b315bea9456bd920e7922d4be9acd5038264362dcb484dcc5d7adec6c"
+    },
+    {
+      "path": "vendor/etc/init/init.honor.mt6993.memory.rc",
+      "size": 187,
+      "sha256": "17a34f7d31f306584412363dcf6b31059c5c51449f1e4073496a260c7ad207e1"
+    },
+    {
+      "path": "vendor/etc/init/hw/init.mt6993.rc",
+      "size": 48294,
+      "sha256": "23871d9b67cb97c1ba1f30db32429f3618ba420e735852bf01454fb753dfad87"
+    }
+  ],
+  "validation": {
+    "upstream_task_profiles": {
+      "CameraServiceCapacity": {
+        "Name": "CameraServiceCapacity",
+        "Actions": [
+          {
+            "Name": "JoinCgroup",
+            "Params": {
+              "Controller": "cpuset",
+              "Path": "camera-daemon"
+            }
+          }
+        ]
+      },
+      "MaxPerformance": {
+        "Name": "MaxPerformance",
+        "Actions": [
+          {
+            "Name": "JoinCgroup",
+            "Params": {
+              "Controller": "cpu",
+              "Path": "top-app"
+            }
+          }
+        ]
+      },
+      "ProcessCapacityHigh": {
+        "Name": "ProcessCapacityHigh",
+        "Actions": [
+          {
+            "Name": "JoinCgroup",
+            "Params": {
+              "Controller": "cpuset",
+              "Path": "foreground"
+            }
+          }
+        ]
+      },
+      "HighPerformance": {
+        "Name": "HighPerformance",
+        "Actions": [
+          {
+            "Name": "JoinCgroup",
+            "Params": {
+              "Controller": "cpu",
+              "Path": "foreground"
+            }
+          }
+        ]
+      }
+    },
+    "memory_policy": "Compiled upstream condition and macros: four cases passed, product assignment and init load order checked.",
+    "phone_access": false,
+    "full_image_build": false
+  },
+  "limits": [
+    "Offline evidence does not establish complete stock parity or measured performance gains.",
+    "Retain matched vendor HALs, tuning, firmware, SELinux and kernel modules.",
+    "Do not import stock libCameraHwExtend.so into Lineage cameraserver: it depends on Honor private ABI."
+  ]
+}
