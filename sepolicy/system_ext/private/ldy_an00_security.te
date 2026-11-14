@@ -1,8 +1,13 @@
-# Runtime commands for the init-backed automatic reboot timer.
+# Runtime commands for automatic reboot and the early ADB USB gate.
 # No shell, application or platform-app setter grant.
 system_internal_prop(ldy_an00_security_prop)
 set_prop(system_server, ldy_an00_security_prop)
 get_prop(init, ldy_an00_security_prop)
+get_prop(adbd, ldy_an00_security_prop)
 
 # CLOCK_BOOTTIME_ALARM keeps the init timer effective during suspend.
 allow init self:global_capability2_class_set wake_alarm;
+
+# Preserve public read access to the immutable device capability flag.
+system_public_prop(ldy_an00_security_config_prop)
+get_prop(domain, ldy_an00_security_config_prop)

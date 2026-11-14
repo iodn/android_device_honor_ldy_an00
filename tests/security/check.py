@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Exercise production timer and USB accounting with simulated OS operations."""
+"""Exercise production timer, USB boot gating and request accounting with simulated OS operations."""
 import argparse
 import subprocess
 import tempfile
@@ -23,7 +23,7 @@ def native_timer(core, temporary):
     start = text.index('// Adapted from GrapheneOS\'s init auto-reboot timer')
     end = text.index('// This returns one of the enum of PROP_SUCCESS or PROP_ERROR*, or std::nullopt', start)
     production = text[start:end].replace('[[clang::no_destroy]] ', '')
-    admission = method(text, '    if (name == "sys.ldy_security.reboot_ctl" || name == "sys.ldy_security.reboot_inhibit") {')
+    admission = method(text, '    if (name == "sys.ldy_security.reboot_ctl" || name == "sys.ldy_security.reboot_inhibit"')
     dispatcher = ('std::optional<unsigned int> dispatch_security_property('
                   'const std::string& name, const std::string& value, unsigned int uid) {'
                   'struct { unsigned int uid; } cr{uid};' + admission + 'return std::nullopt;}')
@@ -112,10 +112,15 @@ int main() {
     for (unsigned int uid : {0u, 2000u, 10000u, 101000u}) {
         assert(dispatch_security_property("sys.ldy_security.reboot_ctl", "off", uid) == 3);
         assert(dispatch_security_property("sys.ldy_security.reboot_inhibit", "0", uid) == 3);
+        assert(dispatch_security_property("sys.ldy_security.usb_adb_allowed", "1", uid) == 3);
     }
     fail_set = false;
     assert(dispatch_security_property("sys.ldy_security.reboot_ctl", "off", 1000) == 0);
     assert(!dispatch_security_property("sys.ldy_security.reboot_inhibit", "0", 1000).has_value());
+    assert(!dispatch_security_property("sys.ldy_security.usb_adb_allowed", "0", 1000).has_value());
+    assert(!dispatch_security_property("sys.ldy_security.usb_adb_allowed", "1", 1000).has_value());
+    for (const char* value : {"", "true", "false", "-1", "2"})
+        assert(dispatch_security_property("sys.ldy_security.usb_adb_allowed", value, 1000) == 2);
     std::cout << "INIT_TIMER_TESTS_OK\n";
 }
 """
@@ -177,6 +182,112 @@ public class UsbRequestsTest {
     subprocess.run(['java', '-cp', str(temporary), 'com.android.server.usb.UsbRequestsTest'], check=True)
 
 
+
+def usb_boot_policy(framework, adb, temporary):
+    text = (framework / 'services/usb/java/com/android/server/usb/UsbLockdown.java').read_text()
+    policy = method(text, '    static boolean shouldRestrictUsbData(')
+    test = temporary / 'UsbBootPolicyTest.java'
+    test.write_text('public class UsbBootPolicyTest {\n' + policy + r"""
+    public static void main(String[] args) {
+        for (boolean adb : new boolean[]{false, true})
+            for (boolean locked : new boolean[]{false, true})
+                for (boolean unlocked : new boolean[]{false, true}) {
+                    if (shouldRestrictUsbData(0, adb, locked, unlocked))
+                        throw new AssertionError("Disabled policy blocked USB");
+                    if (shouldRestrictUsbData(1, adb, locked, unlocked) != (locked || !unlocked))
+                        throw new AssertionError("Strict policy or first-unlock bypass");
+                    if (shouldRestrictUsbData(2, adb, locked, unlocked)
+                            != (!adb && (locked || !unlocked)))
+                        throw new AssertionError("Development exception changed");
+                    for (int mode : new int[]{-1, 3, Integer.MAX_VALUE})
+                        if (!shouldRestrictUsbData(mode, adb, locked, unlocked))
+                            throw new AssertionError("Invalid policy must restrict USB");
+                }
+        System.out.println("USB_BOOT_POLICY_TESTS_OK");
+    }
+}
+""")
+    subprocess.run(['javac', '--release', '17', '-d', str(temporary), str(test)], check=True)
+    subprocess.run(['java', '-cp', str(temporary), 'UsbBootPolicyTest'], check=True)
+
+    text = (adb / 'daemon/usb.cpp').read_text()
+    gate = method(text, 'static void wait_for_usb_lockdown()')
+    loop = method(text, 'static void usb_ffs_open_thread()')
+    assert loop.index('wait_for_usb_lockdown();') < loop.index('open_functionfs(')
+    assert loop.rindex('wait_for_usb_lockdown();') < loop.index('register_transport(transport)')
+    assert loop.count('wait_for_usb_lockdown();') == 2
+    prefix = r"""
+#include <atomic>
+#include <cassert>
+#include <chrono>
+#include <condition_variable>
+#include <iostream>
+#include <mutex>
+#include <string>
+#include <thread>
+using namespace std::chrono_literals;
+std::mutex mutex;
+std::condition_variable changed;
+std::string allowed;
+bool feature = true, waiting = false;
+namespace android::base {
+bool GetBoolProperty(const char* name, bool fallback) {
+    assert(std::string(name) == "ro.lineage.ldy_an00.security_controls");
+    assert(!fallback);
+    return feature;
+}
+bool WaitForProperty(const char* name, const char* expected) {
+    assert(std::string(name) == "sys.ldy_security.usb_adb_allowed");
+    assert(std::string(expected) == "1");
+    std::unique_lock<std::mutex> lock(mutex);
+    waiting = true;
+    changed.notify_all();
+    changed.wait(lock, [] { return allowed == "1"; });
+    return true;
+}
+}
+"""
+    cases = r"""
+int main() {
+#ifndef __ANDROID_RECOVERY__
+    for (int boot = 0; boot < 25; ++boot) {
+        allowed = ""; waiting = false;
+        std::atomic<bool> usb_opened{false};
+        std::thread startup([&] { wait_for_usb_lockdown(); usb_opened = true; });
+        {
+            std::unique_lock<std::mutex> lock(mutex);
+            assert(changed.wait_for(lock, 2s, [] { return waiting; }));
+            assert(!usb_opened); // No decision exists before system_server starts.
+            allowed = "0";
+            changed.notify_all();
+            assert(!usb_opened); // A previously authorized host is still blocked.
+            allowed = "1";
+        }
+        changed.notify_all();
+        startup.join();
+        assert(usb_opened);
+    }
+    feature = false; allowed = "";
+    wait_for_usb_lockdown();
+    std::cout << "ADB_EARLY_USB_GATE_TESTS_OK\n";
+#else
+    allowed = "";
+    wait_for_usb_lockdown();
+    assert(!waiting);
+    std::cout << "ADB_RECOVERY_BYPASS_TESTS_OK\n";
+#endif
+}
+"""
+    cpp = temporary / 'usb_boot.cpp'
+    cpp.write_text(prefix + gate + cases)
+    for recovery in (False, True):
+        output = temporary / ('usb_boot_recovery' if recovery else 'usb_boot')
+        flags = ['-D__ANDROID_RECOVERY__'] if recovery else []
+        subprocess.run(['g++', '-std=c++17', '-Wall', '-Wextra', '-Werror', '-pthread',
+                        *flags, str(cpp), '-o', str(output)], check=True)
+        subprocess.run([str(output)], check=True, timeout=10)
+
+
 def authorization(args):
     ns = '{http://schemas.android.com/apk/res/android}'
     manifest = ET.parse(args.phone / 'AndroidManifest.xml').getroot()
@@ -210,13 +321,14 @@ def authorization(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ['frameworks-base', 'system-core', 'settings', 'phone', 'openeuicc']:
+    for name in ['frameworks-base', 'system-core', 'settings', 'phone', 'openeuicc', 'adb']:
         parser.add_argument('--' + name, required=True, type=Path)
     args = parser.parse_args()
     with tempfile.TemporaryDirectory() as temp:
         temporary = Path(temp)
         native_timer(args.system_core, temporary)
         usb_accounting(args.frameworks_base, temporary)
+        usb_boot_policy(args.frameworks_base, args.adb, temporary)
         authorization(args)
     print('SECURITY_HOST_CHECKS_OK')
 

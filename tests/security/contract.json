@@ -39,7 +39,16 @@
     },
     "preserves_other_disable_requesters": true,
     "hardware_data_line_isolation_proven": false,
-    "alternate_modes_blocked": false
+    "alternate_modes_blocked": false,
+    "early_adb_gate": {
+      "default": "deny before framework policy decision",
+      "transport": "adbd FunctionFS, checked before opening endpoints and before transport registration",
+      "unlock": "current foreground user must be unlocked and keyguard unlocked in restrictive modes",
+      "recovery": "recovery-built adbd bypasses the Android lock gate for sideload",
+      "property": "sys.ldy_security.usb_adb_allowed",
+      "property_writer_uid": 1000,
+      "bootloader_and_controller_firmware": "outside the native ADB gate; hardware isolation remains unproven"
+    }
   },
   "custom_callbacks": {
     "face": 1000,
@@ -65,6 +74,7 @@
     "Host timer tests replace OS timer and shutdown operations.",
     "Host USB tests execute request accounting with a simulated port.",
     "Hardware lock/unlock, calls and OTA interaction require a combined firmware test.",
-    "This does not provide GrapheneOS-equivalent boot or USB hardware guarantees."
+    "This does not provide GrapheneOS-equivalent boot or USB hardware guarantees.",
+    "Native ADB boot tests execute the actual wait helper with simulated properties; hardware reboot and authorized-host connection attempts remain required."
   ]
 }

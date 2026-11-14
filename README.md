@@ -150,7 +150,7 @@ export LDY_AN00_REVIEWED_DSU_CANDIDATE=true
 
 ## Optional device protection
 
-Security & privacy > More security & privacy > Device protection provides automatic reboot and USB data restrictions while locked. Both are off by default. USB debugging can be allowed explicitly. Calls and system updates defer automatic reboot. These controls require the matching framework and init patches; hardware validation is pending.
+Security & privacy > More security & privacy > Device protection provides automatic reboot and USB data restrictions while locked. Both are off by default. USB debugging can be allowed explicitly. Calls and system updates defer automatic reboot. These controls require matching framework, init and ADB patches. Normal Android USB ADB waits for the lock-policy decision before opening its transport; restrictive modes also require the current user to be unlocked unless the debugging exception applies. Recovery/sideload and bootloader modes are outside this gate. Hardware boot validation and USB-controller isolation remain unproven.
 
 The optional stock GPU test uses Python packages `unicorn` and `pyelftools`.
 Run `python3 power/tests/emulate_stock_gpu.py /path/to/libpowerhal.so`
