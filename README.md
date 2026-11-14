@@ -75,7 +75,8 @@ IMS is included in this device tree rather than a separate hardware repository.
 The [thermal audit](power/stock-thermal-contract.json) traces stock sensor units,
 hysteresis and cooling ownership. The native MediaTek controller and stock thresholds are retained.
 The shell-temperature publisher rejects incomplete sensor discovery rather than
-accepting a partial map. CPU/GPU policy coordination review is still in progress.
+accepting a partial map. The audit distinguishes native CPU/GPU thermal ownership
+from the display policy subset; full HAware SoC scene-policy parity is not claimed.
 
 ## Power integration
 
@@ -139,3 +140,8 @@ The optional stock GPU test uses Python packages `unicorn` and `pyelftools`.
 Run `python3 power/tests/emulate_stock_gpu.py /path/to/libpowerhal.so`
 with the matching stock library supplied separately. It rejects other hashes and
 intercepts driver calls. It does not access hardware or establish GPU performance.
+
+The optional thermal test uses the same Python dependencies:
+`python3 power/shell_temperature/tests/emulate_stock_thermal.py /path/to/thermal_core`.
+It checks the pinned native arithmetic and threshold callbacks with intercepted
+writes. Synthetic test parameters never change the device configuration.

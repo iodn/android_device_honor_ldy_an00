@@ -2,7 +2,7 @@
   "schema_version": 1,
   "device": "LDY-AN00",
   "stock_reference": "10.0.0.113",
-  "status": "Sensor acquisition and native cooling paths traced; Android CPU/GPU policy coordination review remains in progress.",
+  "status": "Offline sensor, cooling and CPU/GPU/display ownership trace completed. Sensor discovery and power retry lifecycle corrected; full stock Android policy parity is not asserted.",
   "address_convention": "Ghidra virtual addresses in the explicitly selected ARM64 v8A program.",
   "binary_sha256": {
     "vendor/bin/thermal_core": "11b5e3e9a0c9c0261c5b18a9e6b0b1cbcc3b55eadcf809d688e32c444d650486",
@@ -32,7 +32,15 @@
       "thermal_zone": "soc_max",
       "mode": "enabled"
     },
-    "decision": "Retain the native controller and calibration. No raised thresholds or disabled throttling are introduced."
+    "decision": "Retain the native controller and calibration. No raised thresholds or disabled throttling are introduced.",
+    "selection": {
+      "main": "0x118b00; assembly fallback used after decompiler timeout.",
+      "persisted_selector": "/data/vendor/thermal/.permanent_tp; main reads a bounded name, trims trailing whitespace and checks thermal/disable prefixes before dispatch.",
+      "fallback": "main 0x11c2dc..0x11c2e4 passes the literal thermal.conf at 0x10458a to change_policy.",
+      "policy_switch": "change_policy 0x136b10 rejects thermal_options.conf and direct sub-policy selection, uses thermal_options_checker for registered defaults, otherwise calls exe_change_policy 0x1118e0.",
+      "skin_dispatch": "exe_change_policy 0x1128ac..0x1128dc recognizes [mtk-skin-control]; 0x1159bc calls skin_control_parser 0x121430.",
+      "scope": "Stored-policy/fallback and skin-parser path, not every command-line or alternate-policy branch. The current phone was not queried."
+    }
   },
   "sensor_acquisition": {
     "thermal_core": {
@@ -66,7 +74,8 @@
       "function": "0x117b90",
       "enter": "temperature > trip",
       "release": "temperature < trip-hysteresis",
-      "state": "Enable is latched only when the callback returns 1; release clears the latch."
+      "state": "Enable is latched only when the callback returns 1; release clears the latch.",
+      "failure_semantics": "The native release clears its latch even when its callback reports failure; the Lineage display or power transport must not assume this proves hardware release."
     },
     "general_cooler": {
       "function": "0x136810",
@@ -75,7 +84,40 @@
     "catm": {
       "settings": "0x1456c0",
       "decision": "0x145720",
-      "behavior": "Calculate proportional/integral terms with retained state, direction-dependent gain and configured clamps."
+      "behavior": "Calculate proportional/integral terms with retained state, direction-dependent gain and configured clamps.",
+      "parser": "skin_control_parser 0x121430",
+      "parameter_offsets": {
+        "0x00": "maximum target junction temperature",
+        "0x04": "CPU target cap",
+        "0x08": "GPU target cap",
+        "0x0c": "APU target cap",
+        "0x10": "minimum target junction temperature",
+        "0x14": "steady target junction temperature",
+        "0x18": "board-temperature trip",
+        "0x1c": "board-temperature target",
+        "0x20": "computed proportional coefficient",
+        "0x24": "high integral scale (default 500)",
+        "0x28": "low integral scale (default 500)",
+        "0x2c": "polling time",
+        "0x30": "computed lower integral bound",
+        "0x34": "computed upper integral bound",
+        "0x38": "ATC enable",
+        "0x40": "ATC maximum target",
+        "0x44": "original configured maximum",
+        "0x64": "debug mode",
+        "0x90": "falling-temperature proportional ratio (default 1)",
+        "0x94": "positive integral maximum-bound reduction (default 0)"
+      },
+      "parameter_base": "g_catm at 0x160730; byte offsets in this pinned binary only.",
+      "parser_order": "Read configured values and CPU/GPU/APU ATC nodes; disabled ATC restores all three caps to configured maximum. Enabled ATC clamps against atc_max_target_tj; an optional GPU override and debug path are distinct. Recompute maximum and coefficients, then register tskin_control.",
+      "coefficients": {
+        "proportional": "((maximum-steady)*1024)/(board_target-board_trip), or 0 if denominator is 0",
+        "lower_integral_bound": "((minimum-steady)*1024)/high_scale, or 0 if high_scale is 0",
+        "upper_integral_bound": "((maximum-steady)*1024)/low_scale, or 0 if low_scale is 0"
+      },
+      "decision_order": "Below the board trip: reset integral and return maximum. Otherwise accumulate target-current error, clamp integral, apply proportional and integral terms around steady, then clamp the result to minimum/maximum. Falling-temperature gain does not amplify negative error.",
+      "pinned_result": "The pinned maximum and minimum both equal 105000, so the returned target is fixed at 105000 despite internal integral state. This is not evidence that 105 C is a shell-temperature limit.",
+      "native_validation": "tests/emulate_stock_thermal.py: 33 cases execute the hash-pinned ARM64 routines. Additional synthetic nonfixed parameters exercise positive/negative integral, bounds and falling gain; they never alter the production configuration."
     },
     "targets": {
       "function": "0x117d30",
@@ -135,7 +177,46 @@
         "gpu_level": 133
       },
       "coordination": "Separate current/previous maps support residual release followed by changed policy application. Additional paths cover core isolation, CATM, refresh rate and scene-specific hints.",
-      "port_gate": "Every field must be matched to the retained MediaTek adapter. Some stock GPU leaves contain legacy frequency-like values, whereas tag 10 expects a level index; copying the XML value is not a qualified GPU limit."
+      "port_gate": "Every field must be matched to the retained MediaTek adapter. Some stock GPU leaves contain legacy frequency-like values, whereas tag 10 expects a level index; copying the XML value is not a qualified GPU limit.",
+      "predicate_sources": {
+        "modeid": "ControlPlugin.m -> ThermalSceneRecog.v -> SystemInfo.w. Smart-power state 3 returns mode 100; otherwise the SystemInfo mode field defaults to 1 and changes on source event 403. This is distinct from the scene resolver modeM default 2.",
+        "battery_level": "i1.h/i accepts exactly two numeric bounds; lower inclusive, upper exclusive.",
+        "sensor_and_trigger_temp": "Both attributes are required together; the sensor name must resolve and a reading must exist. Trigger bounds scale by 1000 and use lower inclusive/upper exclusive comparison.",
+        "typeid": "ControlPlugin.s resolves scene type through r.U, including ordered prefix-wildcard rules and the previous-game-scene special case; this is not the raw application-classifier result.",
+        "other_active_leaf_predicates": [
+          "video_call",
+          "dexoat",
+          "fullscreen",
+          "clonerole"
+        ],
+        "outdoor": "warm_shell_outdoor level configuration has its own outdoor=1 qualification."
+      },
+      "aggregation": "Select the last eligible ordinary/dynamic item per cluster before traversing its qualified leaves. Primary and secondary policy maps have key-specific override/AND rules; do not flatten leaves before item selection.",
+      "merge": "Ordinary CPU maxima choose numeric minimum; reverse-ordered GPU/isolation/boost keys choose maximum. Mode-dependent AND-key merging reverses this selection and requires both primary/secondary keys.",
+      "release_and_readiness": "e1.x emits zero for keys absent from the new map, removes them from the old map, then sends changed values. e1.s resets registered keys and clears cached state. First readiness transition on sys.cpu.uniperf.ready or elapsed time >180 seconds clears the old map and reapplies new values.",
+      "mtk_dispatch": {
+        "constructor": "libmtk_wrapper.so InitLimitConfigSet 0x10f100",
+        "cpu": {
+          "1": "little soft maximum, kHz",
+          "4": "middle soft maximum on three-cluster path, kHz",
+          "7": "prime soft maximum on three-cluster path, kHz"
+        },
+        "gpu_10": "Driver performance-level index; zero/invalid inputs resolve to native default maximum index 0. XML values 702000/520000 are not valid level indices.",
+        "not_registered_in_pinned_adapter": [
+          16,
+          59,
+          68,
+          131,
+          133,
+          163
+        ],
+        "boost_57": "e1 sends a separate single-tag request; DoPerfSetConfig accepts that special case without producing a resource action.",
+        "catm_125": "H0.p uses client 2 tag 125 when no dynamic junction target is active; its other MTK path writes TTJ for CPU/GPU/APU together.",
+        "tsens_protected": "Dispatches H0.s rather than frequency tag 0; its direct node-map path is Qualcomm-qualified, not a generic MTK CPU minimum.",
+        "refresh_rate": "e1.A/B0.m delivers refresh_rate plus owner temperature through its service wrapper; B0.f deduplicates rate and uses 0/-1 when the secondary-game state suppresses the cap.",
+        "ownership": "Use the retained native adapter arbitration. Never replace the client-1 power map while attempting to apply client-2 thermal leaves."
+      },
+      "implementation_boundary": "The current Lineage publisher implements the qualified display subset. No full replacement of HAware client-2 SoC scene policies is claimed. Unsupported tags and legacy GPU frequency values must not be copied as new driver limits."
     },
     "lineage": "Display scene selection, reporter epochs, level hysteresis and seven display controls are already present. The CPU/GPU thermal-policy adapter review is still open."
   },
@@ -146,14 +227,26 @@
     "host_tests": [
       "Thermal sensor discovery filesystem cases",
       "Injected readdir/closedir failures",
-      "Existing policy batch/validity tests"
+      "Existing policy batch/validity tests",
+      "Pinned native CATM and generic threshold callbacks: 33 emulated cases; driver and log calls intercepted",
+      "Current repository display coordinator: 22 checks",
+      "Current repository seven display controls: 42 checks",
+      "Current repository metadata loader: 120 assertions using Android org.json and the pinned payload",
+      "Current repository stock reporter: 22 checks",
+      "Current repository warm/cold level engine: 174 checks",
+      "CPU/GPU power policy and controller tests, plus 7 configuration-generator tests"
     ],
     "hardware_effect": "Not tested in this offline phase."
   },
   "remaining": [
-    "Finish native CATM/threshold configuration-field and cooling-owner reconciliation.",
-    "Qualify Honor CPU/GPU leaf dispatch, release values and mode predicates against this MTK adapter.",
-    "Review display/power cross-policy failures and add any evidence-backed missing integration.",
-    "Run focused component checks and final completion audit."
-  ]
+    "Hardware temperature accuracy, throttling effect, performance and power-loss behavior are not established by host tests.",
+    "A separate full HAware SoC scene-policy port would need qualified mode/foreground/secondary context and supported MTK dispatch; it is not implemented by the display subset."
+  ],
+  "coordination_review": {
+    "sensor_to_display": "Complete, sequenced shell/USB/battery batches advance reporter and level history even when scene context is unavailable. An invalid source resets its epoch; previously accepted display caps remain until a qualified replacement.",
+    "thermal_native": "thermal_core retains its own perf handle and TTJ/cooling-device control; do not use the display SKIN severity as its board-temperature input.",
+    "power": "DevicePowerService owns client 1; camera/non-normal audio releases its CPU/GPU votes. Intent generation now invalidates stale retries even when returning to a cached request.",
+    "display": "Seven qualified channels use their own value domains, owner temperatures and release commands. Context/registration failure holds pending publication; it does not manufacture a release.",
+    "charging": "Retain stock charging policy and thresholds. No charging tuning is included."
+  }
 }
