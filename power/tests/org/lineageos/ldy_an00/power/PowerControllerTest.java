@@ -239,6 +239,52 @@ public final class PowerControllerTest {
         if (!f.backend.screenStates.equals(java.util.List.of(false))) {
             throw new AssertionError("First real screen observation was lost");
         }
+        f = new Fixture();
+        f.backend.gpuLevels = 20;
+        f.controller.update(false, true, false);
+        f.drain(); // Cache the unrestricted request before the getter outage.
+        f.backend.failRead = true;
+        f.controller.update(true, true, false);
+        f.controller.update(true, true, true); // A call/camera requires the cached release.
+        f.backend.failRead = false;
+        f.drain();
+        f.count(1);
+        f.releaseLast(); // The pending saver retry must not throttle the protected workload.
+
+        f = new Fixture();
+        f.backend.gpuLevels = 20;
+        f.controller.update(true, true, false);
+        f.drain(); // Cache the awake saver vote.
+        f.backend.failRead = true;
+        f.controller.update(true, false, false);
+        f.controller.update(true, true, false); // Return to the already-requested awake vote.
+        f.backend.failRead = false;
+        f.drain();
+        f.count(1);
+        if (f.backend.requests.get(0)[3] != 10) {
+            throw new AssertionError("Stale asleep retry replaced the awake GPU limit");
+        }
+        f = new Fixture();
+        f.backend.gpuLevels = 20;
+        f.backend.failRead = true;
+        f.controller.update(true, true, false);
+        f.drain();
+        f.controller.update(true, false, false);
+        f.drain();
+        if (f.backend.reads != 8) {
+            throw new AssertionError("A different policy inherited an exhausted retry budget");
+        }
+        f.count(0);
+
+        f = new Fixture();
+        f.backend.failRead = true;
+        f.controller.update(true, true, false);
+        f.controller.update(true, true, false);
+        f.drain(); // Repeated observations must not reset the retry budget.
+        if (f.backend.reads != 4) {
+            throw new AssertionError("Identical observations reset the retry budget");
+        }
+        f.count(0);
         System.out.println("POWER_CONTROLLER_TESTS_OK");
     }
 }

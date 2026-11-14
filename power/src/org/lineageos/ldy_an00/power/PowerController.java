@@ -19,6 +19,7 @@ final class PowerController {
     private final Backend mBackend;
     private final Scheduler mScheduler;
     private final BiConsumer<String, Exception> mLog;
+    private int[] mDesired;
     private int[] mRequested;
     private int[] mBlocked;
     private int mGeneration;
@@ -36,6 +37,7 @@ final class PowerController {
         mScreenGeneration++;
         mInteractive = null;
         mGeneration++;
+        mDesired = null;
         mRequested = null;
         mBlocked = null;
         mRetries = 0;
@@ -78,6 +80,12 @@ final class PowerController {
     }
 
     private void apply(int[] desired) {
+        if (!Arrays.equals(desired, mDesired)) {
+            // A cached vote still supersedes retries for an intervening policy.
+            mDesired = desired.clone();
+            mGeneration++;
+            mRetries = 0;
+        }
         if (Arrays.equals(desired, mRequested) || Arrays.equals(desired, mBlocked)) return;
         int generation = ++mGeneration;
         boolean requestAttempted = false;

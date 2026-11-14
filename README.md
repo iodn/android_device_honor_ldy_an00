@@ -112,8 +112,9 @@ The [resource map](power/stock-mtk-resources.json) covers all names used in the
 records framework boost start, replacement and cancellation.
 The device service also forwards observed screen state to UniPerf's native boost
 admission gate. It records remaining integration gaps separately from implemented behavior.
-Release transport failures receive bounded retries; a stale retry cannot replace
-a newer policy. Aggregate readback does not prove removal of a specific client vote.
+Release transport failures receive bounded retries. Returning to an already-cached
+policy also cancels older retries, including when a call or camera needs this
+service's limits released. Aggregate readback does not prove removal of a specific client vote.
 
 ## DSU development profile
 

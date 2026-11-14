@@ -499,7 +499,14 @@
         "lineage": "Retained process-scoped adapter with actual frame observations and thread IDs",
         "limit": "Thread attributes and performance effect need hardware qualification."
       }
-    ]
+    ],
+    "retry_intent_fencing": {
+      "trigger": "A previous request is cached, a different policy waits on a failed CPU getter, then the desired policy returns to the cached request before the delayed retry.",
+      "failure": "Comparing against the cached request before invalidating the previous generation allowed its delayed CPU/GPU request to replace the current policy.",
+      "correction": "Track desired policy separately from the last delivered request. Every intent change invalidates old callbacks even when no new HAL transaction is needed; it also starts a fresh bounded getter retry budget.",
+      "verification": "PowerControllerTest reproduces the cached-release/protected-workload and cached-awake/GPU cases. It checks fresh retry budgets after policy changes and bounded retries for identical observations.",
+      "scope": "Host lifecycle validation only. No assertion of hardware performance, battery improvement or successful per-client vote removal."
+    }
   },
   "validation_scope": {
     "phone_access": false,
