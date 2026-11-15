@@ -63,7 +63,7 @@
       "file": "vbmeta.img",
       "partition": "vbmeta",
       "file_bytes": 1048576,
-      "sha256": "944af1ad781592a0044aedc90729f13407ded5b73a9df5c3e99ec98e21fdf967"
+      "sha256": "a982f4d16d07ec2aa983b36e99305127faef9b912bfaaef07817f06f87bf8384"
     },
     {
       "file": "vbmeta_odm.img",
