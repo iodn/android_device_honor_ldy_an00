@@ -11,3 +11,15 @@ allow init self:global_capability2_class_set wake_alarm;
 # Preserve public read access to the immutable device capability flag.
 system_public_prop(ldy_an00_security_config_prop)
 get_prop(domain, ldy_an00_security_config_prop)
+
+# Root/init owns the narrow reset interface; system_server only discovers support.
+type sysfs_ldy_reset_guard, fs_type, sysfs_type;
+allow init sysfs_ldy_reset_guard:dir search;
+allow init sysfs_ldy_reset_guard:file rw_file_perms;
+allow system_server sysfs_ldy_reset_guard:dir search;
+allow system_server sysfs_ldy_reset_guard:file getattr;
+
+# Preserve the existing vendor debug sysctl while init temporarily inhibits it.
+type proc_ldy_reset_diagnostic, fs_type, proc_type;
+allow init proc_ldy_reset_diagnostic:file rw_file_perms;
+allow vendor_init proc_ldy_reset_diagnostic:file rw_file_perms;

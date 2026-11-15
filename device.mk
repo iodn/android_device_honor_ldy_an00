@@ -148,3 +148,10 @@ $(call inherit-product, device/honor/ldy_an00/reviewed-dsu-candidate.mk)
 
 # Optional keyguard security controls; both policies remain off until selected.
 PRODUCT_SYSTEM_EXT_PROPERTIES += ro.lineage.ldy_an00.security_controls=true
+
+# Enable together with the reset-guard kernel candidate after cohort qualification.
+ifeq ($(LDY_AN00_RESET_GUARD),1)
+PRODUCT_SYSTEM_EXT_PROPERTIES += ro.lineage.ldy_an00.reset_guard=true
+PRODUCT_PACKAGE_OVERLAYS += device/honor/ldy_an00/overlay-lock-protection
+PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += device/honor/ldy_an00/overlay-lock-protection
+endif

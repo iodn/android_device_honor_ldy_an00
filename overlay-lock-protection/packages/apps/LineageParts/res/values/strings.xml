@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<resources>
+    <string name="power_menu_block_when_locked_title">Block power controls when locked</string>
+    <string name="power_menu_block_when_locked_summary">Prevent power-off and forced restart until the device is unlocked</string>
+</resources>

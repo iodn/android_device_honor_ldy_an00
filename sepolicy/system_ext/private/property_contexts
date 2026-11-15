@@ -33,3 +33,4 @@ sys.ldy_security.reboot_inhibit u:object_r:ldy_an00_security_prop:s0 exact bool
 
 ro.lineage.ldy_an00.security_controls u:object_r:ldy_an00_security_config_prop:s0 exact bool
 sys.ldy_security.usb_adb_allowed u:object_r:ldy_an00_security_prop:s0 exact bool
+sys.ldy_security.reset_protected u:object_r:ldy_an00_security_prop:s0 exact bool
