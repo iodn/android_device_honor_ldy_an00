@@ -52,7 +52,7 @@ PRODUCT_PACKAGES += snapuserd
 # It must override retained vendor firmware lists in the later product props map.
 ifeq ($(LDY_AN00_NATIVE_HARDWARE_BASELINE),stock11)
 PRODUCT_PRODUCT_PROPERTIES += \
-    ro.vendor.build.ab_ota_partitions=boot,init_boot,vendor_boot,dtbo,system,system_dlkm,vendor,vendor_dlkm,odm,odm_dlkm,vbmeta,vbmeta_system,vbmeta_system_dlkm,vbmeta_vendor,vbmeta_vendor_dlkm,vbmeta_odm,vbmeta_odm_dlkm,recovery_vbmeta
+    ro.vendor.build.ab_ota_partitions=boot,init_boot,vendor_boot,dtbo,system,system_dlkm,vendor,vendor_dlkm,odm,odm_dlkm,vbmeta,vbmeta_system,vbmeta_system_dlkm,vbmeta_vendor,vbmeta_vendor_dlkm,vbmeta_odm,vbmeta_odm_dlkm,recovery_vbmeta,modem,mcf_ota
 else
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.vendor.build.ab_ota_partitions=boot,system,system_dlkm,vbmeta_system,vbmeta_system_dlkm

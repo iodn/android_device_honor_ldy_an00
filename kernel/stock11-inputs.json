@@ -21,7 +21,19 @@
       "file": "init_boot.img",
       "partition": "init_boot",
       "file_bytes": 8388608,
-      "sha256": "3902187e3e3c9aebcde41f579a8af03bb89ef732aa08651fda859e24672f6777"
+      "sha256": "18bc98383ea1657a1ddfbc3dc0a0a268974779b378b8a297088499736a55655a"
+    },
+    {
+      "file": "mcf_ota.img",
+      "partition": "mcf_ota",
+      "file_bytes": 29999104,
+      "sha256": "dd7a69748d8285cb01bbd823a8a0f769112b3958fc3d38cbf37af9200e1dc811"
+    },
+    {
+      "file": "modem.img",
+      "partition": "modem",
+      "file_bytes": 149360640,
+      "sha256": "fe809dbf8120136143f0438986d1739363db693b80162e9a2d12b9c5bfa122c0"
     },
     {
       "file": "odm.img",
@@ -106,13 +118,28 @@
     "lk",
     "preloader_raw",
     "fw_ufsdev",
-    "recovery_ramdisk"
+    "recovery_ramdisk",
+    "tee",
+    "nvram",
+    "nvdata",
+    "nvcfg",
+    "md_sec",
+    "oeminfo",
+    "seccfg"
   ],
   "pending_qualification": [
-    "Complete OS/OTA assembly",
-    "Modem and secure-firmware compatibility review",
-    "Hardware tests before snapshot merge"
+    "Complete signed 20-partition OTA assembly",
+    "Modem/MCF migration and radio hardware verification",
+    "End-to-end OTA, root retention and snapshot merge"
   ],
   "root_avb_flags": 1,
-  "rollback_indexes_increased": false
+  "rollback_indexes_increased": false,
+  "first_stage_init": {
+    "reference_firmware": "10.0.0.113(C00E100R101P1)",
+    "sha256": "25f59c2e9a78b2918164cfca72a4ca7b25f226a491ba33b07018c28063e0c20f",
+    "ramdisk_reference": "11.0.0.117(SP3C00E117R103P1)",
+    "packaging_tool": "kernel/packaging/init_boot.py",
+    "reason": "Retain the hardware-qualified kernel snapshot implementation required for writable add-on restore.",
+    "other_ramdisk_entries_preserved": true
+  }
 }
