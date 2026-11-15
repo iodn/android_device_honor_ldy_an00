@@ -315,7 +315,7 @@
     </hal>
     <hal format="aidl">
         <name>vendor.honor.hardware.camera.cfgsvr</name>
-        <version>10</version>
+        <version>10-11</version>
         <interface>
             <name>IHwCamCfgSvr</name>
             <instance>default</instance>

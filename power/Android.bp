@@ -23,7 +23,7 @@ python_binary_host {
 genrule {
     name: "LdyAn00MtkPowerConfigXml",
     tools: ["ldy_an00_generate_power_hints"],
-    srcs: ["proprietary/powerscntbl-stock113.xml"],
+    srcs: ["proprietary/powerscntbl-stock.xml"],
     out: ["powerscntbl.xml"],
     cmd: "$(location ldy_an00_generate_power_hints) --source $(in) --output $(out)",
 }

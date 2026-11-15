@@ -7,7 +7,7 @@ import hashlib
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-STOCK_SHA256 = "b8923a5046d1a5fd4df584148f0273ad0a8a5cb8efb715d0dbb7d96d15c1ee44"
+STOCK_SHA256 = "f18d9603b2a33d035bbab0507f58c7c46cd22ccfebaafb3a3879b4927d77f6d1"
 
 
 def generate(source):

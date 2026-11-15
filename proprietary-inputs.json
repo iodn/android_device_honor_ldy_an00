@@ -28,13 +28,15 @@
     },
     {
       "path": "power/proprietary/uniperf_config_cust.xml",
-      "size": 55632,
-      "sha256": "445dc297189dec2e8811ce141a33ddf2ec4456e99033a15b8f3dfc2222cc2ca5"
+      "size": 65024,
+      "sha256": "a2280e41d03f3e17df739444a1ddc3a3c0b2bb88950a1ef0883f39e5def23575",
+      "firmware": "11.0.0.117(SP3C00E117R103P1)"
     },
     {
-      "path": "power/proprietary/powerscntbl-stock113.xml",
-      "size": 19629,
-      "sha256": "b8923a5046d1a5fd4df584148f0273ad0a8a5cb8efb715d0dbb7d96d15c1ee44"
+      "path": "power/proprietary/powerscntbl-stock.xml",
+      "size": 19564,
+      "sha256": "f18d9603b2a33d035bbab0507f58c7c46cd22ccfebaafb3a3879b4927d77f6d1",
+      "firmware": "11.0.0.117(SP3C00E117R103P1)"
     },
     {
       "path": "displayplugin/stock-policy-assets/proprietary/sources/aps.decoded.xml",
@@ -87,5 +89,6 @@
       "sha256": "3a82ca45508b254259344da82aae5de7c36f7b5c55e821d17d3b896cb0439572"
     }
   ],
-  "notice": "Required proprietary build inputs. Some IMS files are derived by the integration tools; not every file exists in stock firmware. Personal ADB keys are excluded."
+  "notice": "Required proprietary build inputs. Some IMS files are derived by the integration tools; not every file exists in stock firmware. Personal ADB keys are excluded.",
+  "scope": "Retained maintained Lineage integration inputs, with stock11 power inputs explicitly identified per entry."
 }

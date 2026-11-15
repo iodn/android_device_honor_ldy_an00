@@ -1,0 +1,118 @@
+{
+  "schema": "ldy-stock11-hardware-inputs-v1",
+  "cohort": "LDY-AN00-stock11-kernel-6.12.58-fd92206bcd0a",
+  "purpose": "Exact prebuilt hardware inputs for the opt-in migration build. This is not a complete flash or OTA manifest; system and vbmeta_system require a matching signed Android build.",
+  "firmware_reference": "11.0.0.117(SP3C00E117R103P1)",
+  "kernel_release": "6.12.58-LDY-AN00-android16-6-gfd92206bcd0a-4k",
+  "inputs": [
+    {
+      "file": "boot.img",
+      "partition": "boot",
+      "file_bytes": 67108864,
+      "sha256": "4d6135f009a1cf8cbed31a463416beef4bc4bed191420847ec8af0df18b65cab"
+    },
+    {
+      "file": "dtbo.img",
+      "partition": "dtbo",
+      "file_bytes": 3653632,
+      "sha256": "b35f0c44b9c0fcdc0e2a59942fa885cfd543779abe8be3c7479c99ce36343f00"
+    },
+    {
+      "file": "init_boot.img",
+      "partition": "init_boot",
+      "file_bytes": 8388608,
+      "sha256": "3902187e3e3c9aebcde41f579a8af03bb89ef732aa08651fda859e24672f6777"
+    },
+    {
+      "file": "odm.img",
+      "partition": "odm",
+      "file_bytes": 2357198848,
+      "sha256": "65cfe05d3e73418688e196f55845becdffac7dbb2de9b3d84a141e9d5f094c59"
+    },
+    {
+      "file": "odm_dlkm.img",
+      "partition": "odm_dlkm",
+      "file_bytes": 16777216,
+      "sha256": "6f5fc86133ff3b8a5d446d58d167562c1593e20e72fb5f4a87883df2f5c78923"
+    },
+    {
+      "file": "recovery_vbmeta.img",
+      "partition": "recovery_vbmeta",
+      "file_bytes": 1048576,
+      "sha256": "6a2c51b46088abc831d5b466f116a3fed54ac0aea7a7080bb9ffcf3fdfd4e19c"
+    },
+    {
+      "file": "system_dlkm.img",
+      "partition": "system_dlkm",
+      "file_bytes": 33554432,
+      "sha256": "391ad81913377db5f60841726c4bd4e7b20dd145ade2e3c7113c4bb6d80e39ae"
+    },
+    {
+      "file": "vbmeta.img",
+      "partition": "vbmeta",
+      "file_bytes": 1048576,
+      "sha256": "944af1ad781592a0044aedc90729f13407ded5b73a9df5c3e99ec98e21fdf967"
+    },
+    {
+      "file": "vbmeta_odm.img",
+      "partition": "vbmeta_odm",
+      "file_bytes": 1048576,
+      "sha256": "dc436d7169aa66f02bbfcab3ef51ea239591a7b2bbf14cfc57719b37f7e4dbc5"
+    },
+    {
+      "file": "vbmeta_odm_dlkm.img",
+      "partition": "vbmeta_odm_dlkm",
+      "file_bytes": 1048576,
+      "sha256": "cb8a959b407314f915a8a33d371fd6c4afabbf25d93a1ff60f3cbedf97069d2f"
+    },
+    {
+      "file": "vbmeta_system_dlkm.img",
+      "partition": "vbmeta_system_dlkm",
+      "file_bytes": 1048576,
+      "sha256": "6a9b63a602c31b18a7ff0f8e84e4f3389d110ecc09d94caab1b8efd6b77fbdcf"
+    },
+    {
+      "file": "vbmeta_vendor.img",
+      "partition": "vbmeta_vendor",
+      "file_bytes": 1048576,
+      "sha256": "a96f359c8d1899f01b914d1ff2e048bd721b3e9b49dcb5f34119016ed62b5784"
+    },
+    {
+      "file": "vbmeta_vendor_dlkm.img",
+      "partition": "vbmeta_vendor_dlkm",
+      "file_bytes": 1048576,
+      "sha256": "0fdc1f621552b47ca8b7a8ac3af62a89941fc4b5597522a4bb2fec749ef6cb39"
+    },
+    {
+      "file": "vendor.img",
+      "partition": "vendor",
+      "file_bytes": 973078528,
+      "sha256": "b5ffd5c3fc7ae64f9165bc8d0445bc445dfb02aa03746d135932bf3e41f78ae0"
+    },
+    {
+      "file": "vendor_boot.img",
+      "partition": "vendor_boot",
+      "file_bytes": 100663296,
+      "sha256": "7a7adcaa25b8f1509dd7b4206217766ee29d2a13a24ae23e00421102351ec3f9"
+    },
+    {
+      "file": "vendor_dlkm.img",
+      "partition": "vendor_dlkm",
+      "file_bytes": 100663296,
+      "sha256": "6b1c48f66c673fe5e710525d204297cd6187d3797e5fc48e71d2308d24a51818"
+    }
+  ],
+  "preserve": [
+    "lk",
+    "preloader_raw",
+    "fw_ufsdev",
+    "recovery_ramdisk"
+  ],
+  "pending_qualification": [
+    "Complete OS/OTA assembly",
+    "Modem and secure-firmware compatibility review",
+    "Hardware tests before snapshot merge"
+  ],
+  "root_avb_flags": 1,
+  "rollback_indexes_increased": false
+}

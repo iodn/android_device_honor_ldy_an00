@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 from generate_mtk_power_config import generate
 
-SOURCE = Path(__file__).resolve().parent / "proprietary/powerscntbl-stock113.xml"
+SOURCE = Path(__file__).resolve().parent / "proprietary/powerscntbl-stock.xml"
 
 
 def signature(element):
@@ -53,7 +53,7 @@ class MediaTekPowerConfigTest(unittest.TestCase):
                           config["policies"][policy]["frequencies_khz"])
 
     def test_resource_audit_matches_pinned_scenarios(self):
-        audit = json.loads((SOURCE.parent.parent / "stock-mtk-resources.json").read_text())
+        audit = json.loads((SOURCE.parent.parent / "stock-scenario-config.json").read_text())
         self.assertEqual(hashlib.sha256(self.source).hexdigest(),
                          audit["source_sha256"]["powerscntbl.xml"])
         self.assertEqual(audit["scenarios"], [

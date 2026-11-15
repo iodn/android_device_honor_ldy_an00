@@ -10,3 +10,8 @@ service ldy-guest-capture /system/bin/ldy-guest-capture
     capabilities
     stdio_to_kmsg
     timeout_period 210
+
+# Hold snapshot merging during an explicitly requested userdebug hardware trial.
+# Pair with the upstream merge delay; normal boots have no hold property.
+on property:sys.boot_completed=1 && property:ro.debuggable=1 && property:persist.sys.ldy.ota_validation_hold=1
+    stop update_engine

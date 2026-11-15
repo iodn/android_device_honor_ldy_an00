@@ -28,6 +28,12 @@ PRODUCT_ADB_KEYS :=
 
 AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS := boot system system_dlkm vbmeta_system vbmeta_system_dlkm
+ifeq ($(LDY_AN00_NATIVE_HARDWARE_BASELINE),stock11)
+include device/honor/ldy_an00/stock11-hardware.mk
+AB_OTA_PARTITIONS := $(_LDY_STOCK11_OTA_PARTITIONS)
+# Upstream caps this at 600 seconds; diagnostics stop the daemon during the trial.
+PRODUCT_SYSTEM_PROPERTIES += ro.virtual_ab.merge_delay_seconds=600
+endif
 # Lineage update_engine runs addon.d backup/restore before mounting postinstall read-only.
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -44,8 +50,13 @@ PRODUCT_BUILD_VBMETA_IMAGE := true
 PRODUCT_PACKAGES += snapuserd
 # Android partial-update synthesis reads this VENDOR-named property first.
 # It must override retained vendor firmware lists in the later product props map.
+ifeq ($(LDY_AN00_NATIVE_HARDWARE_BASELINE),stock11)
+PRODUCT_PRODUCT_PROPERTIES += \
+    ro.vendor.build.ab_ota_partitions=boot,init_boot,vendor_boot,dtbo,system,system_dlkm,vendor,vendor_dlkm,odm,odm_dlkm,vbmeta,vbmeta_system,vbmeta_system_dlkm,vbmeta_vendor,vbmeta_vendor_dlkm,vbmeta_odm,vbmeta_odm_dlkm,recovery_vbmeta
+else
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.vendor.build.ab_ota_partitions=boot,system,system_dlkm,vbmeta_system,vbmeta_system_dlkm
+endif
 ifeq ($(LDY_AN00_NATIVE_STAGE),production)
 PRODUCT_PRODUCT_PROPERTIES += lineage.updater.uri=$(LDY_AN00_NATIVE_UPDATER_URI)
 endif
