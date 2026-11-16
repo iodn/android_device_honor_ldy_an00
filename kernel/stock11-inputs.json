@@ -1,15 +1,15 @@
 {
   "schema": "ldy-stock11-hardware-inputs-v1",
-  "cohort": "LDY-AN00-stock11-kernel-6.12.58-fd92206bcd0a",
+  "cohort": "LDY-AN00-stock11-kernel-6.12.58-a6ebb716965a",
   "purpose": "Exact prebuilt hardware inputs for the opt-in migration build. This is not a complete flash or OTA manifest; system and vbmeta_system require a matching signed Android build.",
   "firmware_reference": "11.0.0.117(SP3C00E117R103P1)",
-  "kernel_release": "6.12.58-LDY-AN00-android16-6-gfd92206bcd0a-4k",
+  "kernel_release": "6.12.58-LDY-AN00-android16-6-ga6ebb716965a-4k",
   "inputs": [
     {
       "file": "boot.img",
       "partition": "boot",
       "file_bytes": 67108864,
-      "sha256": "4d6135f009a1cf8cbed31a463416beef4bc4bed191420847ec8af0df18b65cab"
+      "sha256": "620c3b6c8cfacfe4168a3b3047c5289532184de20e4bcf4bb145e5c72d50324f"
     },
     {
       "file": "dtbo.img",
@@ -57,7 +57,7 @@
       "file": "system_dlkm.img",
       "partition": "system_dlkm",
       "file_bytes": 33554432,
-      "sha256": "391ad81913377db5f60841726c4bd4e7b20dd145ade2e3c7113c4bb6d80e39ae"
+      "sha256": "6a0a676e52a0e0aae6c9a1598e5176efef182303b49bd07a28890f78fb1da39e"
     },
     {
       "file": "vbmeta.img",
@@ -81,7 +81,7 @@
       "file": "vbmeta_system_dlkm.img",
       "partition": "vbmeta_system_dlkm",
       "file_bytes": 1048576,
-      "sha256": "6a9b63a602c31b18a7ff0f8e84e4f3389d110ecc09d94caab1b8efd6b77fbdcf"
+      "sha256": "c0c37f21f2a2d1bf9aa45579dbc0daaa61ee4b54819985021246e29958eb12b2"
     },
     {
       "file": "vbmeta_vendor.img",
@@ -93,7 +93,7 @@
       "file": "vbmeta_vendor_dlkm.img",
       "partition": "vbmeta_vendor_dlkm",
       "file_bytes": 1048576,
-      "sha256": "0fdc1f621552b47ca8b7a8ac3af62a89941fc4b5597522a4bb2fec749ef6cb39"
+      "sha256": "ff44516bc8fcc52f16e6d4898ed3fb57ac8bbe37f54cc121f671a2c414cfca51"
     },
     {
       "file": "vendor.img",
@@ -105,13 +105,13 @@
       "file": "vendor_boot.img",
       "partition": "vendor_boot",
       "file_bytes": 100663296,
-      "sha256": "7a7adcaa25b8f1509dd7b4206217766ee29d2a13a24ae23e00421102351ec3f9"
+      "sha256": "290060084343d205f877c8fdf367f980dcbcf46dc37c0cc5910cb9bdcc594c9d"
     },
     {
       "file": "vendor_dlkm.img",
       "partition": "vendor_dlkm",
       "file_bytes": 100663296,
-      "sha256": "6b1c48f66c673fe5e710525d204297cd6187d3797e5fc48e71d2308d24a51818"
+      "sha256": "054e6f7347ce435a1f4b8b356a2f8ab6bc3061eb967547ce3122ad1526bd8a4b"
     }
   ],
   "preserve": [
