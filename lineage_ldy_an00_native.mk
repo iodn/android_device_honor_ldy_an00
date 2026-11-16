@@ -20,6 +20,10 @@ else
 $(error Select explicit unsigned-inventory or production native VAB stage)
 endif
 
+ifeq ($(LDY_AN00_NATIVE_HARDWARE_BASELINE),stock11)
+LDY_AN00_RESET_GUARD ?= 1
+endif
+
 # Preserve the C6 features and userdebug root-debug opt-in.
 $(call inherit-product, device/honor/ldy_an00/lineage_ldy_an00.mk)
 PRODUCT_NAME := lineage_ldy_an00_native
