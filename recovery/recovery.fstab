@@ -1,0 +1,35 @@
+# Honor stock 10.0.0.113 filesystem paths and encryption settings.
+# Recovery mounts these explicitly; retained vendor_boot owns first-stage modules.
+# Do not format or auto-mount userdata as part of recovery startup.
+system /system erofs ro wait,slotselect,logical,avb
+system /system ext4 ro,barrier=1,discard wait,slotselect,logical,avb
+system_ext /system_ext erofs ro wait,slotselect,logical,nofail,avb
+system_ext /system_ext ext4 ro,barrier=1,discard wait,slotselect,logical,nofail,avb
+vendor /vendor erofs ro wait,slotselect,logical,avb
+vendor /vendor ext4 ro,barrier=1,discard wait,slotselect,logical,avb
+vendor_dlkm /vendor_dlkm erofs ro wait,slotselect,logical,avb
+vendor_dlkm /vendor_dlkm ext4 ro,barrier=1,discard wait,slotselect,logical,avb
+system_dlkm /system_dlkm erofs ro wait,slotselect,logical,avb
+system_dlkm /system_dlkm ext4 ro,barrier=1,discard wait,slotselect,logical,avb
+odm /odm erofs ro wait,slotselect,logical,nofail,avb
+odm /odm ext4 ro,barrier=1,discard wait,slotselect,logical,nofail,avb
+odm_dlkm /odm_dlkm erofs ro wait,slotselect,logical,nofail,avb
+odm_dlkm /odm_dlkm ext4 ro,barrier=1,discard wait,slotselect,logical,nofail,avb
+product /product erofs ro wait,slotselect,logical,nofail,avb
+product /product ext4 ro,barrier=1,discard wait,slotselect,logical,nofail,avb
+/dev/block/by-name/metadata /metadata f2fs noatime,nosuid,nodev,discard wait,check
+/dev/block/by-name/metadata /metadata ext4 noatime,nosuid,nodev,discard wait,check
+/dev/block/by-name/userdata /data f2fs noatime,nosuid,nodev,discard,noflush_merge,fsync_mode=nobarrier,reserve_root=134217,resgid=1065,inlinecrypt wait,check,quota,latemount,resize,reservedsize=128m,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption,fsverity,sysfs_path=/sys/devices/platform/soc/16810000.ufshci
+/dev/block/by-name/userdata /data ext4 noatime,nosuid,nodev,inlinecrypt,errors=panic wait,check,quota,latemount,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption
+
+# Physical storage used by recovery, AVB and the boot-control HAL.
+/dev/block/by-name/super /super emmc defaults defaults
+/dev/block/by-name/misc /misc emmc defaults defaults
+/dev/block/by-name/boot /boot emmc defaults wait,slotselect
+/dev/block/by-name/init_boot /init_boot emmc defaults wait,slotselect
+/dev/block/by-name/vendor_boot /vendor_boot emmc defaults wait,slotselect
+/dev/block/by-name/recovery_ramdisk /recovery_ramdisk emmc defaults wait,slotselect
+/dev/block/by-name/recovery_vbmeta /recovery_vbmeta emmc defaults wait,slotselect
+/dev/block/by-name/vbmeta /vbmeta emmc defaults wait,slotselect
+/dev/block/by-name/vbmeta_system /vbmeta_system emmc defaults wait,slotselect
+/dev/block/by-name/vbmeta_system_dlkm /vbmeta_system_dlkm emmc defaults wait,slotselect

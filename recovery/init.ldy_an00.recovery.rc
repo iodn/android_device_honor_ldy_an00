@@ -1,0 +1,5 @@
+# Explicit recovery imports exclude retained vendor normal-boot init scripts.
+import /system/etc/init/hw/init.rc
+import /system/etc/init/servicemanager.recovery.rc
+import /system/etc/init/snapuserd.rc
+import /system/etc/init/android.hardware.boot-service.mtk.recovery.rc

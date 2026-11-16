@@ -1,0 +1,3 @@
+# OEM libmtk_bsg accesses this exact character device from the stock boot HAL.
+type bsg_device, dev_type;
+allow hal_bootctl_default bsg_device:chr_file { getattr open read write ioctl };

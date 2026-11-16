@@ -13,3 +13,6 @@ __pycache__/
 
 # Generated stock display-policy data must never enter public source exports.
 /displayplugin/stock-policy-assets/*.json
+
+# Public OTA verification certificate, not private signing material.
+!recovery/security/ota.x509.pem

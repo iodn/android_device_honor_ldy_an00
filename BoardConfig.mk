@@ -48,3 +48,7 @@ endif
 ifeq ($(TARGET_PRODUCT),lineage_ldy_an00_native)
 include $(DEVICE_PATH)/BoardConfigNativeVab.mk
 endif
+
+ifeq ($(TARGET_PRODUCT),lineage_ldy_an00_recovery)
+include $(DEVICE_PATH)/recovery/BoardConfigRecovery.mk
+endif

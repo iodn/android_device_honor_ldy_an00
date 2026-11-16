@@ -48,7 +48,7 @@ python3 tools/generate_power_profile.py
 | Device/model | `ldy_an00` / `LDY-AN00` |
 | Android source path | `device/honor/ldy_an00` |
 | Native product | `lineage_ldy_an00_native` |
-| Branch | `lineage-24.0` |
+| Branch | `main` |
 | Tested firmware baseline | `10.0.0.113(C00E100R101P1)` |
 
 Official downloads and GhostLock status are listed in the

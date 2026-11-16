@@ -1,0 +1,10 @@
+# Hardware settings from the retained stock init.recovery.mt6993.rc.
+# Standard Lineage recovery init owns FunctionFS and ADB/fastboot transitions.
+# Retained vendor_boot supplies DTB, bootconfig and modules.load.recovery.
+on init
+    setprop sys.usb.configfs 1
+    setprop sys.usb.controller 16751000.usb0
+    setprop sys.usb.ffs.aio_compat 1
+
+on boot
+    write /sys/devices/platform/soc/16751000.usb0/offload_support 0

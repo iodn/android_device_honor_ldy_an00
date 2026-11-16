@@ -1,0 +1,16 @@
+# The recovery HAL and its OEM UFS BSG node do not require a vendor mount.
+/system/bin/hw/android\.hardware\.boot-service\.mtk u:object_r:hal_bootctl_default_exec:s0
+/dev/ufs-bsg0 u:object_r:bsg_device:s0
+
+# Ueventd labels UFS nodes using their global and platform partition aliases.
+# Boot and AVB artifacts use the recovery boot-partition access category.
+/dev/block/by-name/super u:object_r:super_block_device:s0
+/dev/block/platform/soc/16810000\.ufshci/by-name/super u:object_r:super_block_device:s0
+/dev/block/by-name/metadata u:object_r:metadata_block_device:s0
+/dev/block/platform/soc/16810000\.ufshci/by-name/metadata u:object_r:metadata_block_device:s0
+/dev/block/by-name/userdata u:object_r:userdata_block_device:s0
+/dev/block/platform/soc/16810000\.ufshci/by-name/userdata u:object_r:userdata_block_device:s0
+/dev/block/by-name/misc u:object_r:misc_block_device:s0
+/dev/block/platform/soc/16810000\.ufshci/by-name/misc u:object_r:misc_block_device:s0
+/dev/block/by-name/(boot|init_boot|vendor_boot|recovery_ramdisk|recovery_vbmeta|vbmeta|vbmeta_system|vbmeta_system_dlkm)_[ab] u:object_r:boot_block_device:s0
+/dev/block/platform/soc/16810000\.ufshci/by-name/(boot|init_boot|vendor_boot|recovery_ramdisk|recovery_vbmeta|vbmeta|vbmeta_system|vbmeta_system_dlkm)_[ab] u:object_r:boot_block_device:s0
