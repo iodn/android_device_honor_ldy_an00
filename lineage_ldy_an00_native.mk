@@ -30,6 +30,9 @@ PRODUCT_NAME := lineage_ldy_an00_native
 # Distribution must not silently authorize the owner's personal ADB public key.
 PRODUCT_ADB_KEYS :=
 
+# Normal Android has no serial-console user; retain Recovery and ADB defaults.
+PRODUCT_SYSTEM_PROPERTIES += ro.boot.serialconsole=0
+
 AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS := boot system system_dlkm vbmeta_system vbmeta_system_dlkm
 ifeq ($(LDY_AN00_NATIVE_HARDWARE_BASELINE),stock11)
