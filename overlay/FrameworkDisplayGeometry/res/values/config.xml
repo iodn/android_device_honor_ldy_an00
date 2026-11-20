@@ -7,4 +7,7 @@
     <dimen name="rounded_corner_radius_bottom">42dp</dimen>
     <dimen name="status_bar_height_default">134px</dimen>
     <dimen name="status_bar_height_portrait">134px</dimen>
+    <!-- Keep a 60 Hz peak by default and let the user's peak selection replace it. -->
+    <integer name="config_defaultRefreshRate">0</integer>
+    <integer name="config_defaultPeakRefreshRate">60</integer>
 </resources>
