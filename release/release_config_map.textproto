@@ -1,0 +1,6 @@
+default_containers: "system"
+
+release_config {
+    name: "cp2a"
+    flag_value_files: "release_configs/cp2a.textproto"
+}

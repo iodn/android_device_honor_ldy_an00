@@ -1,0 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+aconfig_value_set {
+    name: "aconfig_value_set-ldy-an00-cp2a",
+    srcs: ["android.security/Android.bp"],
+}
