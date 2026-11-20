@@ -13,8 +13,7 @@ import java.util.Set;
 final class ThermalSceneResolver {
     enum Outcome { READY, NOT_READY }
     record PackageRule(String key, String scene) {}
-    record Foreground(String packageName, Integer cmsAppType, int matchedPid,
-            String previousRawScene) {}
+    record Foreground(String packageName, Integer cmsAppType, String previousRawScene) {}
     // Boxed flags deliberately distinguish unavailable context from false.
     record Flags(Boolean vr, Boolean highSpeed, Boolean screenOn, Boolean pcCast,
             boolean demoVersionKnown, String demoVersion, Boolean flagF,

@@ -325,17 +325,8 @@ public final class ThermalPolicyPlugin implements Plugin {
         var flags = new ThermalSceneResolver.Flags(vr(),highSpeed,screen,mPcCast,true,demo,
                 false,false,false,2);
         return new ThermalSceneResolver.Snapshot(
-                new ThermalSceneResolver.Foreground(pkg,cms,matchedPid(pkg),mPreviousRawScene),
+                new ThermalSceneResolver.Foreground(pkg,cms,mPreviousRawScene),
                 flags,Map.of());
-    }
-    private int matchedPid(String pkg) {
-        if (pkg == null) return -1;
-        var processes = mActivities.getRunningAppProcesses();
-        if (processes != null) for (var process : processes) {
-            if (process == null || process.pkgList == null) continue;
-            for (String member : process.pkgList) if (pkg.equals(member)) return process.pid;
-        }
-        return -1;
     }
     private StockLcdPolicy.HdrSceneState baselineHdrAuthority() {
         return FrameworkAuthority.allAbsent(Plugin.class.getClassLoader(),
