@@ -1,0 +1,3 @@
+# Restrict the kernel syslog to privileged callers from early boot.
+on early-init
+    write /proc/sys/kernel/dmesg_restrict 1

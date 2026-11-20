@@ -34,6 +34,9 @@ PRODUCT_ADB_KEYS :=
 PRODUCT_PRODUCT_PROPERTIES += persist.sys.usb.config=none
 PRODUCT_SYSTEM_EXT_PROPERTIES += ro.lineage.ldy_an00.adb_default_off=true
 
+PRODUCT_COPY_FILES += \
+    device/honor/ldy_an00/rootdir/etc/init/ldy-an00-kernel-hardening.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/ldy-an00-kernel-hardening.rc
+
 # Normal Android has no serial-console user; retain Recovery and ADB defaults.
 PRODUCT_SYSTEM_PROPERTIES += ro.boot.serialconsole=0
 
