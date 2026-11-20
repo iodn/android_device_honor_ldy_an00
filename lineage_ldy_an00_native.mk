@@ -30,6 +30,10 @@ PRODUCT_NAME := lineage_ldy_an00_native
 # Distribution must not silently authorize the owner's personal ADB public key.
 PRODUCT_ADB_KEYS :=
 
+# Override Honor's manufacturing USB defaults. Init respects an existing user opt-in.
+PRODUCT_PRODUCT_PROPERTIES += persist.sys.usb.config=none
+PRODUCT_SYSTEM_EXT_PROPERTIES += ro.lineage.ldy_an00.adb_default_off=true
+
 # Normal Android has no serial-console user; retain Recovery and ADB defaults.
 PRODUCT_SYSTEM_PROPERTIES += ro.boot.serialconsole=0
 

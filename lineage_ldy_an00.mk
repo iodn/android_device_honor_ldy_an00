@@ -21,6 +21,9 @@ ifeq ($(TARGET_BUILD_VARIANT),userdebug)
 # The build serializes any nonempty value, including false, as true.
 PRODUCT_NOT_DEBUGGABLE_IN_USERDEBUG :=
 PRODUCT_ADB_KEYS := vendor/honor/ldy_an00/proprietary/debug/adbkey.pub
-# Product defaults load after the retained vendor manufacturing defaults.
-PRODUCT_PRODUCT_PROPERTIES += persist.sys.usb.config=adb ro.logd.kernel=true
+# Keep automatic ADB for the development guest. The native product opts in via Settings.
+ifneq ($(TARGET_PRODUCT),lineage_ldy_an00_native)
+PRODUCT_PRODUCT_PROPERTIES += persist.sys.usb.config=adb
+endif
+PRODUCT_PRODUCT_PROPERTIES += ro.logd.kernel=true
 endif
