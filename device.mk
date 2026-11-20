@@ -90,9 +90,11 @@ $(call inherit-product, vendor/honor/ldy_an00/npu-framework.mk)
 # Stock audio algorithm engine and deterministic tuning.
 $(call inherit-product, vendor/honor/ldy_an00/audio-sws-framework.mk)
 
-# Personal userdebug diagnostics; no capture package in user builds.
+# Keep boot log capture and the radio metadata probe in explicit lab builds.
 ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+ifeq ($(LDY_AN00_INCLUDE_LAB_DIAGNOSTICS),true)
 PRODUCT_PACKAGES += ldy-guest-capture LdyAn00HnRadioMetadataProbe
+endif
 # Corrected local LPA fork: no global startup logical-channel cleanup sweep.
 PRODUCT_PACKAGES += OpenEUICC
 PRODUCT_COPY_FILES += \

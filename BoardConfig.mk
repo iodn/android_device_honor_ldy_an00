@@ -42,7 +42,9 @@ SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/system_ext/private
 include vendor/lineage/config/BoardConfigLineage.mk
 
 ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+ifeq ($(LDY_AN00_INCLUDE_LAB_DIAGNOSTICS),true)
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/diagnostic-capture/sepolicy
+endif
 endif
 
 ifeq ($(TARGET_PRODUCT),lineage_ldy_an00_native)
