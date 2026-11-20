@@ -1,0 +1,4 @@
+# Vendor loads the zRAM driver in post-fs-data and runs legacy swapon_all at
+# boot. Publish the AOSP flag in between so fs_mgr defers zRAM setup to mmd.
+on early-boot && property:mmd.zram.enabled=true
+    exec -- /system/bin/mmd --set-property

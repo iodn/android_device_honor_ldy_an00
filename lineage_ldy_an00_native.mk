@@ -37,6 +37,7 @@ AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS := boot system system_dlkm vbmeta_system vbmeta_system_dlkm
 ifeq ($(LDY_AN00_NATIVE_HARDWARE_BASELINE),stock11)
 include device/honor/ldy_an00/stock11-hardware.mk
+include device/honor/ldy_an00/memory-management.mk
 AB_OTA_PARTITIONS := $(_LDY_STOCK11_OTA_PARTITIONS)
 # Upstream caps this at 600 seconds; diagnostics stop the daemon during the trial.
 PRODUCT_SYSTEM_PROPERTIES += ro.virtual_ab.merge_delay_seconds=600
